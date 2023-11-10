@@ -7,7 +7,6 @@
 </template>
 
 <script>
-
 export default {
   provide() {
     return {
@@ -34,14 +33,15 @@ export default {
 <style lang="scss">
 @import 'assets/SideBar/sideBar.css';
 @import './assets/all.scss';
-// body {
-//   background-image: url('../src//assets/backGround/bg.cd92bdbc.png');
-//   background-size: 100% 100%;
-//   background-attachment: fixed;
-//   background-position: center;
-//   background-repeat: no-repeat;
-//   transition: background 0.2s;
-// }
+body {
+  background-image: url('../src//assets/backGround/FileCover.png');
+  // background-size: 100% 100%;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background 0.2s;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -64,15 +64,15 @@ nav {
 }
 // 滑出動畫特效
 .fade-enter-from,
-    .fade-leave-to {
-        opacity: 0;
-    }
-    .fade-enter-to,
-    .fade-leave-from {
-        opacity: 1;
-    }
-    .fade-enter-active,
-    .fade-leave-active {
-        transition: 0.3s ease;
-    }
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: 0.3s ease;
+}
 </style>
