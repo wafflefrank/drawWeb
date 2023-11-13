@@ -27,6 +27,9 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import 'material-icons/iconfont/material-icons.css';
 // e-chart
 import * as echarts from 'echarts'; // e-charts 圓餅圖
+// 抽獎轉盤
+import LeeVue from 'leevueplugin';
+import VueLuckyCanvas from '@lucky-canvas/vue';
 // 時間格式轉換
 import moment from 'moment';
 // 引入 I18n 套件
@@ -83,6 +86,8 @@ app.config.globalProperties.$filters = {
 app.component('Loading', Loading);
 app.use(i18n);
 app.use(_);
+app.use(LeeVue);
+app.use(VueLuckyCanvas);
 app.use(VueSweetalert2);
 app.use(router);
 app.use(VueAxios, axios);
