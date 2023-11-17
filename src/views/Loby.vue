@@ -8,7 +8,34 @@
     </div>
   </div>
 
-  <div class="my-5 d-flex flex-column align-items-center">
+  <!-- 輪播畫面 -->
+  <!-- <el-carousel class="mt-5" height="50px" :autoplay="true" indicator-position="none">
+    <el-carousel-item v-for="item in translate_News" :key="item">
+      <div class="d-flex justify-content-center">
+        <div class="announce-icon d-flex">
+          <span style="color: #faa30d" class="me-1 material-icons-outlined">campaign</span>
+          <h5 justify="center" style="color: #ae92e1">{{ item.memberID }}</h5>
+          <h5 justify="center" style="color: #ae92e1">{{ item.memberID }}</h5>
+          <h5 justify="center" style="color: #ae92e1">{{ item.memberID }}</h5>
+        </div>
+        <div class="div-menu">
+          <span style="color: #faa30d" class="material-icons-outlined">menu</span>
+        </div>
+      </div>
+    </el-carousel-item>
+  </el-carousel> -->
+  <div class="marquee_style my-5 d-flex align-items-center">
+    <img class="boadcast_style" src="../assets/banner/broadcast-icon-png.webp" alt="#" />
+    <div class="borderStyle">
+      <Vue3Marquee :duration="8">
+        <span class="text-white my-3" v-for="(item, index) in translate_News" :key="index">
+          {{ item.memberID }}
+        </span>
+      </Vue3Marquee>
+    </div>
+  </div>
+
+  <div class="mb-5 d-flex flex-column align-items-center">
     <!-- 幸運轉盤 -->
     <LuckyWheel ref="myLucky" width="900px" height="900px" :prizes="prizes" :blocks="blocks" :buttons="buttons" @start="startCallback" @end="endCallback" />
 
@@ -36,14 +63,14 @@
 
   <el-dialog class="drawModel_style" v-model="dialogFormVisible" title="抽獎資格驗證" width="40%" center>
     <el-form :model="getCode_Form">
-      <el-form-item label="抽獎驗證碼:" :label-width="formLabelWidth">
+      <el-form-item label="抽獎驗證碼:" class="codeForm_style">
         <el-input class="codeInput_style" v-model="getCode_Form.code" autocomplete="off" />
       </el-form-item>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false"> Confirm </el-button>
+        <el-button class="cancelBtn" color="#a3a3a3" @click="dialogFormVisible = false">取消</el-button>
+        <el-button class="verifyBtn" color="#c71e2d" @click="doVarify()">認證</el-button>
       </span>
     </template>
   </el-dialog>
@@ -71,6 +98,16 @@ export default {
       getCode_Form: {
         code: '',
       },
+      // 剩餘抽獎次數(測試用)
+      drawNum: 0,
+      // 最新消息列表(測試用)
+      translate_News: [
+        { memberID: '12345', money: 1000 },
+        { memberID: '13579', money: 2000 },
+        { memberID: '24688', money: 3000 },
+      ],
+      // 測試資料
+      dataCode: 200,
       lotteryMsg: '',
       blocks: [{ padding: '55px', background: '#869cfa', imgs: [{ src: borderImg, width: '100%', rotate: true }] }],
       prizes: [
@@ -111,7 +148,7 @@ export default {
   },
   methods: {
     postLottery() {
-      this.$http.post('http://localhost:3000/users/lottery', this.memberCode).then((res) => {
+      this.$http.post('/users/lottery', this.memberCode).then((res) => {
         console.log(res.data.data);
         if (res.data.data.code === 200) {
           console.log('抽獎成功');
@@ -121,6 +158,26 @@ export default {
           this.lotteryMsg = res.data.data.msg;
         }
       });
+    },
+    // 驗證碼
+    doVarify() {
+      // api
+      this.$http.post('/users/lottery', this.memberCode).then((res) => {
+        if (res.data.code === 200) {
+          this.$swal.fire('驗證成功', '驗證成功', 'success');
+          this.dialogFormVisible = false;
+        } else {
+          this.$swal.fire('驗證失敗', '驗證失敗失敗', 'error');
+        }
+      });
+      // test
+      if (this.getCode_Form.code !== '') {
+        this.$swal.fire('驗證成功', '驗證成功', 'success');
+        this.dialogFormVisible = false;
+      } else {
+        this.$swal.fire('驗證失敗', '驗證失敗', 'error');
+      }
+      this.getCode_Form.code = '';
     },
     // 点击抽奖按钮会触发star回调
     startCallback() {
@@ -219,8 +276,8 @@ export default {
 // 輸入驗證碼樣式
 .codeInput_style {
   // width: 80%;
-  --el-input-focus-border-color: #faa30d;
-  padding: 10px 200px;
+  --el-input-focus-border-color: #f082ac;
+  // padding: 10px 200px;
   // & :deep(.el-input__inner) {
   //   padding: 25px 0 25px 0px;
   //   // border-radius: 50px;
@@ -228,12 +285,52 @@ export default {
   & :deep(.el-input__wrapper) {
     border-top-right-radius: 50px;
     border-bottom-right-radius: 50px;
-    padding-left: 10px;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    background: #eee;
+    // padding-left: 10px;
   }
   & :deep(.el-input-group__prepend) {
     border-top-left-radius: 50px;
     border-bottom-left-radius: 50px;
   }
+}
+
+// 取消按鈕
+.cancelBtn {
+  color: #fff;
+  font-weight: bold;
+  padding: 20px;
+  font-size: 25px;
+}
+// 驗證按鈕
+.verifyBtn {
+  color: #fff;
+  font-weight: bold;
+  padding: 20px;
+  font-size: 25px;
+}
+.marquee_style {
+  width: 800px;
+  margin: auto;
+  position: relative;
+  & .borderStyle {
+    max-width: 700px;
+    width: 100%;
+    height: 55px;
+    // margin: 20px 0 23px 65px;
+    background: transparent;
+    border: 3px solid #ca0e19;
+    border-radius: 25px;
+  }
+}
+.boadcast_style {
+  width: 207px;
+  width: 200px;
+  position: absolute;
+  left: -70px;
+  top: -80px;
+  bottom: 0;
 }
 </style>
 
@@ -254,6 +351,13 @@ export default {
     font-size: 30px;
     font-weight: bold;
     color: #fff;
+  }
+}
+
+.codeForm_style {
+  display: block;
+  & .el-form-item__label {
+    font-size: 18px !important;
   }
 }
 </style>

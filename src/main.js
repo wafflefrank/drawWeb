@@ -32,6 +32,8 @@ import LeeVue from 'leevueplugin';
 import VueLuckyCanvas from '@lucky-canvas/vue';
 // 時間格式轉換
 import moment from 'moment';
+// 跑馬燈套件
+import Vue3Marquee from 'vue3-marquee';
 // 引入 I18n 套件
 import i18n from './i18n/index';
 // 深色模式
@@ -87,6 +89,7 @@ app.component('Loading', Loading);
 app.use(i18n);
 app.use(_);
 app.use(LeeVue);
+app.use(Vue3Marquee);
 app.use(VueLuckyCanvas);
 app.use(VueSweetalert2);
 app.use(router);
