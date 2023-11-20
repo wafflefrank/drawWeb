@@ -35,6 +35,14 @@
     </div>
   </div>
 
+  <!-- 帳戶 -->
+  <div class="d-flex align-items-center justify-content-center mb-5">
+    <span class="text-white me-5 fs-4">帳戶: {{ this.memberAccount }}</span>
+    <span class="text-white ms-5 text-start"
+      ><span class="fs-4">剩餘次數: {{ this.drawNum }}</span> <br />(若卡在抽獎過程,刷新不減抽獎次數！</span
+    >
+  </div>
+
   <div class="mb-5 d-flex flex-column align-items-center">
     <!-- 幸運轉盤 -->
     <LuckyWheel ref="myLucky" width="900px" height="900px" :prizes="prizes" :blocks="blocks" :buttons="buttons" @start="startCallback" @end="endCallback" />
@@ -81,6 +89,9 @@
 import borderImg from '../assets/backGround/zp2_bg.png';
 import startBtn from '../assets/backGround/startBtn.png';
 import selectBtn from '../assets/backGround/zp3_btn2.png';
+import coinImg from '../assets/backGround/coins.png';
+import coinBag from '../assets/backGround/goldcoins_bag.png';
+import treasureImg from '../assets/backGround/treasure.png';
 
 export default {
   components: {
@@ -98,6 +109,8 @@ export default {
       getCode_Form: {
         code: '',
       },
+      // 使用者帳戶(測試用)
+      memberAccount: 'frank',
       // 剩餘抽獎次數(測試用)
       drawNum: 0,
       // 最新消息列表(測試用)
@@ -111,12 +124,12 @@ export default {
       lotteryMsg: '',
       blocks: [{ padding: '55px', background: '#869cfa', imgs: [{ src: borderImg, width: '100%', rotate: true }] }],
       prizes: [
-        { background: '#ee95a9', fonts: [{ text: '0' }] },
-        { background: '#c98ef4', fonts: [{ text: '1' }] },
-        { background: '#ee95a9', fonts: [{ text: '2' }] },
-        { background: '#c98ef4', fonts: [{ text: '3' }] },
-        { background: '#ee95a9', fonts: [{ text: '4' }] },
-        { background: '#c98ef4', fonts: [{ text: '5' }] },
+        { background: '#ee95a9', imgs: [{ src: coinImg, width: '40%', top: '40%' }], fonts: [{ text: '0', top: '30%' }] },
+        { background: '#c98ef4', imgs: [{ src: coinImg, width: '40%', top: '40%' }], fonts: [{ text: '1', top: '30%' }] },
+        { background: '#ee95a9', imgs: [{ src: coinBag, width: '40%', top: '40%' }], fonts: [{ text: '2', top: '30%' }] },
+        { background: '#c98ef4', imgs: [{ src: coinImg, width: '40%', top: '40%' }], fonts: [{ text: '3', top: '30%' }] },
+        { background: '#ee95a9', imgs: [{ src: treasureImg, width: '40%', top: '40%' }], fonts: [{ text: '4', top: '30%' }] },
+        { background: '#c98ef4', imgs: [{ src: coinImg, width: '40%', top: '40%' }], fonts: [{ text: '5', top: '30%' }] },
       ],
       buttons: [
         {
@@ -152,10 +165,18 @@ export default {
         console.log(res.data.data);
         if (res.data.data.code === 200) {
           console.log('抽獎成功');
-          this.lotteryMsg = res.data.data.msg;
+          // this.lotteryMsg = res.data.data.msg;
+
+          // 測試用
+          this.$swal.fire('抽獎成功', '驗證成功', 'success');
+          this.lotteryMsg = '抽獎成功';
         } else {
           console.log('驗證碼有誤');
-          this.lotteryMsg = res.data.data.msg;
+          // this.lotteryMsg = res.data.data.msg;
+
+          // 測試用
+          this.$swal.fire('抽獎失敗', '驗證成功', 'error');
+          this.lotteryMsg = '抽獎失敗';
         }
       });
     },
@@ -174,6 +195,7 @@ export default {
       if (this.getCode_Form.code !== '') {
         this.$swal.fire('驗證成功', '驗證成功', 'success');
         this.dialogFormVisible = false;
+        this.drawNum = 7;
       } else {
         this.$swal.fire('驗證失敗', '驗證失敗', 'error');
       }
@@ -181,25 +203,31 @@ export default {
     },
     // 点击抽奖按钮会触发star回调
     startCallback() {
-      this.dialogFormVisible = true;
-      this.postLottery();
-      // 调用抽奖组件的play方法开始游戏
-      this.$refs.myLucky.play();
-      // 模拟调用接口异步抽奖
-      setTimeout(() => {
-        // 假设后端返回的中奖索引是0
-        const index = 0;
-        // 调用stop停止旋转并传递中奖索引
-        this.$refs.myLucky.stop(index);
-      }, 3000);
+      if (this.drawNum === 0) {
+        this.$swal.fire('無抽獎次數', '請輸入驗證碼', 'error');
+        this.dialogFormVisible = true;
+      }
+      if (this.drawNum > 0) {
+        // 调用抽奖组件的play方法开始游戏
+        this.$refs.myLucky.play();
+        this.drawNum -= 1;
+        // 模拟调用接口异步抽奖
+        setTimeout(() => {
+          // 假设后端返回的中奖索引是0
+          const index = 0;
+          // 调用stop停止旋转并传递中奖索引
+          this.$refs.myLucky.stop(index);
+        }, 3000);
+      }
     },
     // 抽奖结束会触发end回调
     endCallback(prize) {
       console.log(prize);
+      this.postLottery();
     },
   },
   created() {
-    this.postLottery();
+    // this.postLottery();
   },
 };
 </script>
@@ -311,7 +339,7 @@ export default {
   font-size: 25px;
 }
 .marquee_style {
-  width: 800px;
+  width: 700px;
   margin: auto;
   position: relative;
   & .borderStyle {
@@ -320,8 +348,9 @@ export default {
     height: 55px;
     // margin: 20px 0 23px 65px;
     background: transparent;
-    border: 3px solid #ca0e19;
+    border: 3px solid #ffa1a1;
     border-radius: 25px;
+    padding-left: 100px;
   }
 }
 .boadcast_style {
