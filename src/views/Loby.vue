@@ -86,6 +86,7 @@
 
 <script>
 // import SwiperCarousel from '../components/Swiper/Carousel.vue';
+import _ from 'lodash';
 import borderImg from '../assets/backGround/zp2_bg.png';
 import startBtn from '../assets/backGround/startBtn.png';
 import selectBtn from '../assets/backGround/zp3_btn2.png';
@@ -97,6 +98,7 @@ export default {
   components: {
     // SwiperCarousel,
   },
+
   data() {
     return {
       // 驗證碼
@@ -121,15 +123,83 @@ export default {
       ],
       // 測試資料
       dataCode: 200,
+      // 獎項名稱
+      prizeName: '禮金8888',
       lotteryMsg: '',
       blocks: [{ padding: '55px', background: '#869cfa', imgs: [{ src: borderImg, width: '100%', rotate: true }] }],
       prizes: [
-        { background: '#ee95a9', imgs: [{ src: coinImg, width: '40%', top: '40%' }], fonts: [{ text: '0', top: '30%' }] },
-        { background: '#c98ef4', imgs: [{ src: coinImg, width: '40%', top: '40%' }], fonts: [{ text: '1', top: '30%' }] },
-        { background: '#ee95a9', imgs: [{ src: coinBag, width: '40%', top: '40%' }], fonts: [{ text: '2', top: '30%' }] },
-        { background: '#c98ef4', imgs: [{ src: coinImg, width: '40%', top: '40%' }], fonts: [{ text: '3', top: '30%' }] },
-        { background: '#ee95a9', imgs: [{ src: treasureImg, width: '40%', top: '40%' }], fonts: [{ text: '4', top: '30%' }] },
-        { background: '#c98ef4', imgs: [{ src: coinImg, width: '40%', top: '40%' }], fonts: [{ text: '5', top: '30%' }] },
+        {
+          background: '#ee95a9',
+          imgs: [{ src: coinImg, width: '40%', top: '40%' }],
+          fonts: [
+            {
+              text: 'test.prizeName',
+              fontSize: '24px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
+        {
+          background: '#c98ef4',
+          imgs: [{ src: coinImg, width: '40%', top: '40%' }],
+          fonts: [
+            {
+              text: '禮金2000',
+              fontSize: '24px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
+        {
+          background: '#ee95a9',
+          imgs: [{ src: coinBag, width: '40%', top: '40%' }],
+          fonts: [
+            {
+              text: '禮金35000',
+              fontSize: '24px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
+        {
+          background: '#c98ef4',
+          imgs: [{ src: coinImg, width: '40%', top: '40%' }],
+          fonts: [
+            {
+              text: '禮金55000',
+              fontSize: '24px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
+        {
+          background: '#ee95a9',
+          imgs: [{ src: treasureImg, width: '40%', top: '40%' }],
+          fonts: [
+            {
+              text: '禮金60000',
+              fontSize: '24px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
+        {
+          background: '#c98ef4',
+          imgs: [{ src: coinImg, width: '40%', top: '40%' }],
+          fonts: [
+            {
+              text: '禮金1000',
+              fontSize: '24px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
       ],
       buttons: [
         {
@@ -225,9 +295,18 @@ export default {
       console.log(prize);
       this.postLottery();
     },
+    // 抓取抽獎資料
+    get_prizeInfo() {
+      this.$http.get('/admin/templates').then((res) => {
+        _.forEach(res.data.data, (item) => {
+          console.log(item.msg);
+        });
+      });
+    },
   },
   created() {
     // this.postLottery();
+    this.get_prizeInfo();
   },
 };
 </script>
