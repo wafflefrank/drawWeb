@@ -37,10 +37,15 @@
 
   <!-- 帳戶 -->
   <div class="d-flex align-items-center justify-content-center mb-5">
-    <span class="text-white me-5 fs-4">帳戶: {{ this.memberAccount }}</span>
-    <span class="text-white ms-5 text-start"
-      ><span class="fs-4">剩餘次數: {{ this.drawNum }}</span> <br />(若卡在抽獎過程,刷新不減抽獎次數！</span
+    <!-- <span class="text-white me-5 fs-4">帳戶: {{ this.memberAccount }}</span> -->
+    <span class="text-white me-5 text-start"
+      ><span class="fs-4"
+        >剩餘抽獎次數: <span class="drawNums_style">{{ this.drawNum }}</span></span
+      >
+      <br />(若卡在抽獎過程,刷新不減抽獎次數！</span
     >
+    <button class="button-72 me-2" @click="inputCode()">輸入序號</button>
+    <button class="button-73" @click="inputCode()">抽獎紀錄</button>
   </div>
 
   <div class="mb-5 d-flex flex-column align-items-center">
@@ -69,10 +74,10 @@
     </div>
   </div>
 
-  <el-dialog class="drawModel_style" v-model="dialogFormVisible" title="抽獎資格驗證" width="40%" center>
-    <el-form :model="getCode_Form">
+  <el-dialog class="drawModel_style" v-model="dialogFormVisible" title="抽獎序號驗證" width="40%" center>
+    <el-form :model="getDrawNums">
       <el-form-item label="抽獎驗證碼:" class="codeForm_style">
-        <el-input class="codeInput_style" v-model="getCode_Form.code" autocomplete="off" />
+        <el-input class="codeInput_style" v-model="getDrawNums.code" autocomplete="off" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -86,7 +91,7 @@
 
 <script>
 // import SwiperCarousel from '../components/Swiper/Carousel.vue';
-import _ from 'lodash';
+// import _ from 'lodash';
 import borderImg from '../assets/backGround/zp2_bg.png';
 import startBtn from '../assets/backGround/startBtn.png';
 import selectBtn from '../assets/backGround/zp3_btn2.png';
@@ -102,7 +107,7 @@ export default {
   data() {
     return {
       // 驗證碼
-      memberCode: {
+      getDrawNums: {
         code: '',
       },
       // 驗證表單
@@ -115,6 +120,8 @@ export default {
       memberAccount: 'frank',
       // 剩餘抽獎次數(測試用)
       drawNum: 0,
+      // 暫存抽獎次數
+      storedDrawNums: 0,
       // 最新消息列表(測試用)
       translate_News: [
         { memberID: '12345', money: 1000 },
@@ -231,63 +238,64 @@ export default {
   },
   methods: {
     postLottery() {
-      this.$http.post('/users/lottery', this.memberCode).then((res) => {
-        console.log(res.data.data);
-        if (res.data.data.code === 200) {
-          console.log('抽獎成功');
-          // this.lotteryMsg = res.data.data.msg;
-
-          // 測試用
-          this.$swal.fire('抽獎成功', '驗證成功', 'success');
-          this.lotteryMsg = '抽獎成功';
+      this.$http.post('/users/drawing', this.getDrawNums).then((res) => {
+        if (res.data.code === 200) {
+          this.$swal.fire('抽獎成功', `恭喜獲取 :${res.data.data.award}`, 'success');
+          this.drawNum = res.data.data.count;
+          localStorage.setItem('storedDrawNums', JSON.stringify(this.drawNum));
+          this.dialogFormVisible = false;
         } else {
-          console.log('驗證碼有誤');
-          // this.lotteryMsg = res.data.data.msg;
-
-          // 測試用
-          this.$swal.fire('抽獎失敗', '驗證成功', 'error');
-          this.lotteryMsg = '抽獎失敗';
+          this.$swal.fire('抽獎失敗', `${res.data.msg}`, 'error');
         }
       });
     },
-    // 驗證碼
+    // 確認驗證碼
     doVarify() {
       // api
-      this.$http.post('/users/lottery', this.memberCode).then((res) => {
+      this.$http.post('/users/startLottery', this.getDrawNums).then((res) => {
         if (res.data.code === 200) {
-          this.$swal.fire('驗證成功', '驗證成功', 'success');
+          this.drawNum = res.data.count;
+          this.$swal.fire('輸入成功', `${res.data.msg}`, 'success');
           this.dialogFormVisible = false;
+          localStorage.setItem('storedDrawNums', JSON.stringify(this.drawNum));
         } else {
-          this.$swal.fire('驗證失敗', '驗證失敗失敗', 'error');
+          this.$swal.fire('輸入失敗', `${res.data.msg}`, 'error');
         }
       });
+
       // test
-      if (this.getCode_Form.code !== '') {
-        this.$swal.fire('驗證成功', '驗證成功', 'success');
-        this.dialogFormVisible = false;
-        this.drawNum = 7;
-      } else {
-        this.$swal.fire('驗證失敗', '驗證失敗', 'error');
-      }
+      // if (this.getCode_Form.code !== '') {
+      //   this.$swal.fire('驗證成功', '驗證成功', 'success');
+      //   this.dialogFormVisible = false;
+      //   this.drawNum = 7;
+      // } else {
+      //   this.$swal.fire('驗證失敗', '驗證失敗', 'error');
+      // }
       this.getCode_Form.code = '';
+    },
+    reloadSavedForm() {
+      // 使用JSON.parse()將LocalStorange中的資料轉回可利用的object
+      const stored = JSON.parse(localStorage.getItem('storedDrawNums'));
+      console.log(stored);
+      if (stored !== null) {
+        this.drawNum = stored;
+      }
     },
     // 点击抽奖按钮会触发star回调
     startCallback() {
       if (this.drawNum === 0) {
-        this.$swal.fire('無抽獎次數', '請輸入驗證碼', 'error');
         this.dialogFormVisible = true;
       }
       if (this.drawNum > 0) {
         // 调用抽奖组件的play方法开始游戏
         this.$refs.myLucky.play();
-        this.drawNum -= 1;
         // 模拟调用接口异步抽奖
         setTimeout(() => {
           // 假设后端返回的中奖索引是0
           const index = 0;
           // 调用stop停止旋转并传递中奖索引
           this.$refs.myLucky.stop(index);
-        }, 3000);
+        }, 4000);
       }
     },
     // 抽奖结束会触发end回调
@@ -295,18 +303,14 @@ export default {
       console.log(prize);
       this.postLottery();
     },
-    // 抓取抽獎資料
-    get_prizeInfo() {
-      this.$http.get('/admin/templates').then((res) => {
-        _.forEach(res.data.data, (item) => {
-          console.log(item.msg);
-        });
-      });
+    // 輸入序號彈窗
+    inputCode() {
+      this.dialogFormVisible = true;
     },
   },
   created() {
     // this.postLottery();
-    this.get_prizeInfo();
+    this.reloadSavedForm();
   },
 };
 </script>
@@ -432,6 +436,7 @@ export default {
     padding-left: 100px;
   }
 }
+// 廣播樣式
 .boadcast_style {
   width: 207px;
   width: 200px;
@@ -439,6 +444,12 @@ export default {
   left: -70px;
   top: -80px;
   bottom: 0;
+}
+// 抽獎次數文字樣式
+.drawNums_style {
+  color: rgb(255, 243, 14);
+  font-weight: bold;
+  font-size: 30px;
 }
 </style>
 
@@ -466,6 +477,85 @@ export default {
   display: block;
   & .el-form-item__label {
     font-size: 18px !important;
+  }
+}
+
+/*輸入序號Btn CSS */
+.button-72 {
+  align-items: center;
+  background-color: initial;
+  background-image: linear-gradient(rgba(179, 132, 201, 0.84), rgba(119, 71, 181, 0.84) 50%);
+  border-radius: 42px;
+  border-width: 0;
+  box-shadow: rgba(57, 31, 91, 0.24) 0 2px 2px, rgba(179, 132, 201, 0.4) 0 8px 12px;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  font-family: Quicksand, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  justify-content: center;
+  letter-spacing: 0.04em;
+  line-height: 16px;
+  margin: 0;
+  padding: 18px 18px;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: rgba(255, 255, 255, 0.4) 0 0 4px, rgba(255, 255, 255, 0.2) 0 0 12px, rgba(57, 31, 91, 0.6) 1px 1px 4px, rgba(57, 31, 91, 0.32) 4px 4px 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+}
+
+.button-72:hover {
+  background-image: linear-gradient(#b384c9, #391f5b 50%);
+  transition: 0.5ms;
+}
+
+@media (min-width: 768px) {
+  .button-72 {
+    font-size: 21px;
+    padding: 18px 34px;
+  }
+}
+/*歷史紀錄Btn CSS */
+.button-73 {
+  align-items: center;
+  background-color: initial;
+  background-image: linear-gradient(90deg, rgba(238, 149, 179, 1) 0%, rgba(199,30,45,0.770920868347339), rgba(71, 1, 15, 0.8073354341736695) 100%);
+  border-radius: 42px;
+  border-width: 0;
+  box-shadow: rgba(57, 31, 91, 0.24) 0 2px 2px, rgba(179, 132, 201, 0.4) 0 8px 12px;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  font-family: Quicksand, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  justify-content: center;
+  letter-spacing: 0.04em;
+  line-height: 16px;
+  margin: 0;
+  padding: 18px 18px;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: rgba(255, 255, 255, 0.4) 0 0 4px, rgba(255, 255, 255, 0.2) 0 0 12px, rgba(59,5,13,1) 56% 1px 1px 4px,  rgba(129,15,25,0.770920868347339) 4px 4px 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+}
+
+.button-73:hover {
+  background-image: linear-gradient(#b384c9, #3b050d 50%);
+  transition: 0.5ms;
+}
+
+@media (min-width: 768px) {
+  .button-73 {
+    font-size: 21px;
+    padding: 18px 34px;
   }
 }
 </style>
