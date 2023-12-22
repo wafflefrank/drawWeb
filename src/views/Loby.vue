@@ -95,8 +95,9 @@
 import borderImg from '../assets/backGround/zp2_bg.png';
 import startBtn from '../assets/backGround/startBtn.png';
 import selectBtn from '../assets/backGround/zp3_btn2.png';
-import coinImg from '../assets/backGround/coins.png';
+import coinImg from '../assets/backGround/goldCoin.png';
 import coinBag from '../assets/backGround/goldcoins_bag.png';
+import greenBag from '../assets/backGround/greenBag.png';
 import treasureImg from '../assets/backGround/treasure.png';
 
 export default {
@@ -128,28 +129,30 @@ export default {
         { memberID: '13579', money: 2000 },
         { memberID: '24688', money: 3000 },
       ],
-      // 測試資料
-      dataCode: 200,
+      // 返回獎項索引值
+      prizeIndex: 0,
       // 獎項名稱
       prizeName: '禮金8888',
       lotteryMsg: '',
       blocks: [{ padding: '55px', background: '#869cfa', imgs: [{ src: borderImg, width: '100%', rotate: true }] }],
       prizes: [
+        // 0
         {
           background: '#ee95a9',
-          imgs: [{ src: coinImg, width: '40%', top: '40%' }],
+          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
           fonts: [
             {
-              text: 'test.prizeName',
+              text: '禮金500',
               fontSize: '24px',
               top: '30%',
               fontWeight: '600',
             },
           ],
         },
+        // 1
         {
           background: '#c98ef4',
-          imgs: [{ src: coinImg, width: '40%', top: '40%' }],
+          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
           fonts: [
             {
               text: '禮金2000',
@@ -159,6 +162,7 @@ export default {
             },
           ],
         },
+        // 2
         {
           background: '#ee95a9',
           imgs: [{ src: coinBag, width: '40%', top: '40%' }],
@@ -171,21 +175,23 @@ export default {
             },
           ],
         },
+        // 3
         {
           background: '#c98ef4',
-          imgs: [{ src: coinImg, width: '40%', top: '40%' }],
+          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
           fonts: [
             {
-              text: '禮金55000',
+              text: '禮金550',
               fontSize: '24px',
               top: '30%',
               fontWeight: '600',
             },
           ],
         },
+        // 4
         {
           background: '#ee95a9',
-          imgs: [{ src: treasureImg, width: '40%', top: '40%' }],
+          imgs: [{ src: treasureImg, width: '40%', top: '55%' }],
           fonts: [
             {
               text: '禮金60000',
@@ -195,12 +201,39 @@ export default {
             },
           ],
         },
+        // 5
         {
           background: '#c98ef4',
-          imgs: [{ src: coinImg, width: '40%', top: '40%' }],
+          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
           fonts: [
             {
-              text: '禮金1000',
+              text: '禮金2500',
+              fontSize: '24px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
+        // 6
+        {
+          background: '#ee95a9',
+          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+          fonts: [
+            {
+              text: '禮金1500',
+              fontSize: '24px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
+        // 7
+        {
+          background: '#c98ef4',
+          imgs: [{ src: greenBag, width: '40%', top: '55%' }],
+          fonts: [
+            {
+              text: '禮金5000',
               fontSize: '24px',
               top: '30%',
               fontWeight: '600',
@@ -240,8 +273,9 @@ export default {
     postLottery() {
       this.$http.post('/users/drawing', this.getDrawNums).then((res) => {
         if (res.data.code === 200) {
-          this.$swal.fire('抽獎成功', `恭喜獲取 :${res.data.data.award}`, 'success');
+          // this.$swal.fire('抽獎成功', `恭喜獲取 :${res.data.data.award}`, 'success');
           this.drawNum = res.data.data.count;
+          this.prizeIndex = res.data.data.award;
           localStorage.setItem('storedDrawNums', JSON.stringify(this.drawNum));
           this.dialogFormVisible = false;
         } else {
@@ -287,21 +321,25 @@ export default {
         this.dialogFormVisible = true;
       }
       if (this.drawNum > 0) {
+        this.postLottery();
         // 调用抽奖组件的play方法开始游戏
         this.$refs.myLucky.play();
         // 模拟调用接口异步抽奖
         setTimeout(() => {
           // 假设后端返回的中奖索引是0
-          const index = 0;
+          // const index = 0;
+
           // 调用stop停止旋转并传递中奖索引
-          this.$refs.myLucky.stop(index);
-        }, 4000);
+          this.$refs.myLucky.stop(this.prizeIndex);
+        }, 3000);
       }
     },
     // 抽奖结束会触发end回调
     endCallback(prize) {
       console.log(prize);
-      this.postLottery();
+      if (this.prizeIndex !== '') {
+        this.$swal.fire('抽獎成功', `恭喜獲取 :${this.prizes[this.prizeIndex].fonts[0].text}`, 'success');
+      }
     },
     // 輸入序號彈窗
     inputCode() {
@@ -523,7 +561,7 @@ export default {
 .button-73 {
   align-items: center;
   background-color: initial;
-  background-image: linear-gradient(90deg, rgba(238, 149, 179, 1) 0%, rgba(199,30,45,0.770920868347339), rgba(71, 1, 15, 0.8073354341736695) 100%);
+  background-image: linear-gradient(90deg, rgba(238, 149, 179, 1) 0%, rgba(199, 30, 45, 0.770920868347339), rgba(71, 1, 15, 0.8073354341736695) 100%);
   border-radius: 42px;
   border-width: 0;
   box-shadow: rgba(57, 31, 91, 0.24) 0 2px 2px, rgba(179, 132, 201, 0.4) 0 8px 12px;
@@ -540,7 +578,7 @@ export default {
   padding: 18px 18px;
   text-align: center;
   text-decoration: none;
-  text-shadow: rgba(255, 255, 255, 0.4) 0 0 4px, rgba(255, 255, 255, 0.2) 0 0 12px, rgba(59,5,13,1) 56% 1px 1px 4px,  rgba(129,15,25,0.770920868347339) 4px 4px 16px;
+  text-shadow: rgba(255, 255, 255, 0.4) 0 0 4px, rgba(255, 255, 255, 0.2) 0 0 12px, rgba(59, 5, 13, 1) 56% 1px 1px 4px, rgba(129, 15, 25, 0.770920868347339) 4px 4px 16px;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
