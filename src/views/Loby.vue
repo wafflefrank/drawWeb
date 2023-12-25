@@ -45,12 +45,31 @@
       <br />(若卡在抽獎過程,刷新不減抽獎次數！</span
     >
     <button class="button-72 me-2" @click="inputCode()">輸入序號</button>
-    <button class="button-73" @click="inputCode()">抽獎紀錄</button>
+    <button class="button-73" @click="showPrize()">抽獎紀錄</button>
   </div>
 
   <div class="mb-5 d-flex flex-column align-items-center">
     <!-- 幸運轉盤 -->
-    <LuckyWheel ref="myLucky" width="900px" height="900px" :prizes="prizes" :blocks="blocks" :buttons="buttons" @start="startCallback" @end="endCallback" />
+    <LuckyWheel ref="myLucky" width="700px" height="700px" :prizes="prizes" :blocks="blocks" :buttons="buttons" @start="startCallback" @end="endCallback" />
+
+    <transition name="slide-fade">
+      <div class="prize" v-if="isShow === true">
+        <div class="prize-container">
+          <div class="prize-title">well...DONE!</div>
+          <div class="prize-title">
+            YOU GET A FREE...
+            <span class="prize-item">{{ 'XXX' }}</span>
+          </div>
+          <div class="prize-background">
+            <!-- <template v-for="(this.prizeIcon, index) in 9">
+              <i class="material-icons">
+                {{ this.prize_icon }}
+              </i>
+            </template> -->
+          </div>
+        </div>
+      </div>
+    </transition>
 
     <!-- 中獎說明 -->
     <div class="directionBox">
@@ -267,6 +286,7 @@ export default {
         //   fonts: [{ text: '開始', top: '-10px' }],
         // },
       ],
+      isShow: false,
     };
   },
   methods: {
@@ -276,7 +296,8 @@ export default {
           // this.$swal.fire('抽獎成功', `恭喜獲取 :${res.data.data.award}`, 'success');
           this.drawNum = res.data.data.count;
           this.prizeIndex = res.data.data.award;
-          localStorage.setItem('storedDrawNums', JSON.stringify(this.drawNum));
+          // localStorage.setItem('storedDrawNums', JSON.stringify(this.drawNum));
+          this.setWithExpiry('storedDrawNums', this.drawNum, 600000); // 設定暫存10分鐘;1秒=1000ms
           this.dialogFormVisible = false;
         } else {
           this.$swal.fire('抽獎失敗', `${res.data.msg}`, 'error');
@@ -291,7 +312,8 @@ export default {
           this.drawNum = res.data.count;
           this.$swal.fire('輸入成功', `${res.data.msg}`, 'success');
           this.dialogFormVisible = false;
-          localStorage.setItem('storedDrawNums', JSON.stringify(this.drawNum));
+          // localStorage.setItem('storedDrawNums', JSON.stringify(this.drawNum));
+          this.setWithExpiry('storedDrawNums', this.drawNum, 30000);
         } else {
           this.$swal.fire('輸入失敗', `${res.data.msg}`, 'error');
         }
@@ -338,17 +360,86 @@ export default {
     endCallback(prize) {
       console.log(prize);
       if (this.prizeIndex !== '') {
-        this.$swal.fire('抽獎成功', `恭喜獲取 :${this.prizes[this.prizeIndex].fonts[0].text}`, 'success');
+        this.showPrize();
+        // this.$swal.fire('抽獎成功', `恭喜獲取 :${this.prizes[this.prizeIndex].fonts[0].text}`, 'success');
       }
     },
     // 輸入序號彈窗
     inputCode() {
       this.dialogFormVisible = true;
     },
+    // 設定暫存秒數
+    setWithExpiry(key, valueNum, ttl) {
+      const now = new Date();
+
+      const item = {
+        value: valueNum,
+        expiry: now.getTime() + ttl, // 注意 ttl 的單位為豪秒
+      };
+
+      localStorage.setItem(key, JSON.stringify(item));
+    },
+    // 讀取暫存
+    getWithExpiry() {
+      const itemStr = localStorage.getItem('storedDrawNums');
+
+      if (!itemStr) {
+        return null;
+      }
+
+      const item = JSON.parse(itemStr);
+      const now = new Date();
+
+      // 比較當前的時間是否已超過我們所設定的過期時間
+      if (now.getTime() > item.expiry) {
+        localStorage.removeItem('storedDrawNums');
+        return null;
+      }
+      console.log(item.value);
+      this.drawNum = item.value;
+      return this.drawNum;
+    },
+    showConfirmDialog() {
+      this.$swal
+        .fire({
+          title: '确认',
+          text: '确定删除吗？',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: '是',
+          cancelButtonText: '否',
+          customClass: {
+            title: 'red-title',
+            text: 'red-text',
+            popup: 'swalBody',
+          },
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            this.$swal.fire({
+              title: '删除成功',
+              text: '数据已成功删除',
+              icon: 'success',
+              customClass: {
+                title: 'red-title',
+                text: 'red-text',
+                popup: 'light-grey-popup',
+              },
+            });
+          }
+        });
+    },
+    showPrize() {
+      if (this.isShow === true) {
+        this.isShow = false;
+      } else if (this.isShow === false) {
+        this.isShow = true;
+      }
+    },
   },
   created() {
-    // this.postLottery();
-    this.reloadSavedForm();
+    // this.reloadSavedForm();
+    this.getWithExpiry();
   },
 };
 </script>
@@ -489,6 +580,130 @@ export default {
   font-weight: bold;
   font-size: 30px;
 }
+// 獲取獎項動畫
+.slide-fade-enter-active {
+  transition: all 0.5s ease-out;
+  // transition-delay:  2s;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+// 獲取獎項樣式
+.prize {
+  display: flex;
+  position: absolute;
+  width: 100%;
+  height: 237px;
+  background-color: #238a4e;
+  overflow: hidden;
+  z-index: -5;
+
+  .prize-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 1280px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .prize-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 25%;
+    height: 157px;
+    font-size: 72px;
+    color: white;
+    font-weight: bold;
+    padding-left: 11%;
+    z-index: 999;
+  }
+
+  .prize-title:nth-child(2) {
+    width: 26%;
+    padding-left: 0px;
+    font-size: 32px;
+  }
+
+  .prize-item {
+    font-size: 72px;
+    color: #b35277;
+    text-decoration: underline;
+  }
+}
+.prize-background {
+  width: 1280px;
+  height: 237px;
+  position: absolute;
+
+  i {
+    font-size: 4rem;
+    color: #22299b;
+    position: absolute;
+  }
+
+  i:nth-child(1) {
+    bottom: 30px;
+    left: -40px;
+    transform: rotate(0deg);
+  }
+
+  i:nth-child(2) {
+    top: 40px;
+    left: 30px;
+    transform: rotate(20deg);
+  }
+
+  i:nth-child(3) {
+    bottom: -40px;
+    left: 130px;
+    transform: rotate(-20deg);
+  }
+
+  i:nth-child(4) {
+    top: -25px;
+    left: 270px;
+    transform: rotate(-30deg);
+  }
+
+  i:nth-child(5) {
+    bottom: 20px;
+    left: 340px;
+    transform: rotate(0deg);
+  }
+
+  i:nth-child(6) {
+    top: -20px;
+    right: 300px;
+    transform: rotate(0deg);
+  }
+
+  i:nth-child(7) {
+    bottom: -35px;
+    right: 260px;
+    transform: rotate(40deg);
+  }
+
+  i:nth-child(8) {
+    bottom: 35px;
+    right: 50px;
+    transform: rotate(-20deg);
+  }
+
+  i:nth-child(9) {
+    top: 10px;
+    right: -25px;
+    transform: rotate(20deg);
+  }
+}
 </style>
 
 <style lang="scss">
@@ -595,5 +810,9 @@ export default {
     font-size: 21px;
     padding: 18px 34px;
   }
+}
+.swalBody {
+  border-radius: 30px;
+  background-color: #b384c9;
 }
 </style>

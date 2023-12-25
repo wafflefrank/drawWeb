@@ -29,6 +29,12 @@ const routes = [
         component: () => import('../views/Loby.vue'),
         meta: { title: '大廳' },
       },
+      {
+        path: 'testLoby',
+        name: '測試大廳',
+        component: () => import('../views/TestLoby.vue'),
+        meta: { title: '測試大廳' },
+      },
     ],
   },
   {
