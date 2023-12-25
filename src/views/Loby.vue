@@ -55,17 +55,15 @@
     <transition name="slide-fade">
       <div class="prize" v-if="isShow === true">
         <div class="prize-container">
-          <div class="prize-title">well...DONE!</div>
+          <div class="prize-title"></div>
           <div class="prize-title">
-            YOU GET A FREE...
-            <span class="prize-item">{{ 'XXX' }}</span>
+            恭喜獲得...
+            <span class="prize-item">{{ this.prizes[this.prizeIndex].fonts[0].text }}</span>
           </div>
           <div class="prize-background">
-            <!-- <template v-for="(this.prizeIcon, index) in 9">
-              <i class="material-icons">
-                {{ this.prize_icon }}
-              </i>
-            </template> -->
+            <div>
+              <i v-for="item in 7" class="fa-solid fa-snowflake" :key="item"></i>
+            </div>
           </div>
         </div>
       </div>
@@ -286,7 +284,10 @@ export default {
         //   fonts: [{ text: '開始', top: '-10px' }],
         // },
       ],
-      isShow: false,
+
+      // 中獎畫面
+      isShow: true,
+      prize_icon: '',
     };
   },
   methods: {
@@ -395,8 +396,12 @@ export default {
         localStorage.removeItem('storedDrawNums');
         return null;
       }
-      console.log(item.value);
-      this.drawNum = item.value;
+      console.log('暫存內容:', item.value);
+      if (item.value === undefined) {
+        this.drawNum = 0;
+      } else {
+        this.drawNum = item.value;
+      }
       return this.drawNum;
     },
     showConfirmDialog() {
@@ -600,16 +605,17 @@ export default {
   display: flex;
   position: absolute;
   width: 100%;
-  height: 237px;
-  background-color: #238a4e;
+  height: 300px;
+  background-color: #0a735e26;
   overflow: hidden;
   z-index: -5;
+  margin-top: 180px;
 
   .prize-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 1280px;
+    width: 100%;
     margin: 0 auto;
     position: relative;
   }
@@ -618,25 +624,25 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 25%;
+    width: 10%;
     height: 157px;
     font-size: 72px;
     color: white;
     font-weight: bold;
-    padding-left: 11%;
+    padding-left: 10%;
     z-index: 999;
   }
 
   .prize-title:nth-child(2) {
     width: 26%;
-    padding-left: 0px;
+    margin-right: 300px;
     font-size: 32px;
   }
 
   .prize-item {
     font-size: 72px;
-    color: #b35277;
-    text-decoration: underline;
+    color: #f91919;
+    // text-decoration: underline;
   }
 }
 .prize-background {
@@ -645,14 +651,14 @@ export default {
   position: absolute;
 
   i {
-    font-size: 4rem;
-    color: #22299b;
+    font-size: 3rem;
+    color: #f0f0ff;
     position: absolute;
   }
 
   i:nth-child(1) {
     bottom: 30px;
-    left: -40px;
+    left: 40px;
     transform: rotate(0deg);
   }
 
@@ -670,7 +676,7 @@ export default {
 
   i:nth-child(4) {
     top: -25px;
-    left: 270px;
+    left: 550px;
     transform: rotate(-30deg);
   }
 
@@ -702,6 +708,53 @@ export default {
     top: 10px;
     right: -25px;
     transform: rotate(20deg);
+  }
+}
+// $i: 30;
+// 抽完獎雪花畫面動畫
+@for $i from 1 through 9 {
+  $size: random(100) + 1000;
+
+  .prize-background i:nth-child(odd) {
+    animation: move 3s alternate infinite ease-in-out !important;
+    animation-delay: $i * 0.2s !important;
+  }
+
+  .prize-background i:nth-child(even) {
+    animation: move 2s alternate-reverse infinite ease-in-out !important;
+  }
+}
+// 雪花動畫
+@keyframes move {
+  @for $i from 1 through 9 {
+    10% {
+      transform: rotate((random(10) * 1deg)) scale(random(1) * 0.8);
+    }
+
+    20% {
+      transform: rotate((random(10) * 1deg)) scale(random(1) * 0.8);
+    }
+    30% {
+      transform: rotate((random(10) * 1deg)) scale(random(1) * 0.8);
+    }
+    40% {
+      transform: rotate((random(10) * 1deg)) scale(random(1) * 0.8);
+    }
+    50% {
+      transform: rotate((random(10) * 1deg)) scale(random(1) * 0.8);
+    }
+    60% {
+      transform: rotate((random(10) * 1deg)) scale(random(1) * 0.8);
+    }
+    70% {
+      transform: rotate((random(10) * 1deg)) scale(random(1) * 0.8);
+    }
+    80% {
+      transform: rotate((random(10) * 1deg)) scale(random(1) * 0.8);
+    }
+    90% {
+      transform: rotate((random(10) * 1deg)) scale(random(1) * 0.8);
+    }
   }
 }
 </style>

@@ -559,7 +559,7 @@ button:focus {
 
 //$n:輪盤數量；$deg每個項目角度
 $n: 6;
-$i: 10;
+// $i: 10;
 
 @for $i from 1 through $n {
   $deg: 360deg / $n;
