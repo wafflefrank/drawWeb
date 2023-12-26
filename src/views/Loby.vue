@@ -361,7 +361,7 @@ export default {
     reloadSavedForm() {
       // 使用JSON.parse()將LocalStorange中的資料轉回可利用的object
       const stored = JSON.parse(localStorage.getItem('storedDrawNums'));
-      console.log(stored);
+      // console.log(stored);
       if (stored !== null) {
         this.drawNum = stored;
       }
@@ -481,11 +481,11 @@ export default {
       this.$http.get(`/users/awards/${this.getDrawNums.code}`).then((res) => {
         this.drawHistory_Data = res.data.data.BetHistories;
         _.forEach(this.drawHistory_Data, (item, key) => {
-          console.log('獎品內容', item);
+          // console.log('獎品內容', item);
           this.drawHistory_Data[key].isEnter = res.data.data.isEnter;
           this.drawHistory_Data[key].code = res.data.data.code;
         });
-        console.log('中獎資料', this.drawHistory_Data);
+        // console.log('中獎資料', this.drawHistory_Data);
       });
     },
     // 過濾序號使用狀態
