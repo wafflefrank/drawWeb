@@ -45,7 +45,7 @@
       <br />(若卡在抽獎過程,刷新不減抽獎次數！</span
     >
     <button class="button-72 me-2" @click="inputCode()">輸入序號</button>
-    <button class="button-73" @click="showPrize()">抽獎紀錄</button>
+    <button class="button-73" @click="getDrawHistory()">抽獎紀錄</button>
   </div>
 
   <div class="mb-5 d-flex flex-column align-items-center">
@@ -62,7 +62,7 @@
           </div>
           <div class="prize-background">
             <div>
-              <i v-for="item in 7" class="fa-solid fa-snowflake" :key="item"></i>
+              <i v-for="item in 9" class="fa-solid fa-snowflake" :key="item"></i>
             </div>
           </div>
         </div>
@@ -90,7 +90,7 @@
       </div>
     </div>
   </div>
-
+  <!-- 輸入抽獎碼彈窗 -->
   <el-dialog class="drawModel_style" v-model="dialogFormVisible" title="抽獎序號驗證" width="40%" center>
     <el-form :model="getDrawNums">
       <el-form-item label="抽獎驗證碼:" class="codeForm_style">
@@ -104,11 +104,34 @@
       </span>
     </template>
   </el-dialog>
+  <!-- 抽獎紀錄彈窗 -->
+  <el-dialog class="loginHistory_style" v-model="drawHistory_Visible" title="中獎歷史紀錄" width="40%" center>
+    <div class="loginHyTable_style">
+      <el-table
+        :data="drawHistory_Data"
+        :header-cell-style="{ background: 'linear-gradient(180deg, rgba(252, 240, 255, 1) 0%, rgba(115, 111, 159, 0.46) 100%)', color: '#000' }"
+      >
+        <el-table-column prop="code" label="驗證碼" width="180" align="center">
+          <!-- <template v-slot="{ row }">{{ formatCode(row) }}</template> -->
+        </el-table-column>
+        <el-table-column prop="isEnter" label="使用紀錄" align="center">
+          <template v-slot="{ row }">
+            <el-tag :type="row.isEnter === true ? 'success' : 'danger'">
+              {{ formatisEnter(row.isEnter) }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="award" label="獎品名稱" align="center">
+          <template v-slot="{ row }">{{ formatAward(row.award) }}</template>
+        </el-table-column>
+      </el-table>
+    </div>
+  </el-dialog>
 </template>
 
 <script>
 // import SwiperCarousel from '../components/Swiper/Carousel.vue';
-// import _ from 'lodash';
+import _ from 'lodash';
 import borderImg from '../assets/backGround/zp2_bg.png';
 import startBtn from '../assets/backGround/startBtn.png';
 import selectBtn from '../assets/backGround/zp3_btn2.png';
@@ -273,7 +296,7 @@ export default {
             {
               src: selectBtn,
               width: '40%',
-              top: '-450px',
+              top: '-350px',
             },
           ],
         },
@@ -286,8 +309,12 @@ export default {
       ],
 
       // 中獎畫面
-      isShow: true,
+      isShow: false,
       prize_icon: '',
+      // 中獎紀錄彈窗
+      drawHistory_Visible: false,
+      // 中獎紀錄table
+      drawHistory_Data: [],
     };
   },
   methods: {
@@ -314,7 +341,8 @@ export default {
           this.$swal.fire('輸入成功', `${res.data.msg}`, 'success');
           this.dialogFormVisible = false;
           // localStorage.setItem('storedDrawNums', JSON.stringify(this.drawNum));
-          this.setWithExpiry('storedDrawNums', this.drawNum, 30000);
+          this.setWithExpiry('storedDrawNums', this.drawNum, 600000);
+          this.setWithExpiry('storedDrawCode', this.getDrawNums.code, 600000);
         } else {
           this.$swal.fire('輸入失敗', `${res.data.msg}`, 'error');
         }
@@ -347,6 +375,7 @@ export default {
         this.postLottery();
         // 调用抽奖组件的play方法开始游戏
         this.$refs.myLucky.play();
+        this.isShow = false;
         // 模拟调用接口异步抽奖
         setTimeout(() => {
           // 假设后端返回的中奖索引是0
@@ -383,24 +412,28 @@ export default {
     // 讀取暫存
     getWithExpiry() {
       const itemStr = localStorage.getItem('storedDrawNums');
+      const itemCode = localStorage.getItem('storedDrawCode');
 
       if (!itemStr) {
         return null;
       }
 
       const item = JSON.parse(itemStr);
+      const item2 = JSON.parse(itemCode);
       const now = new Date();
 
       // 比較當前的時間是否已超過我們所設定的過期時間
       if (now.getTime() > item.expiry) {
         localStorage.removeItem('storedDrawNums');
+        localStorage.removeItem('storedDrawCode');
         return null;
       }
-      console.log('暫存內容:', item.value);
+      console.log('暫存內容:', item.value, item2.value);
       if (item.value === undefined) {
         this.drawNum = 0;
       } else {
         this.drawNum = item.value;
+        this.getDrawNums.code = item2.value;
       }
       return this.drawNum;
     },
@@ -434,12 +467,72 @@ export default {
           }
         });
     },
+    // 中獎動畫顯示
     showPrize() {
       if (this.isShow === true) {
         this.isShow = false;
       } else if (this.isShow === false) {
         this.isShow = true;
       }
+    },
+    // 中獎彈窗資料
+    getDrawHistory() {
+      this.drawHistory_Visible = true;
+      this.$http.get(`/users/awards/${this.getDrawNums.code}`).then((res) => {
+        this.drawHistory_Data = res.data.data.BetHistories;
+        _.forEach(this.drawHistory_Data, (item, key) => {
+          console.log('獎品內容', item);
+          this.drawHistory_Data[key].isEnter = res.data.data.isEnter;
+          this.drawHistory_Data[key].code = res.data.data.code;
+        });
+        console.log('中獎資料', this.drawHistory_Data);
+      });
+    },
+    // 過濾序號使用狀態
+    formatisEnter(isEnter) {
+      // console.log('是否已使用過', isEnter);
+      if (isEnter === true) {
+        return '已使用';
+      }
+      if (isEnter === false) {
+        return '未使用';
+      }
+      return '備用';
+    },
+    formatAward(award) {
+      if (award === '0') {
+        this.drawHistory_Data[0].awardName = this.prizes[0].fonts[0].text;
+        return `${this.prizes[0].fonts[0].text}`;
+      }
+      if (award === '1') {
+        this.drawHistory_Data[0].awardName = this.prizes[1].fonts[0].text;
+        return `${this.prizes[1].fonts[0].text}`;
+      }
+      if (award === '2') {
+        this.drawHistory_Data[0].awardName = this.prizes[2].fonts[0].text;
+        return `${this.prizes[2].fonts[0].text}`;
+      }
+      if (award === '3') {
+        this.drawHistory_Data[0].awardName = this.prizes[3].fonts[0].text;
+        return `${this.prizes[3].fonts[0].text}`;
+      }
+      if (award === '4') {
+        this.drawHistory_Data[0].awardName = this.prizes[4].fonts[0].text;
+        return `${this.prizes[4].fonts[0].text}`;
+      }
+      if (award === '5') {
+        this.drawHistory_Data[0].awardName = this.prizes[5].fonts[0].text;
+        return `${this.prizes[5].fonts[0].text}`;
+      }
+      if (award === '6') {
+        this.drawHistory_Data[0].awardName = this.prizes[6].fonts[0].text;
+        return `${this.prizes[6].fonts[0].text}`;
+      }
+      if (award === '7') {
+        this.drawHistory_Data[0].awardName = this.prizes[7].fonts[0].text;
+        return `${this.prizes[7].fonts[0].text}`;
+      }
+      return '備用';
     },
   },
   created() {
@@ -606,7 +699,7 @@ export default {
   position: absolute;
   width: 100%;
   height: 300px;
-  background-color: #0a735e26;
+  background-color: #4945451d;
   overflow: hidden;
   z-index: -5;
   margin-top: 180px;
@@ -626,7 +719,7 @@ export default {
     justify-content: center;
     width: 10%;
     height: 157px;
-    font-size: 72px;
+    font-size: 50px;
     color: white;
     font-weight: bold;
     padding-left: 10%;
@@ -635,19 +728,19 @@ export default {
 
   .prize-title:nth-child(2) {
     width: 26%;
-    margin-right: 300px;
+    margin-right: 350px;
     font-size: 32px;
   }
 
   .prize-item {
-    font-size: 72px;
+    font-size: 52px;
     color: #f91919;
     // text-decoration: underline;
   }
 }
 .prize-background {
-  width: 1280px;
-  height: 237px;
+  width: 100vw;
+  // height: 237px;
   position: absolute;
 
   i {
@@ -687,14 +780,14 @@ export default {
   }
 
   i:nth-child(6) {
-    top: -20px;
+    top: -100px;
     right: 300px;
     transform: rotate(0deg);
   }
 
   i:nth-child(7) {
     bottom: -35px;
-    right: 260px;
+    right: 200px;
     transform: rotate(40deg);
   }
 
@@ -705,8 +798,8 @@ export default {
   }
 
   i:nth-child(9) {
-    top: 10px;
-    right: -25px;
+    top: 100px;
+    right: 100px;
     transform: rotate(20deg);
   }
 }
@@ -777,6 +870,57 @@ export default {
     font-weight: bold;
     color: #fff;
   }
+}
+
+// 抽獎紀錄彈窗
+.loginHistory_style {
+  background: linear-gradient(270deg, rgba(238, 149, 179, 1) 0%, rgba(59, 5, 13, 1) 0%, rgba(35, 7, 64, 1) 100%) !important;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 20px;
+  & .el-dialog__title {
+    font-size: 30px;
+    font-weight: bold;
+    color: #fff;
+  }
+}
+.loginHyTable_style {
+  width: 100%;
+  // margin: auto;
+}
+.loginHyTable_style .el-table__header-wrapper {
+  border-radius: 15px;
+}
+.loginHyTable_style .el-table,
+.el-table__expanded-cell {
+  background-color: transparent;
+}
+.loginHyTable_style .el-table th {
+  border-bottom: none !important;
+  padding-top: 10px;
+}
+.loginHyTable_style .el-table tr {
+  background-color: transparent !important;
+  color: white;
+}
+// 更改表格hover背景色
+.loginHyTable_style .el-table__body tr:hover {
+  border-radius: 15px !important;
+}
+.loginHyTable_style .el-table__body tr:hover > td {
+  background-color: #2a5595 !important;
+}
+.loginHyTable_style .el-table--enable-row-transition .el-table__body td,
+.el-table .cell {
+  background-color: transparent;
+  border: none !important; //去掉表格的底線
+  margin-top: 10px;
+  margin-bottom: 10px !important;
+}
+.loginHyTable_style :deep(.el-table::before) {
+  //去除底部白线
+  height: 0px !important;
+  background-color: transparent !important;
 }
 
 .codeForm_style {
