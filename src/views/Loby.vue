@@ -358,14 +358,15 @@ export default {
       // }
       this.getCode_Form.code = '';
     },
-    reloadSavedForm() {
-      // 使用JSON.parse()將LocalStorange中的資料轉回可利用的object
-      const stored = JSON.parse(localStorage.getItem('storedDrawNums'));
-      // console.log(stored);
-      if (stored !== null) {
-        this.drawNum = stored;
-      }
-    },
+    // reloadSavedForm() {
+    //   // 使用JSON.parse()將LocalStorange中的資料轉回可利用的object
+    //   const stored = JSON.parse(localStorage.getItem('storedDrawNums'));
+    //   // console.log(stored);
+    //   if (stored !== null) {
+    //     this.drawNum = stored;
+    //   }
+    // },
+
     // 点击抽奖按钮会触发star回调
     startCallback() {
       if (this.drawNum === 0) {
@@ -431,6 +432,7 @@ export default {
       console.log('暫存內容:', item.value, item2.value);
       if (item.value === undefined) {
         this.drawNum = 0;
+        this.getDrawNums.code = '';
       } else {
         this.drawNum = item.value;
         this.getDrawNums.code = item2.value;
@@ -501,38 +503,38 @@ export default {
     },
     formatAward(award) {
       if (award === '0') {
-        this.drawHistory_Data[0].awardName = this.prizes[0].fonts[0].text;
+        // this.drawHistory_Data[0].awardName = this.prizes[0].fonts[0].text;
         return `${this.prizes[0].fonts[0].text}`;
       }
       if (award === '1') {
-        this.drawHistory_Data[0].awardName = this.prizes[1].fonts[0].text;
+        // this.drawHistory_Data[0].awardName = this.prizes[1].fonts[0].text;
         return `${this.prizes[1].fonts[0].text}`;
       }
       if (award === '2') {
-        this.drawHistory_Data[0].awardName = this.prizes[2].fonts[0].text;
+        // this.drawHistory_Data[0].awardName = this.prizes[2].fonts[0].text;
         return `${this.prizes[2].fonts[0].text}`;
       }
       if (award === '3') {
-        this.drawHistory_Data[0].awardName = this.prizes[3].fonts[0].text;
+        // this.drawHistory_Data[0].awardName = this.prizes[3].fonts[0].text;
         return `${this.prizes[3].fonts[0].text}`;
       }
       if (award === '4') {
-        this.drawHistory_Data[0].awardName = this.prizes[4].fonts[0].text;
+        // this.drawHistory_Data[0].awardName = this.prizes[4].fonts[0].text;
         return `${this.prizes[4].fonts[0].text}`;
       }
       if (award === '5') {
-        this.drawHistory_Data[0].awardName = this.prizes[5].fonts[0].text;
+        // this.drawHistory_Data[0].awardName = this.prizes[5].fonts[0].text;
         return `${this.prizes[5].fonts[0].text}`;
       }
       if (award === '6') {
-        this.drawHistory_Data[0].awardName = this.prizes[6].fonts[0].text;
+        // this.drawHistory_Data[0].awardName = this.prizes[6].fonts[0].text;
         return `${this.prizes[6].fonts[0].text}`;
       }
       if (award === '7') {
-        this.drawHistory_Data[0].awardName = this.prizes[7].fonts[0].text;
+        // this.drawHistory_Data[0].awardName = this.prizes[7].fonts[0].text;
         return `${this.prizes[7].fonts[0].text}`;
       }
-      return '備用';
+      return '無獎項';
     },
   },
   created() {
