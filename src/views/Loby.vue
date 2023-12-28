@@ -24,7 +24,9 @@
       </div>
     </el-carousel-item>
   </el-carousel> -->
-  <div class="marquee_style my-5 d-flex align-items-center">
+
+  <!-- 廣播 -->
+  <!-- <div class="marquee_style my-5 d-flex align-items-center">
     <img class="boadcast_style" src="../assets/banner/broadcast-icon-png.webp" alt="#" />
     <div class="borderStyle">
       <Vue3Marquee :duration="8">
@@ -33,7 +35,7 @@
         </span>
       </Vue3Marquee>
     </div>
-  </div>
+  </div> -->
 
   <!-- 帳戶 -->
   <div class="d-flex align-items-center justify-content-center mb-5">
