@@ -38,7 +38,7 @@
   </div> -->
 
   <!-- 帳戶 -->
-  <div class="d-flex align-items-center justify-content-center mb-5">
+  <div class="d-flex align-items-center justify-content-center mb-5 mt-5">
     <!-- <span class="text-white me-5 fs-4">帳戶: {{ this.memberAccount }}</span> -->
     <span class="text-white me-5 text-start"
       ><span class="fs-4"
