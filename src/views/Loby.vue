@@ -321,7 +321,7 @@ export default {
   },
   methods: {
     postLottery() {
-      this.$http.post('/users/drawing', this.getDrawNums).then((res) => {
+      this.$http.post('/api/users/drawing', this.getDrawNums).then((res) => {
         if (res.data.code === 200) {
           // this.$swal.fire('抽獎成功', `恭喜獲取 :${res.data.data.award}`, 'success');
           this.drawNum = res.data.data.count;
@@ -337,7 +337,7 @@ export default {
     // 確認驗證碼
     doVarify() {
       // api
-      this.$http.post('/users/startLottery', this.getDrawNums).then((res) => {
+      this.$http.post('/api/users/startLottery', this.getDrawNums).then((res) => {
         if (res.data.code === 200) {
           this.drawNum = res.data.count;
           this.$swal.fire('輸入成功', `${res.data.msg}`, 'success');
@@ -482,7 +482,7 @@ export default {
     // 中獎彈窗資料
     getDrawHistory() {
       this.drawHistory_Visible = true;
-      this.$http.get(`/users/awards/${this.getDrawNums.code}`).then((res) => {
+      this.$http.get(`/api/users/awards/${this.getDrawNums.code}`).then((res) => {
         this.drawHistory_Data = res.data.data.BetHistories;
         _.forEach(this.drawHistory_Data, (item, key) => {
           // console.log('獎品內容', item);
