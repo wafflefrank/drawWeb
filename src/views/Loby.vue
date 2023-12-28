@@ -86,7 +86,7 @@
       <div class="D_Word">
         <p>1.LEO娛樂城EX與KU經銷專屬幸運大抽獎，僅有EX與KU旗下會員才可參加抽獎活動，非EX與KU旗下會員將不符合資格。</p>
         <p>2.會員當月存款金額累計滿10000點(含)以上且需一倍流水，獲得抽獎次數1次，最多儲值滿30000點(含)以上且需一倍流水，獲得抽獎次數3次。</p>
-        <p>3.次月1號至10號經審查合格後，將於隔日11號可獲得抽獎驗證碼，會員需自行至抽獎活動網址進行抽獎。</p>
+        <p>3.次月1號至10號經審查合格後，將於隔日11號可獲得抽獎序號，會員需自行至抽獎活動網址進行抽獎。</p>
         <p>4.審核合格後，當月20號以前未自行前往抽獎則視為放棄資格。</p>
         <p>5.任何參與資格都以LEO娛樂城抽獎系統判斷為主，不得有爭議。<br />&nbsp;</p>
       </div>
@@ -95,7 +95,7 @@
   <!-- 輸入抽獎碼彈窗 -->
   <el-dialog class="drawModel_style" v-model="dialogFormVisible" title="抽獎序號驗證" width="40%" center>
     <el-form :model="getDrawNums">
-      <el-form-item label="抽獎驗證碼:" class="codeForm_style">
+      <el-form-item label="抽獎序號:" class="codeForm_style">
         <el-input class="codeInput_style" v-model="getDrawNums.code" autocomplete="off" />
       </el-form-item>
     </el-form>
@@ -345,6 +345,7 @@ export default {
           // localStorage.setItem('storedDrawNums', JSON.stringify(this.drawNum));
           this.setWithExpiry('storedDrawNums', this.drawNum, 600000);
           this.setWithExpiry('storedDrawCode', this.getDrawNums.code, 600000);
+          this.drawHistory_Data = [];
         } else {
           this.$swal.fire('輸入失敗', `${res.data.msg}`, 'error');
         }
@@ -482,6 +483,7 @@ export default {
     // 中獎彈窗資料
     getDrawHistory() {
       this.drawHistory_Visible = true;
+      console.log(this.codeReview);
       this.$http.get(`/api/users/awards/${this.getDrawNums.code}`).then((res) => {
         this.drawHistory_Data = res.data.data.BetHistories;
         _.forEach(this.drawHistory_Data, (item, key) => {

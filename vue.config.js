@@ -6,6 +6,6 @@ module.exports = defineConfig({
   lintOnSave: false,
   // 後台網址
   devServer: {
-    proxy: 'http://lottery.morty.zaza.one/api',
+    proxy: 'http://lottery.morty.zaza.one',
   },
 });
