@@ -51,5 +51,6 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes,
 });
+document.title = '抽獎測試網站';
 
 export default router;
