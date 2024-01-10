@@ -60,7 +60,7 @@
           <div class="prize-title"></div>
           <div class="prize-title">
             恭喜獲得...
-            <span class="prize-item">{{ this.prizes[this.prizeIndex].fonts[0].text }}</span>
+            <span class="prize-item">{{ this.prizes[this.prizeIndex - 1].fonts[0].text }}</span>
           </div>
           <div class="prize-background">
             <div>
@@ -245,7 +245,7 @@ export default {
         },
         // 5
         {
-          background: '#c98ef4',
+          background: '#d945a9',
           imgs: [{ src: coinImg, width: '20%', top: '60%' }],
           fonts: [
             {
@@ -258,7 +258,7 @@ export default {
         },
         // 6
         {
-          background: '#ee95a9',
+          background: '#ffaec1',
           imgs: [{ src: coinImg, width: '20%', top: '60%' }],
           fonts: [
             {
@@ -271,7 +271,7 @@ export default {
         },
         // 7
         {
-          background: '#c98ef4',
+          background: '#d945a9',
           imgs: [{ src: greenBag, width: '40%', top: '55%' }],
           fonts: [
             {
@@ -283,6 +283,22 @@ export default {
           ],
         },
       ],
+
+      // prizes: [],
+      // prizes_content: {
+      //   background: '#ffaec1',
+      //   imgs: [{ src: greenBag, width: '40%', top: '55%' }],
+      //   fonts: [
+      //     {
+      //       text: '禮金5000',
+      //       fontSize: '24px',
+      //       top: '30%',
+      //       fontWeight: '600',
+      //     },
+      //   ],
+      // },
+      // i: 1,
+
       buttons: [
         {
           radius: '30%',
@@ -317,9 +333,73 @@ export default {
       drawHistory_Visible: false,
       // 中獎紀錄table
       drawHistory_Data: [],
+      // 登入
+      loginForm: {
+        accountId: 'admin',
+        password: 'admin',
+      },
     };
   },
   methods: {
+    //  獲取轉盤獎項
+    getPrizes() {
+      this.$http.get('/api/admin/prizes').then((res) => {
+        console.log('轉盤資訊:', res.data.data);
+        // for (this.i = 0; this.i < res.data.data.length; this.i += 1) {
+        //   this.prizes.push(this.prizes_content);
+        // }
+        // console.log(this.prizes);
+        _.forEach(res.data.data, (item, key) => {
+          console.log(item, key);
+          const prizeMoney = Number(item.prize.replace(/[^0-9]/gi, ''));
+          console.log(prizeMoney);
+          this.prizes[key].fonts[0].text = item.prize;
+          // 偶數
+          if (key % 2 === 0) {
+            console.log('偶數區域');
+            this.prizes[key].background = '#ffaec1';
+            if (prizeMoney >= 1000 && prizeMoney < 3500) {
+              this.prizes[key].imgs[0].src = coinImg;
+              this.prizes[key].imgs[0].width = '20%';
+              this.prizes[key].imgs[0].top = '60%';
+            } else if (prizeMoney >= 3500 && prizeMoney < 5500) {
+              this.prizes[key].imgs[0].src = coinBag;
+              this.prizes[key].imgs[0].width = '40%';
+              this.prizes[key].imgs[0].top = '40%';
+            } else if (prizeMoney >= 5500 && prizeMoney < 10000) {
+              this.prizes[key].imgs[0].src = greenBag;
+              this.prizes[key].imgs[0].width = '40%';
+              this.prizes[key].imgs[0].top = '55%';
+            } else {
+              this.prizes[key].imgs[0].src = treasureImg;
+              this.prizes[key].imgs[0].width = '40%';
+              this.prizes[key].imgs[0].top = '55%';
+            }
+          } else {
+            console.log('基數區域');
+            this.prizes[key].background = '#d945a9';
+            if (prizeMoney >= 1000 && prizeMoney < 3500) {
+              this.prizes[key].imgs[0].src = coinImg;
+              this.prizes[key].imgs[0].width = '20%';
+              this.prizes[key].imgs[0].top = '60%';
+            } else if (prizeMoney >= 3500 && prizeMoney < 5500) {
+              this.prizes[key].imgs[0].src = coinBag;
+              this.prizes[key].imgs[0].width = '40%';
+              this.prizes[key].imgs[0].top = '40%';
+            } else if (prizeMoney >= 5500 && prizeMoney < 10000) {
+              this.prizes[key].imgs[0].src = greenBag;
+              this.prizes[key].imgs[0].width = '40%';
+              this.prizes[key].imgs[0].top = '55%';
+            } else {
+              this.prizes[key].imgs[0].src = treasureImg;
+              this.prizes[key].imgs[0].width = '40%';
+              this.prizes[key].imgs[0].top = '55%';
+            }
+          }
+          console.log(this.prizes);
+        });
+      });
+    },
     postLottery() {
       this.$http.post('/api/users/drawing', this.getDrawNums).then((res) => {
         if (res.data.code === 200) {
@@ -386,7 +466,7 @@ export default {
           // const index = 0;
 
           // 调用stop停止旋转并传递中奖索引
-          this.$refs.myLucky.stop(this.prizeIndex);
+          this.$refs.myLucky.stop(this.prizeIndex - 1);
         }, 3000);
       }
     },
@@ -506,35 +586,35 @@ export default {
       return '備用';
     },
     formatAward(award) {
-      if (award === '0') {
+      if (award === '1') {
         // this.drawHistory_Data[0].awardName = this.prizes[0].fonts[0].text;
         return `${this.prizes[0].fonts[0].text}`;
       }
-      if (award === '1') {
+      if (award === '2') {
         // this.drawHistory_Data[0].awardName = this.prizes[1].fonts[0].text;
         return `${this.prizes[1].fonts[0].text}`;
       }
-      if (award === '2') {
+      if (award === '3') {
         // this.drawHistory_Data[0].awardName = this.prizes[2].fonts[0].text;
         return `${this.prizes[2].fonts[0].text}`;
       }
-      if (award === '3') {
+      if (award === '4') {
         // this.drawHistory_Data[0].awardName = this.prizes[3].fonts[0].text;
         return `${this.prizes[3].fonts[0].text}`;
       }
-      if (award === '4') {
+      if (award === '5') {
         // this.drawHistory_Data[0].awardName = this.prizes[4].fonts[0].text;
         return `${this.prizes[4].fonts[0].text}`;
       }
-      if (award === '5') {
+      if (award === '6') {
         // this.drawHistory_Data[0].awardName = this.prizes[5].fonts[0].text;
         return `${this.prizes[5].fonts[0].text}`;
       }
-      if (award === '6') {
+      if (award === '7') {
         // this.drawHistory_Data[0].awardName = this.prizes[6].fonts[0].text;
         return `${this.prizes[6].fonts[0].text}`;
       }
-      if (award === '7') {
+      if (award === '8') {
         // this.drawHistory_Data[0].awardName = this.prizes[7].fonts[0].text;
         return `${this.prizes[7].fonts[0].text}`;
       }
@@ -543,6 +623,7 @@ export default {
   },
   created() {
     // this.reloadSavedForm();
+    this.getPrizes();
     this.getWithExpiry();
   },
 };
