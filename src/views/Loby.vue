@@ -75,20 +75,22 @@
     <div class="directionBox">
       <div class="D_title"><img src="../assets/banner/win_des.png" alt="" /></div>
       <div class="D_Word">
-        <p>1.為避免【會員瀏覽器問題】所有得獎者獎項一律以LEO娛樂城抽獎系統歷史記錄為主。</p>
+        <!-- <p>1.為避免【會員瀏覽器問題】所有得獎者獎項一律以LEO娛樂城抽獎系統歷史記錄為主。</p>
         <p>2.中獎禮金將於21號後依序轉入會員的遊戲帳戶。</p>
-        <p>3.本活動最終解釋權歸LEO娛樂城所有。</p>
+        <p>3.本活動最終解釋權歸LEO娛樂城所有。</p> -->
+        {{ this.awardText }}
       </div>
     </div>
     <!-- 活動說明 -->
     <div class="directionBox">
       <div class="D_title"><img src="../assets/banner/act_des.png" alt="" /></div>
       <div class="D_Word">
-        <p>1.LEO娛樂城EX與KU經銷專屬幸運大抽獎，僅有EX與KU旗下會員才可參加抽獎活動，非EX與KU旗下會員將不符合資格。</p>
+        {{ this.activityText }}
+        <!-- <p>1.LEO娛樂城EX與KU經銷專屬幸運大抽獎，僅有EX與KU旗下會員才可參加抽獎活動，非EX與KU旗下會員將不符合資格。</p>
         <p>2.會員當月存款金額累計滿10000點(含)以上且需一倍流水，獲得抽獎次數1次，最多儲值滿30000點(含)以上且需一倍流水，獲得抽獎次數3次。</p>
         <p>3.次月1號至10號經審查合格後，將於隔日11號可獲得抽獎序號，會員需自行至抽獎活動網址進行抽獎。</p>
         <p>4.審核合格後，當月20號以前未自行前往抽獎則視為放棄資格。</p>
-        <p>5.任何參與資格都以LEO娛樂城抽獎系統判斷為主，不得有爭議。<br />&nbsp;</p>
+        <p>5.任何參與資格都以LEO娛樂城抽獎系統判斷為主，不得有爭議。<br />&nbsp;</p> -->
       </div>
     </div>
   </div>
@@ -184,7 +186,7 @@ export default {
           imgs: [{ src: coinImg, width: '20%', top: '60%' }],
           fonts: [
             {
-              text: '禮金500',
+              text: '禮金1000',
               fontSize: '24px',
               top: '30%',
               fontWeight: '600',
@@ -197,7 +199,7 @@ export default {
           imgs: [{ src: coinImg, width: '20%', top: '60%' }],
           fonts: [
             {
-              text: '禮金2000',
+              text: '禮金1000',
               fontSize: '24px',
               top: '30%',
               fontWeight: '600',
@@ -207,10 +209,10 @@ export default {
         // 2
         {
           background: '#ee95a9',
-          imgs: [{ src: coinBag, width: '40%', top: '40%' }],
+          imgs: [{ src: coinBag, width: '20%', top: '60%' }],
           fonts: [
             {
-              text: '禮金35000',
+              text: '禮金1000',
               fontSize: '24px',
               top: '30%',
               fontWeight: '600',
@@ -223,7 +225,7 @@ export default {
           imgs: [{ src: coinImg, width: '20%', top: '60%' }],
           fonts: [
             {
-              text: '禮金550',
+              text: '禮金1000',
               fontSize: '24px',
               top: '30%',
               fontWeight: '600',
@@ -233,10 +235,10 @@ export default {
         // 4
         {
           background: '#ee95a9',
-          imgs: [{ src: treasureImg, width: '40%', top: '55%' }],
+          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
           fonts: [
             {
-              text: '禮金60000',
+              text: '禮金1000',
               fontSize: '24px',
               top: '30%',
               fontWeight: '600',
@@ -249,7 +251,7 @@ export default {
           imgs: [{ src: coinImg, width: '20%', top: '60%' }],
           fonts: [
             {
-              text: '禮金2500',
+              text: '禮金1000',
               fontSize: '24px',
               top: '30%',
               fontWeight: '600',
@@ -262,7 +264,7 @@ export default {
           imgs: [{ src: coinImg, width: '20%', top: '60%' }],
           fonts: [
             {
-              text: '禮金1500',
+              text: '禮金1000',
               fontSize: '24px',
               top: '30%',
               fontWeight: '600',
@@ -272,10 +274,10 @@ export default {
         // 7
         {
           background: '#d945a9',
-          imgs: [{ src: greenBag, width: '40%', top: '55%' }],
+          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
           fonts: [
             {
-              text: '禮金5000',
+              text: '禮金1000',
               fontSize: '24px',
               top: '30%',
               fontWeight: '600',
@@ -338,6 +340,10 @@ export default {
         accountId: 'admin',
         password: 'admin',
       },
+      // 中獎說明
+      awardText: '',
+      // 活動說明
+      activityText: '',
     };
   },
   methods: {
@@ -398,6 +404,14 @@ export default {
           }
           console.log(this.prizes);
         });
+      });
+    },
+    // 獲取說明
+    getWebInfo() {
+      this.$http.get('/api/admin/website').then((res) => {
+        console.log(res.data.data);
+        this.awardText = res.data.data[0].winning_instructions;
+        this.activityText = res.data.data[0].activity_instructions;
       });
     },
     postLottery() {
@@ -624,6 +638,7 @@ export default {
   created() {
     // this.reloadSavedForm();
     this.getPrizes();
+    this.getWebInfo();
     this.getWithExpiry();
   },
 };
