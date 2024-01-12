@@ -1,6 +1,6 @@
 <template>
   <!-- <SwiperCarousel /> -->
-  <div class="mt-5"><img src="../assets/banner/Banner_1.png" alt="#" /></div>
+  <div class="mt-5 mb-3"><img class="banner_style" src="../assets/backGround/title_red.jpg" alt="#" /></div>
   <div>
     <div class="d-flex justify-content-center">
       <button class="line_btn me-3"><img src="../assets/banner/line_logo.png" alt="" /><span class="ms-2 text-white">Line活動專員</span></button>
@@ -364,16 +364,16 @@ export default {
           if (key % 2 === 0) {
             console.log('偶數區域');
             this.prizes[key].background = '#ffaec1';
-            if (prizeMoney >= 1000 && prizeMoney < 3500) {
+            if (prizeMoney >= 1 && prizeMoney <= 200) {
               this.prizes[key].imgs[0].src = coinImg;
               this.prizes[key].imgs[0].width = '20%';
               this.prizes[key].imgs[0].top = '60%';
-            } else if (prizeMoney >= 3500 && prizeMoney < 5500) {
-              this.prizes[key].imgs[0].src = coinBag;
+            } else if (prizeMoney > 200 && prizeMoney <= 600) {
+              this.prizes[key].imgs[0].src = greenBag;
               this.prizes[key].imgs[0].width = '40%';
               this.prizes[key].imgs[0].top = '40%';
-            } else if (prizeMoney >= 5500 && prizeMoney < 10000) {
-              this.prizes[key].imgs[0].src = greenBag;
+            } else if (prizeMoney > 600 && prizeMoney <= 2000) {
+              this.prizes[key].imgs[0].src = coinBag;
               this.prizes[key].imgs[0].width = '40%';
               this.prizes[key].imgs[0].top = '55%';
             } else {
@@ -955,6 +955,9 @@ export default {
 </style>
 
 <style lang="scss">
+.banner_style {
+  border-radius: 50px !important;
+}
 // 抽獎彈窗
 .drawModel_style {
   background: #fff !important;

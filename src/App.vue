@@ -34,7 +34,7 @@ export default {
 @import 'assets/SideBar/sideBar.css';
 @import './assets/all.scss';
 body {
-  background-image: url('../src//assets/backGround/FileCover.png');
+  background-image: url('../src//assets/backGround/redBg.jpg');
   // background-size: 100% 100%;
   background-size: cover;
   background-attachment: fixed;
