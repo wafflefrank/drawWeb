@@ -384,16 +384,16 @@ export default {
           } else {
             console.log('基數區域');
             this.prizes[key].background = '#d945a9';
-            if (prizeMoney >= 1000 && prizeMoney < 3500) {
+            if (prizeMoney >= 1 && prizeMoney <= 200) {
               this.prizes[key].imgs[0].src = coinImg;
               this.prizes[key].imgs[0].width = '20%';
               this.prizes[key].imgs[0].top = '60%';
-            } else if (prizeMoney >= 3500 && prizeMoney < 5500) {
-              this.prizes[key].imgs[0].src = coinBag;
+            } else if (prizeMoney > 200 && prizeMoney <= 600) {
+              this.prizes[key].imgs[0].src = greenBag;
               this.prizes[key].imgs[0].width = '40%';
               this.prizes[key].imgs[0].top = '40%';
-            } else if (prizeMoney >= 5500 && prizeMoney < 10000) {
-              this.prizes[key].imgs[0].src = greenBag;
+            } else if (prizeMoney > 600 && prizeMoney <= 2000) {
+              this.prizes[key].imgs[0].src = coinBag;
               this.prizes[key].imgs[0].width = '40%';
               this.prizes[key].imgs[0].top = '55%';
             } else {
@@ -801,7 +801,7 @@ export default {
   position: absolute;
   width: 100%;
   height: 300px;
-  background-color: #4945451d;
+  background-color: #8c8c8c21;
   overflow: hidden;
   z-index: -5;
   margin-top: 180px;
@@ -836,7 +836,7 @@ export default {
 
   .prize-item {
     font-size: 52px;
-    color: #f91919;
+    color: #38b6f0;
     // text-decoration: underline;
   }
 }
