@@ -371,7 +371,7 @@ export default {
             } else if (prizeMoney > 200 && prizeMoney <= 600) {
               this.prizes[key].imgs[0].src = greenBag;
               this.prizes[key].imgs[0].width = '40%';
-              this.prizes[key].imgs[0].top = '40%';
+              this.prizes[key].imgs[0].top = '50%';
             } else if (prizeMoney > 600 && prizeMoney <= 2000) {
               this.prizes[key].imgs[0].src = coinBag;
               this.prizes[key].imgs[0].width = '40%';
@@ -391,7 +391,7 @@ export default {
             } else if (prizeMoney > 200 && prizeMoney <= 600) {
               this.prizes[key].imgs[0].src = greenBag;
               this.prizes[key].imgs[0].width = '40%';
-              this.prizes[key].imgs[0].top = '40%';
+              this.prizes[key].imgs[0].top = '20%';
             } else if (prizeMoney > 600 && prizeMoney <= 2000) {
               this.prizes[key].imgs[0].src = coinBag;
               this.prizes[key].imgs[0].width = '40%';
