@@ -38,7 +38,7 @@
   </div> -->
 
   <!-- 帳戶 -->
-  <div class="d-flex align-items-center justify-content-center mb-5 mt-5">
+  <div class="d-flex align-items-center justify-content-center mb-5 mt-5 phone_style">
     <!-- <span class="text-white me-5 fs-4">帳戶: {{ this.memberAccount }}</span> -->
     <span class="text-white me-5 text-start"
       ><span class="fs-4"
@@ -46,16 +46,41 @@
       >
       <br />(若卡在抽獎過程,刷新不減抽獎次數！</span
     >
-    <button class="button-72 me-2" @click="inputCode()">輸入序號</button>
-    <button class="button-73" @click="getDrawHistory()">抽獎紀錄</button>
+    <div class="phone_inputKey d-flex">
+      <button class="button-72 me-2" @click="inputCode()">輸入序號</button>
+      <button class="button-73" @click="getDrawHistory()">抽獎紀錄</button>
+    </div>
   </div>
 
   <div class="mb-5 d-flex flex-column align-items-center">
     <!-- 幸運轉盤 -->
-    <LuckyWheel ref="myLucky" width="700px" height="700px" :prizes="prizes" :blocks="blocks" :buttons="buttons" @start="startCallback" @end="endCallback" />
+
+    <LuckyWheel
+      v-if="this.fullWidth > 600"
+      ref="myLucky"
+      width="700px"
+      height="700px"
+      :prizes="prizes"
+      :blocks="blocks"
+      :buttons="buttons"
+      @start="startCallback"
+      @end="endCallback"
+    />
+
+    <LuckyWheel
+      v-if="this.fullWidth <= 600"
+      ref="myLucky"
+      width="360px"
+      height="360px"
+      :prizes="prizes_phone"
+      :blocks="blocks_phone"
+      :buttons="buttons"
+      @start="startCallback"
+      @end="endCallback"
+    />
 
     <transition name="slide-fade">
-      <div class="prize" v-if="isShow === true">
+      <div class="prize" v-if="isShow === true && fullWidth > 600">
         <div class="prize-container">
           <div class="prize-title"></div>
           <div class="prize-title">
@@ -95,7 +120,7 @@
     </div>
   </div>
   <!-- 輸入抽獎碼彈窗 -->
-  <el-dialog class="drawModel_style" v-model="dialogFormVisible" title="抽獎序號驗證" width="40%" center>
+  <el-dialog class="drawModel_style" v-model="dialogFormVisible" title="抽獎序號驗證" width="70%" center>
     <el-form :model="getDrawNums">
       <el-form-item label="抽獎序號:" class="codeForm_style">
         <el-input class="codeInput_style" v-model="getDrawNums.code" autocomplete="off" />
@@ -115,7 +140,7 @@
         :data="drawHistory_Data"
         :header-cell-style="{ background: 'linear-gradient(180deg, rgba(252, 240, 255, 1) 0%, rgba(115, 111, 159, 0.46) 100%)', color: '#000' }"
       >
-        <el-table-column prop="code" label="驗證碼" width="180" align="center">
+        <el-table-column prop="code" label="驗證碼" width="100" align="center">
           <!-- <template v-slot="{ row }">{{ formatCode(row) }}</template> -->
         </el-table-column>
         <el-table-column prop="isEnter" label="使用紀錄" align="center">
@@ -142,6 +167,7 @@ import selectBtn from '../assets/backGround/zp3_btn2.png';
 import coinImg from '../assets/backGround/goldCoin.png';
 import coinBag from '../assets/backGround/goldcoins_bag.png';
 import greenBag from '../assets/backGround/greenBag.png';
+import ticketImg from '../assets/backGround/ticket3.png';
 import treasureImg from '../assets/backGround/treasure.png';
 
 export default {
@@ -178,6 +204,7 @@ export default {
       // 獎項名稱
       prizeName: '禮金8888',
       lotteryMsg: '',
+      // 電腦版
       blocks: [{ padding: '55px', background: '#869cfa', imgs: [{ src: borderImg, width: '100%', rotate: true }] }],
       prizes: [
         // 0
@@ -285,7 +312,114 @@ export default {
           ],
         },
       ],
-
+      // 手機板
+      blocks_phone: [{ padding: '30px', background: '#869cfa', imgs: [{ src: borderImg, width: '100%', rotate: true }] }],
+      prizes_phone: [
+        // 0
+        {
+          background: '#ee95a9',
+          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+          fonts: [
+            {
+              text: '禮金1000',
+              fontSize: '12px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
+        // 1
+        {
+          background: '#c98ef4',
+          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+          fonts: [
+            {
+              text: '禮金1000',
+              fontSize: '12px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
+        // 2
+        {
+          background: '#ee95a9',
+          imgs: [{ src: coinBag, width: '20%', top: '60%' }],
+          fonts: [
+            {
+              text: '禮金1000',
+              fontSize: '12px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
+        // 3
+        {
+          background: '#c98ef4',
+          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+          fonts: [
+            {
+              text: '禮金1000',
+              fontSize: '12px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
+        // 4
+        {
+          background: '#ee95a9',
+          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+          fonts: [
+            {
+              text: '禮金1000',
+              fontSize: '12px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
+        // 5
+        {
+          background: '#d945a9',
+          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+          fonts: [
+            {
+              text: '禮金1000',
+              fontSize: '12px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
+        // 6
+        {
+          background: '#ffaec1',
+          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+          fonts: [
+            {
+              text: '禮金1000',
+              fontSize: '12px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
+        // 7
+        {
+          background: '#d945a9',
+          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+          fonts: [
+            {
+              text: '禮金1000',
+              fontSize: '12px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
+      ],
       // prizes: [],
       // prizes_content: {
       //   background: '#ffaec1',
@@ -344,6 +478,9 @@ export default {
       awardText: '',
       // 活動說明
       activityText: '',
+      // 電腦寬度
+      fullWidth: 0,
+      fullHeight: 0,
     };
   },
   methods: {
@@ -358,48 +495,189 @@ export default {
         _.forEach(res.data.data, (item, key) => {
           console.log(item, key);
           const prizeMoney = Number(item.prize.replace(/[^0-9]/gi, ''));
-          console.log(prizeMoney);
+          const ticketInclude = item.prize.includes('電子彩金');
+          console.log(prizeMoney, ticketInclude);
           this.prizes[key].fonts[0].text = item.prize;
-          // 偶數
-          if (key % 2 === 0) {
-            console.log('偶數區域');
-            this.prizes[key].background = '#ffaec1';
-            if (prizeMoney >= 1 && prizeMoney <= 200) {
-              this.prizes[key].imgs[0].src = coinImg;
-              this.prizes[key].imgs[0].width = '20%';
-              this.prizes[key].imgs[0].top = '60%';
-            } else if (prizeMoney > 200 && prizeMoney <= 600) {
-              this.prizes[key].imgs[0].src = greenBag;
-              this.prizes[key].imgs[0].width = '40%';
-              this.prizes[key].imgs[0].top = '50%';
-            } else if (prizeMoney > 600 && prizeMoney <= 2000) {
-              this.prizes[key].imgs[0].src = coinBag;
-              this.prizes[key].imgs[0].width = '40%';
-              this.prizes[key].imgs[0].top = '55%';
+          this.prizes_phone[key].fonts[0].text = item.prize;
+          // 電腦版
+          if (this.fullWidth > 600) {
+            // 偶數
+            if (key % 2 === 0) {
+              console.log('偶數區域');
+              this.prizes[key].background = '#ffaec1';
+              if (prizeMoney >= 1 && prizeMoney <= 200) {
+                if (ticketInclude) {
+                  this.prizes[key].imgs[0].src = ticketImg;
+                  this.prizes[key].imgs[0].width = '30%';
+                  this.prizes[key].imgs[0].top = '55%';
+                } else {
+                  this.prizes[key].imgs[0].src = coinImg;
+                  this.prizes[key].imgs[0].width = '20%';
+                  this.prizes[key].imgs[0].top = '60%';
+                }
+              } else if (prizeMoney > 200 && prizeMoney <= 600) {
+                if (ticketInclude) {
+                  this.prizes[key].imgs[0].src = ticketImg;
+                  this.prizes[key].imgs[0].width = '30%';
+                  this.prizes[key].imgs[0].top = '55%';
+                } else {
+                  this.prizes[key].imgs[0].src = greenBag;
+                  this.prizes[key].imgs[0].width = '40%';
+                  this.prizes[key].imgs[0].top = '50%';
+                }
+              } else if (prizeMoney > 600 && prizeMoney <= 2000) {
+                if (ticketInclude) {
+                  this.prizes[key].imgs[0].src = ticketImg;
+                  this.prizes[key].imgs[0].width = '30%';
+                  this.prizes[key].imgs[0].top = '55%';
+                } else {
+                  this.prizes[key].imgs[0].src = coinBag;
+                  this.prizes[key].imgs[0].width = '40%';
+                  this.prizes[key].imgs[0].top = '55%';
+                }
+              } else {
+                if (ticketInclude) {
+                  this.prizes[key].imgs[0].src = ticketImg;
+                  this.prizes[key].imgs[0].width = '30%';
+                  this.prizes[key].imgs[0].top = '55%';
+                }
+                this.prizes[key].imgs[0].src = treasureImg;
+                this.prizes[key].imgs[0].width = '40%';
+                this.prizes[key].imgs[0].top = '55%';
+              }
             } else {
-              this.prizes[key].imgs[0].src = treasureImg;
-              this.prizes[key].imgs[0].width = '40%';
-              this.prizes[key].imgs[0].top = '55%';
+              console.log('基數區域');
+              this.prizes[key].background = '#d945a9';
+              if (prizeMoney >= 1 && prizeMoney <= 200) {
+                if (ticketInclude) {
+                  this.prizes[key].imgs[0].src = ticketImg;
+                  this.prizes[key].imgs[0].width = '30%';
+                  this.prizes[key].imgs[0].top = '55%';
+                } else {
+                  this.prizes[key].imgs[0].src = coinImg;
+                  this.prizes[key].imgs[0].width = '20%';
+                  this.prizes[key].imgs[0].top = '60%';
+                }
+              } else if (prizeMoney > 200 && prizeMoney <= 600) {
+                if (ticketInclude) {
+                  this.prizes[key].imgs[0].src = ticketImg;
+                  this.prizes[key].imgs[0].width = '30%';
+                  this.prizes[key].imgs[0].top = '55%';
+                } else {
+                  this.prizes[key].imgs[0].src = greenBag;
+                  this.prizes[key].imgs[0].width = '40%';
+                  this.prizes[key].imgs[0].top = '50%';
+                }
+              } else if (prizeMoney > 600 && prizeMoney <= 2000) {
+                if (ticketInclude) {
+                  this.prizes[key].imgs[0].src = ticketImg;
+                  this.prizes[key].imgs[0].width = '30%';
+                  this.prizes[key].imgs[0].top = '55%';
+                } else {
+                  this.prizes[key].imgs[0].src = coinBag;
+                  this.prizes[key].imgs[0].width = '40%';
+                  this.prizes[key].imgs[0].top = '55%';
+                }
+              } else {
+                if (ticketInclude) {
+                  this.prizes[key].imgs[0].src = ticketImg;
+                  this.prizes[key].imgs[0].width = '30%';
+                  this.prizes[key].imgs[0].top = '55%';
+                }
+                this.prizes[key].imgs[0].src = treasureImg;
+                this.prizes[key].imgs[0].width = '40%';
+                this.prizes[key].imgs[0].top = '55%';
+              }
             }
-          } else {
-            console.log('基數區域');
-            this.prizes[key].background = '#d945a9';
-            if (prizeMoney >= 1 && prizeMoney <= 200) {
-              this.prizes[key].imgs[0].src = coinImg;
-              this.prizes[key].imgs[0].width = '20%';
-              this.prizes[key].imgs[0].top = '60%';
-            } else if (prizeMoney > 200 && prizeMoney <= 600) {
-              this.prizes[key].imgs[0].src = greenBag;
-              this.prizes[key].imgs[0].width = '40%';
-              this.prizes[key].imgs[0].top = '20%';
-            } else if (prizeMoney > 600 && prizeMoney <= 2000) {
-              this.prizes[key].imgs[0].src = coinBag;
-              this.prizes[key].imgs[0].width = '40%';
-              this.prizes[key].imgs[0].top = '55%';
+          } else if (this.fullWidth <= 600) {
+            // 手機板
+            // 偶數
+            if (key % 2 === 0) {
+              console.log('偶數區域');
+              this.prizes_phone[key].background = '#ffaec1';
+              if (prizeMoney >= 1 && prizeMoney <= 200) {
+                if (ticketInclude) {
+                  this.prizes_phone[key].imgs[0].src = ticketImg;
+                  this.prizes_phone[key].imgs[0].width = '30%';
+                  this.prizes_phone[key].imgs[0].top = '55%';
+                } else {
+                  this.prizes_phone[key].imgs[0].src = coinImg;
+                  this.prizes_phone[key].imgs[0].width = '20%';
+                  this.prizes_phone[key].imgs[0].top = '60%';
+                }
+              } else if (prizeMoney > 200 && prizeMoney <= 600) {
+                if (ticketInclude) {
+                  this.prizes_phone[key].imgs[0].src = ticketImg;
+                  this.prizes_phone[key].imgs[0].width = '30%';
+                  this.prizes_phone[key].imgs[0].top = '55%';
+                } else {
+                  this.prizes_phone[key].imgs[0].src = greenBag;
+                  this.prizes_phone[key].imgs[0].width = '40%';
+                  this.prizes_phone[key].imgs[0].top = '50%';
+                }
+              } else if (prizeMoney > 600 && prizeMoney <= 2000) {
+                if (ticketInclude) {
+                  this.prizes_phone[key].imgs[0].src = ticketImg;
+                  this.prizes_phone[key].imgs[0].width = '30%';
+                  this.prizes_phone[key].imgs[0].top = '55%';
+                } else {
+                  this.prizes_phone[key].imgs[0].src = coinBag;
+                  this.prizes_phone[key].imgs[0].width = '40%';
+                  this.prizes_phone[key].imgs[0].top = '55%';
+                }
+              } else {
+                if (ticketInclude) {
+                  this.prizes_phone[key].imgs[0].src = ticketImg;
+                  this.prizes_phone[key].imgs[0].width = '30%';
+                  this.prizes_phone[key].imgs[0].top = '55%';
+                }
+                this.prizes_phone[key].imgs[0].src = treasureImg;
+                this.prizes_phone[key].imgs[0].width = '40%';
+                this.prizes_phone[key].imgs[0].top = '55%';
+              }
             } else {
-              this.prizes[key].imgs[0].src = treasureImg;
-              this.prizes[key].imgs[0].width = '40%';
-              this.prizes[key].imgs[0].top = '55%';
+              console.log('基數區域');
+              this.prizes_phone[key].background = '#d945a9';
+              if (prizeMoney >= 1 && prizeMoney <= 200) {
+                if (ticketInclude) {
+                  this.prizes_phone[key].imgs[0].src = ticketImg;
+                  this.prizes_phone[key].imgs[0].width = '30%';
+                  this.prizes_phone[key].imgs[0].top = '55%';
+                } else {
+                  this.prizes_phone[key].imgs[0].src = coinImg;
+                  this.prizes_phone[key].imgs[0].width = '20%';
+                  this.prizes_phone[key].imgs[0].top = '60%';
+                }
+              } else if (prizeMoney > 200 && prizeMoney <= 600) {
+                if (ticketInclude) {
+                  this.prizes_phone[key].imgs[0].src = ticketImg;
+                  this.prizes_phone[key].imgs[0].width = '30%';
+                  this.prizes_phone[key].imgs[0].top = '55%';
+                } else {
+                  this.prizes_phone[key].imgs[0].src = greenBag;
+                  this.prizes_phone[key].imgs[0].width = '40%';
+                  this.prizes_phone[key].imgs[0].top = '50%';
+                }
+              } else if (prizeMoney > 600 && prizeMoney <= 2000) {
+                if (ticketInclude) {
+                  this.prizes_phone[key].imgs[0].src = ticketImg;
+                  this.prizes_phone[key].imgs[0].width = '30%';
+                  this.prizes_phone[key].imgs[0].top = '55%';
+                } else {
+                  this.prizes_phone[key].imgs[0].src = coinBag;
+                  this.prizes_phone[key].imgs[0].width = '40%';
+                  this.prizes_phone[key].imgs[0].top = '55%';
+                }
+              } else {
+                if (ticketInclude) {
+                  this.prizes_phone[key].imgs[0].src = ticketImg;
+                  this.prizes_phone[key].imgs[0].width = '30%';
+                  this.prizes_phone[key].imgs[0].top = '55%';
+                }
+                this.prizes_phone[key].imgs[0].src = treasureImg;
+                this.prizes_phone[key].imgs[0].width = '40%';
+                this.prizes_phone[key].imgs[0].top = '55%';
+              }
             }
           }
           console.log(this.prizes);
@@ -434,6 +712,7 @@ export default {
       this.$http.post('/api/users/startLottery', this.getDrawNums).then((res) => {
         if (res.data.code === 200) {
           this.drawNum = res.data.count;
+          // this.drawNum = 20;
           this.$swal.fire('輸入成功', `${res.data.msg}`, 'success');
           this.dialogFormVisible = false;
           // localStorage.setItem('storedDrawNums', JSON.stringify(this.drawNum));
@@ -488,7 +767,11 @@ export default {
     endCallback(prize) {
       console.log(prize);
       if (this.prizeIndex !== '') {
-        this.showPrize();
+        if (this.fullWidth <= 600) {
+          this.showConfirmDialog();
+        } else {
+          this.showPrize();
+        }
         // this.$swal.fire('抽獎成功', `恭喜獲取 :${this.prizes[this.prizeIndex].fonts[0].text}`, 'success');
       }
     },
@@ -537,34 +820,17 @@ export default {
       return this.drawNum;
     },
     showConfirmDialog() {
-      this.$swal
-        .fire({
-          title: '确认',
-          text: '确定删除吗？',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: '是',
-          cancelButtonText: '否',
-          customClass: {
-            title: 'red-title',
-            text: 'red-text',
-            popup: 'swalBody',
-          },
-        })
-        .then((result) => {
-          if (result.isConfirmed) {
-            this.$swal.fire({
-              title: '删除成功',
-              text: '数据已成功删除',
-              icon: 'success',
-              customClass: {
-                title: 'red-title',
-                text: 'red-text',
-                popup: 'light-grey-popup',
-              },
-            });
-          }
-        });
+      this.$swal.fire({
+        title: `恭喜獲取 :${this.prizes[this.prizeIndex - 1].fonts[0].text}`,
+        icon: 'success',
+        showCancelButton: false,
+        confirmButtonText: '確認',
+        customClass: {
+          title: 'red-title',
+          text: 'red-text',
+          popup: 'swalBody',
+        },
+      });
     },
     // 中獎動畫顯示
     showPrize() {
@@ -640,6 +906,15 @@ export default {
     this.getPrizes();
     this.getWebInfo();
     this.getWithExpiry();
+  },
+  mounted() {
+    this.fullWidth = window.innerWidth;
+    this.fullHeight = window.innerHeight;
+    window.onresize = () => {
+      this.fullWidth = window.innerWidth;
+      this.fullHeight = window.innerHeight;
+      console.log(this.fullWidth, this.fullHeight);
+    };
   },
 };
 </script>
@@ -989,7 +1264,7 @@ pre {
 
 // 抽獎紀錄彈窗
 .loginHistory_style {
-  background: linear-gradient(270deg, rgba(238, 149, 179, 1) 0%, rgba(59, 5, 13, 1) 0%, rgba(35, 7, 64, 1) 100%) !important;
+  background: linear-gradient(270deg, rgba(238, 149, 179, 1) 0%, rgb(159, 28, 188) 0%, rgba(35, 7, 64, 1) 100%) !important;
   font-size: 20px;
   font-weight: bold;
   border-radius: 20px;
@@ -1125,6 +1400,56 @@ pre {
 }
 .swalBody {
   border-radius: 30px;
-  background-color: #b384c9;
+  background-color: #ffffff;
+}
+@media (max-width: 800px) {
+  .banner_style {
+    width: 550px !important;
+  }
+}
+@media (max-width: 600px) {
+  .banner_style {
+    width: 350px !important;
+  }
+  .line_btn {
+    min-width: 160px !important;
+    font-size: 16px !important;
+  }
+  .game_btn {
+    min-width: 160px !important;
+    font-size: 16px !important;
+  }
+  .phone_style {
+    flex-direction: column;
+    & .phone_inputKey {
+      display: flex;
+      margin-top: 20px;
+      & .button-72 {
+        margin-right: 20px !important;
+        padding: 18px 40px;
+      }
+      & .button-73 {
+        margin-left: 20px !important;
+        padding: 18px 40px;
+      }
+    }
+  }
+  .drawModel_style {
+    width: 350px !important;
+  }
+  .drawModel_style .el-dialog__title {
+    font-size: 24px !important;
+  }
+  // 中獎說明 & 活動說明 字體大小
+  pre {
+    font-size: 14px !important;
+  }
+  // 中獎紀錄談窗
+  .loginHistory_style {
+    width: 370px !important;
+    & .el-dialog__close {
+      color: #fff !important;
+    }
+  }
 }
 </style>
