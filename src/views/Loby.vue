@@ -74,7 +74,7 @@
       height="360px"
       :prizes="prizes_phone"
       :blocks="blocks_phone"
-      :buttons="buttons"
+      :buttons="buttons_phone"
       @start="startCallback"
       @end="endCallback"
     />
@@ -420,21 +420,7 @@ export default {
           ],
         },
       ],
-      // prizes: [],
-      // prizes_content: {
-      //   background: '#ffaec1',
-      //   imgs: [{ src: greenBag, width: '40%', top: '55%' }],
-      //   fonts: [
-      //     {
-      //       text: '禮金5000',
-      //       fontSize: '24px',
-      //       top: '30%',
-      //       fontWeight: '600',
-      //     },
-      //   ],
-      // },
-      // i: 1,
-
+      // 電腦版
       buttons: [
         {
           radius: '30%',
@@ -451,6 +437,33 @@ export default {
               src: selectBtn,
               width: '40%',
               top: '-350px',
+            },
+          ],
+        },
+        // {
+        //   radius: '30%',
+        //   background: '#869cfa',
+        //   pointer: true,
+        //   fonts: [{ text: '開始', top: '-10px' }],
+        // },
+      ],
+      // 手機板
+      buttons_phone: [
+        {
+          radius: '30%',
+          // background: '#617df2',
+          pointer: true,
+          imgs: [
+            {
+              src: startBtn,
+              width: '100%',
+              top: '-100%',
+              background: '#00ffee',
+            },
+            {
+              src: selectBtn,
+              width: '40%',
+              top: '-180px',
             },
           ],
         },
