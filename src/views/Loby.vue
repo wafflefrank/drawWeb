@@ -3,8 +3,10 @@
   <div class="mt-5 mb-3"><img class="banner_style" src="../assets/backGround/title_red.jpg" alt="#" /></div>
   <div>
     <div class="d-flex justify-content-center">
-      <button class="line_btn me-3"><img src="../assets/banner/line_logo.png" alt="" /><span class="ms-2 text-white">Line活動專員</span></button>
-      <button class="game_btn"><img src="../assets/banner/line_logo.png" alt="" /><span class="ms-2 text-white">娛樂城</span></button>
+      <button class="line_btn me-3" @click="goLine()"><img src="../assets/banner/line_logo.png" alt="" /><span class="ms-2 text-white">Line活動專員</span></button>
+      <button class="game_btn" @click="goEntertaiment()">
+        <span class="ms-2 text-white">娛樂城</span>
+      </button>
     </div>
   </div>
 
@@ -912,6 +914,14 @@ export default {
         return `${this.prizes[7].fonts[0].text}`;
       }
       return '無獎項';
+    },
+    // 前往Line
+    goLine() {
+      window.open('https://line.me/R/ti/p/@max7890707?from=page&searchId=max7890707', '_blank');
+    },
+    // 前往娛樂城
+    goEntertaiment() {
+      window.open('https://linkby.tw/max7890707', '_blank');
     },
   },
   created() {
