@@ -550,15 +550,16 @@ export default {
                   this.prizes[key].imgs[0].width = '40%';
                   this.prizes[key].imgs[0].top = '55%';
                 }
-              } else {
+              } else if (prizeMoney > 2000) {
                 if (ticketInclude) {
                   this.prizes[key].imgs[0].src = ticketImg;
                   this.prizes[key].imgs[0].width = '30%';
                   this.prizes[key].imgs[0].top = '55%';
+                } else {
+                  this.prizes[key].imgs[0].src = treasureImg;
+                  this.prizes[key].imgs[0].width = '40%';
+                  this.prizes[key].imgs[0].top = '55%';
                 }
-                this.prizes[key].imgs[0].src = treasureImg;
-                this.prizes[key].imgs[0].width = '40%';
-                this.prizes[key].imgs[0].top = '55%';
               }
             } else {
               console.log('基數區域');
@@ -593,15 +594,16 @@ export default {
                   this.prizes[key].imgs[0].width = '40%';
                   this.prizes[key].imgs[0].top = '55%';
                 }
-              } else {
+              } else if (prizeMoney > 2000) {
                 if (ticketInclude) {
                   this.prizes[key].imgs[0].src = ticketImg;
                   this.prizes[key].imgs[0].width = '30%';
                   this.prizes[key].imgs[0].top = '55%';
+                } else {
+                  this.prizes[key].imgs[0].src = treasureImg;
+                  this.prizes[key].imgs[0].width = '40%';
+                  this.prizes[key].imgs[0].top = '55%';
                 }
-                this.prizes[key].imgs[0].src = treasureImg;
-                this.prizes[key].imgs[0].width = '40%';
-                this.prizes[key].imgs[0].top = '55%';
               }
             }
           } else if (this.fullWidth <= 600) {
@@ -640,15 +642,16 @@ export default {
                   this.prizes_phone[key].imgs[0].width = '40%';
                   this.prizes_phone[key].imgs[0].top = '55%';
                 }
-              } else {
+              } else if (prizeMoney > 2000) {
                 if (ticketInclude) {
                   this.prizes_phone[key].imgs[0].src = ticketImg;
                   this.prizes_phone[key].imgs[0].width = '30%';
                   this.prizes_phone[key].imgs[0].top = '55%';
+                } else {
+                  this.prizes_phone[key].imgs[0].src = treasureImg;
+                  this.prizes_phone[key].imgs[0].width = '40%';
+                  this.prizes_phone[key].imgs[0].top = '55%';
                 }
-                this.prizes_phone[key].imgs[0].src = treasureImg;
-                this.prizes_phone[key].imgs[0].width = '40%';
-                this.prizes_phone[key].imgs[0].top = '55%';
               }
             } else {
               console.log('基數區域');
@@ -683,15 +686,16 @@ export default {
                   this.prizes_phone[key].imgs[0].width = '40%';
                   this.prizes_phone[key].imgs[0].top = '55%';
                 }
-              } else {
+              } else if (prizeMoney > 2000) {
                 if (ticketInclude) {
                   this.prizes_phone[key].imgs[0].src = ticketImg;
                   this.prizes_phone[key].imgs[0].width = '30%';
                   this.prizes_phone[key].imgs[0].top = '55%';
+                } else {
+                  this.prizes_phone[key].imgs[0].src = treasureImg;
+                  this.prizes_phone[key].imgs[0].width = '40%';
+                  this.prizes_phone[key].imgs[0].top = '55%';
                 }
-                this.prizes_phone[key].imgs[0].src = treasureImg;
-                this.prizes_phone[key].imgs[0].width = '40%';
-                this.prizes_phone[key].imgs[0].top = '55%';
               }
             }
           }
