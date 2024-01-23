@@ -58,7 +58,7 @@
     <!-- 幸運轉盤 -->
 
     <LuckyWheel
-      v-if="this.fullWidth > 600"
+      v-if="this.fullWidth >= 600"
       ref="myLucky"
       width="700px"
       height="700px"
@@ -70,7 +70,7 @@
     />
 
     <LuckyWheel
-      v-if="this.fullWidth <= 600"
+      v-if="this.fullWidth < 600"
       ref="myLucky"
       width="360px"
       height="360px"
@@ -176,9 +176,21 @@ export default {
   components: {
     // SwiperCarousel,
   },
-
+  watch: {
+    pcVersion(newValue, oldValue) {
+      console.log(newValue, oldValue);
+      if (newValue === true && oldValue === false) {
+        console.log('重整頁面');
+        this.reloadPage();
+      } else if (newValue === false && oldValue === true) {
+        console.log('重整頁面');
+        this.reloadPage();
+      }
+    },
+  },
   data() {
     return {
+      isRouterAlive: true,
       // 驗證碼
       getDrawNums: {
         code: '',
@@ -496,9 +508,18 @@ export default {
       // 電腦寬度
       fullWidth: 0,
       fullHeight: 0,
+      // 電腦版
+      pcVersion: false,
     };
   },
   methods: {
+    // 畫面重新整理
+    reloadPage() {
+      this.isRouterAlive = false;
+      this.$nextTick(() => {
+        this.isRouterAlive = true;
+      });
+    },
     //  獲取轉盤獎項
     getPrizes() {
       this.$http.get('/api/admin/prizes').then((res) => {
@@ -513,192 +534,207 @@ export default {
           const ticketInclude = item.prize.includes('電子彩金');
           console.log(prizeMoney, ticketInclude);
           this.prizes[key].fonts[0].text = item.prize;
-          this.prizes_phone[key].fonts[0].text = item.prize;
           // 電腦版
-          if (this.fullWidth > 600) {
-            // 偶數
-            if (key % 2 === 0) {
-              console.log('偶數區域');
-              this.prizes[key].background = '#ffaec1';
-              if (prizeMoney >= 1 && prizeMoney <= 200) {
-                if (ticketInclude) {
-                  this.prizes[key].imgs[0].src = ticketImg;
-                  this.prizes[key].imgs[0].width = '30%';
-                  this.prizes[key].imgs[0].top = '55%';
-                } else {
-                  this.prizes[key].imgs[0].src = coinImg;
-                  this.prizes[key].imgs[0].width = '20%';
-                  this.prizes[key].imgs[0].top = '60%';
-                }
-              } else if (prizeMoney > 200 && prizeMoney <= 600) {
-                if (ticketInclude) {
-                  this.prizes[key].imgs[0].src = ticketImg;
-                  this.prizes[key].imgs[0].width = '30%';
-                  this.prizes[key].imgs[0].top = '55%';
-                } else {
-                  this.prizes[key].imgs[0].src = greenBag;
-                  this.prizes[key].imgs[0].width = '40%';
-                  this.prizes[key].imgs[0].top = '50%';
-                }
-              } else if (prizeMoney > 600 && prizeMoney <= 2000) {
-                if (ticketInclude) {
-                  this.prizes[key].imgs[0].src = ticketImg;
-                  this.prizes[key].imgs[0].width = '30%';
-                  this.prizes[key].imgs[0].top = '55%';
-                } else {
-                  this.prizes[key].imgs[0].src = coinBag;
-                  this.prizes[key].imgs[0].width = '40%';
-                  this.prizes[key].imgs[0].top = '55%';
-                }
-              } else if (prizeMoney > 2000) {
-                if (ticketInclude) {
-                  this.prizes[key].imgs[0].src = ticketImg;
-                  this.prizes[key].imgs[0].width = '30%';
-                  this.prizes[key].imgs[0].top = '55%';
-                } else {
-                  this.prizes[key].imgs[0].src = treasureImg;
-                  this.prizes[key].imgs[0].width = '40%';
-                  this.prizes[key].imgs[0].top = '55%';
-                }
+          // 偶數
+          if (key % 2 === 0) {
+            console.log('偶數區域');
+            this.prizes[key].background = '#ffaec1';
+            if (prizeMoney >= 1 && prizeMoney <= 200) {
+              if (ticketInclude) {
+                this.prizes[key].imgs[0].src = ticketImg;
+                this.prizes[key].imgs[0].width = '30%';
+                this.prizes[key].imgs[0].top = '55%';
+              } else {
+                this.prizes[key].imgs[0].src = coinImg;
+                this.prizes[key].imgs[0].width = '20%';
+                this.prizes[key].imgs[0].top = '60%';
               }
-            } else {
-              console.log('基數區域');
-              this.prizes[key].background = '#d945a9';
-              if (prizeMoney >= 1 && prizeMoney <= 200) {
-                if (ticketInclude) {
-                  this.prizes[key].imgs[0].src = ticketImg;
-                  this.prizes[key].imgs[0].width = '30%';
-                  this.prizes[key].imgs[0].top = '55%';
-                } else {
-                  this.prizes[key].imgs[0].src = coinImg;
-                  this.prizes[key].imgs[0].width = '20%';
-                  this.prizes[key].imgs[0].top = '60%';
-                }
-              } else if (prizeMoney > 200 && prizeMoney <= 600) {
-                if (ticketInclude) {
-                  this.prizes[key].imgs[0].src = ticketImg;
-                  this.prizes[key].imgs[0].width = '30%';
-                  this.prizes[key].imgs[0].top = '55%';
-                } else {
-                  this.prizes[key].imgs[0].src = greenBag;
-                  this.prizes[key].imgs[0].width = '40%';
-                  this.prizes[key].imgs[0].top = '50%';
-                }
-              } else if (prizeMoney > 600 && prizeMoney <= 2000) {
-                if (ticketInclude) {
-                  this.prizes[key].imgs[0].src = ticketImg;
-                  this.prizes[key].imgs[0].width = '30%';
-                  this.prizes[key].imgs[0].top = '55%';
-                } else {
-                  this.prizes[key].imgs[0].src = coinBag;
-                  this.prizes[key].imgs[0].width = '40%';
-                  this.prizes[key].imgs[0].top = '55%';
-                }
-              } else if (prizeMoney > 2000) {
-                if (ticketInclude) {
-                  this.prizes[key].imgs[0].src = ticketImg;
-                  this.prizes[key].imgs[0].width = '30%';
-                  this.prizes[key].imgs[0].top = '55%';
-                } else {
-                  this.prizes[key].imgs[0].src = treasureImg;
-                  this.prizes[key].imgs[0].width = '40%';
-                  this.prizes[key].imgs[0].top = '55%';
-                }
+            } else if (prizeMoney > 200 && prizeMoney <= 600) {
+              if (ticketInclude) {
+                this.prizes[key].imgs[0].src = ticketImg;
+                this.prizes[key].imgs[0].width = '30%';
+                this.prizes[key].imgs[0].top = '55%';
+              } else {
+                this.prizes[key].imgs[0].src = greenBag;
+                this.prizes[key].imgs[0].width = '40%';
+                this.prizes[key].imgs[0].top = '50%';
+              }
+            } else if (prizeMoney > 600 && prizeMoney <= 2000) {
+              if (ticketInclude) {
+                this.prizes[key].imgs[0].src = ticketImg;
+                this.prizes[key].imgs[0].width = '30%';
+                this.prizes[key].imgs[0].top = '55%';
+              } else {
+                this.prizes[key].imgs[0].src = coinBag;
+                this.prizes[key].imgs[0].width = '40%';
+                this.prizes[key].imgs[0].top = '55%';
+              }
+            } else if (prizeMoney > 2000) {
+              if (ticketInclude) {
+                this.prizes[key].imgs[0].src = ticketImg;
+                this.prizes[key].imgs[0].width = '30%';
+                this.prizes[key].imgs[0].top = '55%';
+              } else {
+                this.prizes[key].imgs[0].src = treasureImg;
+                this.prizes[key].imgs[0].width = '40%';
+                this.prizes[key].imgs[0].top = '55%';
               }
             }
-          } else if (this.fullWidth <= 600) {
-            // 手機板
-            // 偶數
-            if (key % 2 === 0) {
-              console.log('偶數區域');
-              this.prizes_phone[key].background = '#ffaec1';
-              if (prizeMoney >= 1 && prizeMoney <= 200) {
-                if (ticketInclude) {
-                  this.prizes_phone[key].imgs[0].src = ticketImg;
-                  this.prizes_phone[key].imgs[0].width = '30%';
-                  this.prizes_phone[key].imgs[0].top = '55%';
-                } else {
-                  this.prizes_phone[key].imgs[0].src = coinImg;
-                  this.prizes_phone[key].imgs[0].width = '20%';
-                  this.prizes_phone[key].imgs[0].top = '60%';
-                }
-              } else if (prizeMoney > 200 && prizeMoney <= 600) {
-                if (ticketInclude) {
-                  this.prizes_phone[key].imgs[0].src = ticketImg;
-                  this.prizes_phone[key].imgs[0].width = '30%';
-                  this.prizes_phone[key].imgs[0].top = '55%';
-                } else {
-                  this.prizes_phone[key].imgs[0].src = greenBag;
-                  this.prizes_phone[key].imgs[0].width = '40%';
-                  this.prizes_phone[key].imgs[0].top = '50%';
-                }
-              } else if (prizeMoney > 600 && prizeMoney <= 2000) {
-                if (ticketInclude) {
-                  this.prizes_phone[key].imgs[0].src = ticketImg;
-                  this.prizes_phone[key].imgs[0].width = '30%';
-                  this.prizes_phone[key].imgs[0].top = '55%';
-                } else {
-                  this.prizes_phone[key].imgs[0].src = coinBag;
-                  this.prizes_phone[key].imgs[0].width = '40%';
-                  this.prizes_phone[key].imgs[0].top = '55%';
-                }
-              } else if (prizeMoney > 2000) {
-                if (ticketInclude) {
-                  this.prizes_phone[key].imgs[0].src = ticketImg;
-                  this.prizes_phone[key].imgs[0].width = '30%';
-                  this.prizes_phone[key].imgs[0].top = '55%';
-                } else {
-                  this.prizes_phone[key].imgs[0].src = treasureImg;
-                  this.prizes_phone[key].imgs[0].width = '40%';
-                  this.prizes_phone[key].imgs[0].top = '55%';
-                }
+          } else {
+            console.log('基數區域');
+            this.prizes[key].background = '#d945a9';
+            if (prizeMoney >= 1 && prizeMoney <= 200) {
+              if (ticketInclude) {
+                this.prizes[key].imgs[0].src = ticketImg;
+                this.prizes[key].imgs[0].width = '30%';
+                this.prizes[key].imgs[0].top = '55%';
+              } else {
+                this.prizes[key].imgs[0].src = coinImg;
+                this.prizes[key].imgs[0].width = '20%';
+                this.prizes[key].imgs[0].top = '60%';
               }
-            } else {
-              console.log('基數區域');
-              this.prizes_phone[key].background = '#d945a9';
-              if (prizeMoney >= 1 && prizeMoney <= 200) {
-                if (ticketInclude) {
-                  this.prizes_phone[key].imgs[0].src = ticketImg;
-                  this.prizes_phone[key].imgs[0].width = '30%';
-                  this.prizes_phone[key].imgs[0].top = '55%';
-                } else {
-                  this.prizes_phone[key].imgs[0].src = coinImg;
-                  this.prizes_phone[key].imgs[0].width = '20%';
-                  this.prizes_phone[key].imgs[0].top = '60%';
-                }
-              } else if (prizeMoney > 200 && prizeMoney <= 600) {
-                if (ticketInclude) {
-                  this.prizes_phone[key].imgs[0].src = ticketImg;
-                  this.prizes_phone[key].imgs[0].width = '30%';
-                  this.prizes_phone[key].imgs[0].top = '55%';
-                } else {
-                  this.prizes_phone[key].imgs[0].src = greenBag;
-                  this.prizes_phone[key].imgs[0].width = '40%';
-                  this.prizes_phone[key].imgs[0].top = '50%';
-                }
-              } else if (prizeMoney > 600 && prizeMoney <= 2000) {
-                if (ticketInclude) {
-                  this.prizes_phone[key].imgs[0].src = ticketImg;
-                  this.prizes_phone[key].imgs[0].width = '30%';
-                  this.prizes_phone[key].imgs[0].top = '55%';
-                } else {
-                  this.prizes_phone[key].imgs[0].src = coinBag;
-                  this.prizes_phone[key].imgs[0].width = '40%';
-                  this.prizes_phone[key].imgs[0].top = '55%';
-                }
-              } else if (prizeMoney > 2000) {
-                if (ticketInclude) {
-                  this.prizes_phone[key].imgs[0].src = ticketImg;
-                  this.prizes_phone[key].imgs[0].width = '30%';
-                  this.prizes_phone[key].imgs[0].top = '55%';
-                } else {
-                  this.prizes_phone[key].imgs[0].src = treasureImg;
-                  this.prizes_phone[key].imgs[0].width = '40%';
-                  this.prizes_phone[key].imgs[0].top = '55%';
-                }
+            } else if (prizeMoney > 200 && prizeMoney <= 600) {
+              if (ticketInclude) {
+                this.prizes[key].imgs[0].src = ticketImg;
+                this.prizes[key].imgs[0].width = '30%';
+                this.prizes[key].imgs[0].top = '55%';
+              } else {
+                this.prizes[key].imgs[0].src = greenBag;
+                this.prizes[key].imgs[0].width = '40%';
+                this.prizes[key].imgs[0].top = '50%';
+              }
+            } else if (prizeMoney > 600 && prizeMoney <= 2000) {
+              if (ticketInclude) {
+                this.prizes[key].imgs[0].src = ticketImg;
+                this.prizes[key].imgs[0].width = '30%';
+                this.prizes[key].imgs[0].top = '55%';
+              } else {
+                this.prizes[key].imgs[0].src = coinBag;
+                this.prizes[key].imgs[0].width = '40%';
+                this.prizes[key].imgs[0].top = '55%';
+              }
+            } else if (prizeMoney > 2000) {
+              if (ticketInclude) {
+                this.prizes[key].imgs[0].src = ticketImg;
+                this.prizes[key].imgs[0].width = '30%';
+                this.prizes[key].imgs[0].top = '55%';
+              } else {
+                this.prizes[key].imgs[0].src = treasureImg;
+                this.prizes[key].imgs[0].width = '40%';
+                this.prizes[key].imgs[0].top = '55%';
               }
             }
           }
+
+          console.log(this.prizes);
+        });
+      });
+    },
+    getPrizes_phone() {
+      this.$http.get('/api/admin/prizes').then((res) => {
+        console.log('轉盤資訊:', res.data.data);
+        // for (this.i = 0; this.i < res.data.data.length; this.i += 1) {
+        //   this.prizes.push(this.prizes_content);
+        // }
+        // console.log(this.prizes);
+        _.forEach(res.data.data, (item, key) => {
+          console.log(item, key);
+          const prizeMoney = Number(item.prize.replace(/[^0-9]/gi, ''));
+          const ticketInclude = item.prize.includes('電子彩金');
+          console.log(prizeMoney, ticketInclude);
+          this.prizes_phone[key].fonts[0].text = item.prize;
+          // 手機板
+          // 偶數
+          if (key % 2 === 0) {
+            console.log('偶數區域');
+            this.prizes_phone[key].background = '#ffaec1';
+            if (prizeMoney >= 1 && prizeMoney <= 200) {
+              if (ticketInclude) {
+                this.prizes_phone[key].imgs[0].src = ticketImg;
+                this.prizes_phone[key].imgs[0].width = '30%';
+                this.prizes_phone[key].imgs[0].top = '55%';
+              } else {
+                this.prizes_phone[key].imgs[0].src = coinImg;
+                this.prizes_phone[key].imgs[0].width = '20%';
+                this.prizes_phone[key].imgs[0].top = '60%';
+              }
+            } else if (prizeMoney > 200 && prizeMoney <= 600) {
+              if (ticketInclude) {
+                this.prizes_phone[key].imgs[0].src = ticketImg;
+                this.prizes_phone[key].imgs[0].width = '30%';
+                this.prizes_phone[key].imgs[0].top = '55%';
+              } else {
+                this.prizes_phone[key].imgs[0].src = greenBag;
+                this.prizes_phone[key].imgs[0].width = '40%';
+                this.prizes_phone[key].imgs[0].top = '50%';
+              }
+            } else if (prizeMoney > 600 && prizeMoney <= 2000) {
+              if (ticketInclude) {
+                this.prizes_phone[key].imgs[0].src = ticketImg;
+                this.prizes_phone[key].imgs[0].width = '30%';
+                this.prizes_phone[key].imgs[0].top = '55%';
+              } else {
+                this.prizes_phone[key].imgs[0].src = coinBag;
+                this.prizes_phone[key].imgs[0].width = '40%';
+                this.prizes_phone[key].imgs[0].top = '55%';
+              }
+            } else if (prizeMoney > 2000) {
+              if (ticketInclude) {
+                this.prizes_phone[key].imgs[0].src = ticketImg;
+                this.prizes_phone[key].imgs[0].width = '30%';
+                this.prizes_phone[key].imgs[0].top = '55%';
+              } else {
+                this.prizes_phone[key].imgs[0].src = treasureImg;
+                this.prizes_phone[key].imgs[0].width = '40%';
+                this.prizes_phone[key].imgs[0].top = '55%';
+              }
+            }
+          } else {
+            console.log('基數區域');
+            this.prizes_phone[key].background = '#d945a9';
+            if (prizeMoney >= 1 && prizeMoney <= 200) {
+              if (ticketInclude) {
+                this.prizes_phone[key].imgs[0].src = ticketImg;
+                this.prizes_phone[key].imgs[0].width = '30%';
+                this.prizes_phone[key].imgs[0].top = '55%';
+              } else {
+                this.prizes_phone[key].imgs[0].src = coinImg;
+                this.prizes_phone[key].imgs[0].width = '20%';
+                this.prizes_phone[key].imgs[0].top = '60%';
+              }
+            } else if (prizeMoney > 200 && prizeMoney <= 600) {
+              if (ticketInclude) {
+                this.prizes_phone[key].imgs[0].src = ticketImg;
+                this.prizes_phone[key].imgs[0].width = '30%';
+                this.prizes_phone[key].imgs[0].top = '55%';
+              } else {
+                this.prizes_phone[key].imgs[0].src = greenBag;
+                this.prizes_phone[key].imgs[0].width = '40%';
+                this.prizes_phone[key].imgs[0].top = '50%';
+              }
+            } else if (prizeMoney > 600 && prizeMoney <= 2000) {
+              if (ticketInclude) {
+                this.prizes_phone[key].imgs[0].src = ticketImg;
+                this.prizes_phone[key].imgs[0].width = '30%';
+                this.prizes_phone[key].imgs[0].top = '55%';
+              } else {
+                this.prizes_phone[key].imgs[0].src = coinBag;
+                this.prizes_phone[key].imgs[0].width = '40%';
+                this.prizes_phone[key].imgs[0].top = '55%';
+              }
+            } else if (prizeMoney > 2000) {
+              if (ticketInclude) {
+                this.prizes_phone[key].imgs[0].src = ticketImg;
+                this.prizes_phone[key].imgs[0].width = '30%';
+                this.prizes_phone[key].imgs[0].top = '55%';
+              } else {
+                this.prizes_phone[key].imgs[0].src = treasureImg;
+                this.prizes_phone[key].imgs[0].width = '40%';
+                this.prizes_phone[key].imgs[0].top = '55%';
+              }
+            }
+          }
+
           console.log(this.prizes);
         });
       });
@@ -931,6 +967,7 @@ export default {
   created() {
     // this.reloadSavedForm();
     this.getPrizes();
+    this.getPrizes_phone();
     this.getWebInfo();
     this.getWithExpiry();
   },
@@ -940,7 +977,12 @@ export default {
     window.onresize = () => {
       this.fullWidth = window.innerWidth;
       this.fullHeight = window.innerHeight;
-      console.log(this.fullWidth, this.fullHeight);
+      // console.log(this.fullWidth, this.fullHeight);
+      if (this.fullWidth >= 600) {
+        this.pcVersion = true;
+      } else {
+        this.pcVersion = false;
+      }
     };
   },
 };
