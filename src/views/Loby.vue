@@ -373,7 +373,7 @@ export default {
         // 3
         {
           background: '#c98ef4',
-          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+          imgs: [{ src: coinBag, width: '40%', top: '60%' }],
           fonts: [
             {
               text: '禮金1000',
@@ -386,7 +386,7 @@ export default {
         // 4
         {
           background: '#ee95a9',
-          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+          imgs: [{ src: coinBag, width: '40%', top: '60%' }],
           fonts: [
             {
               text: '禮金1000',
