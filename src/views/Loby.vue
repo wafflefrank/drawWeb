@@ -171,6 +171,8 @@ import coinBag from '../assets/backGround/goldcoins_bag.png';
 import greenBag from '../assets/backGround/greenBag.png';
 import ticketImg from '../assets/backGround/ticket3.png';
 import treasureImg from '../assets/backGround/treasure.png';
+import airplane from '../assets/prizes/airplane.png';
+import cryFace from '../assets/prizes/cry.png';
 
 export default {
   components: {
@@ -263,7 +265,7 @@ export default {
         // 3
         {
           background: '#c98ef4',
-          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+          imgs: [{ src: coinBag, width: '30%', top: '60%' }],
           fonts: [
             {
               text: '禮金1000',
@@ -532,12 +534,13 @@ export default {
           console.log(item, key);
           const prizeMoney = Number(item.prize.replace(/[^0-9]/gi, ''));
           const ticketInclude = item.prize.includes('電子彩金');
-          console.log(prizeMoney, ticketInclude);
+          const airplaneInclude = item.prize.includes('機票');
+          const thxInclude = item.prize.includes('銘謝惠顧');
+          console.log(prizeMoney, ticketInclude, airplaneInclude, thxInclude);
           this.prizes[key].fonts[0].text = item.prize;
           // 電腦版
-          // 偶數
           if (key % 2 === 0) {
-            console.log('偶數區域');
+            console.log('偶數區域'); // 偶數
             this.prizes[key].background = '#ffaec1';
             if (prizeMoney >= 1 && prizeMoney <= 200) {
               if (ticketInclude) {
@@ -579,6 +582,14 @@ export default {
                 this.prizes[key].imgs[0].width = '40%';
                 this.prizes[key].imgs[0].top = '55%';
               }
+            } else if (airplaneInclude) {
+              this.prizes[key].imgs[0].src = airplane;
+              this.prizes[key].imgs[0].width = '80%';
+              this.prizes[key].imgs[0].top = '35%';
+            } else if (thxInclude) {
+              this.prizes[key].imgs[0].src = cryFace;
+              this.prizes[key].imgs[0].width = '30%';
+              this.prizes[key].imgs[0].top = '65%';
             }
           } else {
             console.log('基數區域');
@@ -623,6 +634,14 @@ export default {
                 this.prizes[key].imgs[0].width = '40%';
                 this.prizes[key].imgs[0].top = '55%';
               }
+            } else if (airplaneInclude) {
+              this.prizes[key].imgs[0].src = airplane;
+              this.prizes[key].imgs[0].width = '80%';
+              this.prizes[key].imgs[0].top = '35%';
+            } else if (thxInclude) {
+              this.prizes[key].imgs[0].src = cryFace;
+              this.prizes[key].imgs[0].width = '30%';
+              this.prizes[key].imgs[0].top = '65%';
             }
           }
 
@@ -641,7 +660,9 @@ export default {
           console.log(item, key);
           const prizeMoney = Number(item.prize.replace(/[^0-9]/gi, ''));
           const ticketInclude = item.prize.includes('電子彩金');
-          console.log(prizeMoney, ticketInclude);
+          const airplaneInclude = item.prize.includes('機票');
+          const thxInclude = item.prize.includes('銘謝惠顧');
+          console.log(prizeMoney, ticketInclude, airplaneInclude, thxInclude);
           this.prizes_phone[key].fonts[0].text = item.prize;
           // 手機板
           // 偶數
@@ -688,6 +709,14 @@ export default {
                 this.prizes_phone[key].imgs[0].width = '40%';
                 this.prizes_phone[key].imgs[0].top = '55%';
               }
+            } else if (airplaneInclude) {
+              this.prizes_phone[key].imgs[0].src = airplane;
+              this.prizes_phone[key].imgs[0].width = '80%';
+              this.prizes_phone[key].imgs[0].top = '35%';
+            } else if (thxInclude) {
+              this.prizes_phone[key].imgs[0].src = cryFace;
+              this.prizes_phone[key].imgs[0].width = '30%';
+              this.prizes_phone[key].imgs[0].top = '65%';
             }
           } else {
             console.log('基數區域');
@@ -732,6 +761,14 @@ export default {
                 this.prizes_phone[key].imgs[0].width = '40%';
                 this.prizes_phone[key].imgs[0].top = '55%';
               }
+            } else if (airplaneInclude) {
+              this.prizes_phone[key].imgs[0].src = airplane;
+              this.prizes_phone[key].imgs[0].width = '80%';
+              this.prizes_phone[key].imgs[0].top = '35%';
+            } else if (thxInclude) {
+              this.prizes_phone[key].imgs[0].src = cryFace;
+              this.prizes_phone[key].imgs[0].width = '30%';
+              this.prizes_phone[key].imgs[0].top = '65%';
             }
           }
 
