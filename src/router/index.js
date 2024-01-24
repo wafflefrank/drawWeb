@@ -46,11 +46,10 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../components/LiveChart/LiveChart.vue'),
   },
 ];
-
+// document.title = '抽獎網站';
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
 });
-document.title = '抽獎測試網站';
 
 export default router;

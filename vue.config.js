@@ -8,4 +8,5 @@ module.exports = defineConfig({
   devServer: {
     proxy: 'http://lottery.morty.zaza.one',
   },
+  // outputDir: 'dist',
 });

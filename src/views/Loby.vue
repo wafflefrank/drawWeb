@@ -4,7 +4,7 @@
   <div>
     <div class="d-flex justify-content-center">
       <button class="line_btn me-3" @click="goLine()"><img src="../assets/banner/line_logo.png" alt="" /><span class="ms-2 text-white">Line活動專員</span></button>
-      <button class="game_btn" @click="goEntertaiment()">
+      <button class="game_btn" @click="goLine()">
         <span class="ms-2 text-white">娛樂城</span>
       </button>
     </div>
