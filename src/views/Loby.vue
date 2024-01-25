@@ -54,7 +54,7 @@
     </div>
   </div>
 
-  <div class="mb-5 d-flex flex-column align-items-center">
+  <div class="mb-5 d-flex flex-column align-items-center" v-if="isRouterAlive">
     <!-- 幸運轉盤 -->
 
     <LuckyWheel
@@ -178,18 +178,18 @@ export default {
   components: {
     // SwiperCarousel,
   },
-  watch: {
-    pcVersion(newValue, oldValue) {
-      console.log(newValue, oldValue);
-      if (newValue === true && oldValue === false) {
-        console.log('重整頁面');
-        this.reloadPage();
-      } else if (newValue === false && oldValue === true) {
-        console.log('重整頁面');
-        this.reloadPage();
-      }
-    },
-  },
+  // watch: {
+  //   pcVersion(newValue, oldValue) {
+  //     console.log(newValue, oldValue);
+  //     if (newValue === true && oldValue === false) {
+  //       console.log('重整頁面');
+  //       this.reloadPage();
+  //     } else if (newValue === false && oldValue === true) {
+  //       console.log('重整頁面');
+  //       this.reloadPage();
+  //     }
+  //   },
+  // },
   data() {
     return {
       isRouterAlive: true,
@@ -1021,6 +1021,18 @@ export default {
         this.pcVersion = false;
       }
     };
+    // 每幾秒刷新指定頁面
+
+    // window.setInterval(() => {
+    //   setTimeout(() => {
+    //     this.reloadPage();
+    //   }, 0);
+    // }, 5000);
+
+    // 2秒後更新畫面
+    window.setTimeout(() => {
+      this.reloadPage();
+    }, 2000);
   },
 };
 </script>

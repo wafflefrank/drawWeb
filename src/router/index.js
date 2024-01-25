@@ -17,25 +17,13 @@ const routes = [
         component: () => import('../views/My_Account.vue'),
         meta: { title: '我的帳號' },
       },
-      {
-        path: 'composition',
-        name: '起手式練習',
-        component: () => import('../views/Composition.vue'),
-        meta: { title: '起手式練習' },
-      },
-      {
-        path: 'loby',
-        name: '大廳',
-        component: () => import('../views/Loby.vue'),
-        meta: { title: '大廳' },
-      },
-      {
-        path: 'testLoby',
-        name: '測試大廳',
-        component: () => import('../views/TestLoby.vue'),
-        meta: { title: '測試大廳' },
-      },
     ],
+  },
+  {
+    path: '/loby',
+    name: '大廳',
+    component: () => import('../views/Loby.vue'),
+    meta: { title: '大廳' },
   },
   {
     path: '/livechart',
@@ -46,10 +34,16 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../components/LiveChart/LiveChart.vue'),
   },
 ];
-// document.title = '抽獎網站';
+document.title = '抽獎網站';
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
 });
+// router.beforeEach((to, from, next) => {
+//   if (to.meta.title) {
+//     document.title = to.meta.title;
+//   }
+//   next();
+// });
 
 export default router;
