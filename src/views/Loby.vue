@@ -91,7 +91,7 @@
           </div>
           <div class="prize-background">
             <div>
-              <i v-for="item in 9" class="fa-solid fa-snowflake" :key="item"></i>
+              <i v-for="item in 9" class=" fa-solid fa-snowflake" :key="item"></i>
             </div>
           </div>
         </div>
@@ -1271,7 +1271,7 @@ export default {
     width: 10%;
     height: 157px;
     font-size: 50px;
-    color: white;
+    color: #163d4f;
     font-weight: bold;
     padding-left: 10%;
     z-index: 999;
@@ -1285,7 +1285,7 @@ export default {
 
   .prize-item {
     font-size: 52px;
-    color: #38b6f0;
+    color: #bb1414;
     // text-decoration: underline;
   }
 }
@@ -1296,7 +1296,8 @@ export default {
 
   i {
     font-size: 3rem;
-    color: #f0f0ff;
+    // color: #f0f0ff;
+    color: #9ebffc;
     position: absolute;
   }
 
