@@ -1,6 +1,6 @@
 <template>
   <!-- <SwiperCarousel /> -->
-  <div class="mt-5 mb-3"><img class="banner_style" src="../assets/backGround/title_red.jpg" alt="#" /></div>
+  <div class="mt-5 mb-3"><img class="banner_style" src="../assets/backGround/lightAd.jpg" alt="#" /></div>
   <div>
     <div class="d-flex justify-content-center">
       <button class="line_btn me-3" @click="goLine()"><img src="../assets/banner/line_logo.png" alt="" /><span class="ms-2 text-white">Line活動專員</span></button>
@@ -42,7 +42,7 @@
   <!-- 帳戶 -->
   <div class="d-flex align-items-center justify-content-center mb-5 mt-5 phone_style">
     <!-- <span class="text-white me-5 fs-4">帳戶: {{ this.memberAccount }}</span> -->
-    <span class="text-white me-5 text-start"
+    <span class="text-dark me-5 text-start"
       ><span class="fs-4"
         >剩餘抽獎次數: <span class="drawNums_style">{{ this.drawNum }}</span></span
       >
@@ -302,31 +302,32 @@ export default {
           ],
         },
         // 6
-        {
-          background: '#ffaec1',
-          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
-          fonts: [
-            {
-              text: '禮金1000',
-              fontSize: '24px',
-              top: '30%',
-              fontWeight: '600',
-            },
-          ],
-        },
+        // {
+        //   background: '#ffaec1',
+        //   imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+        //   fonts: [
+        //     {
+        //       text: '禮金1000',
+        //       fontSize: '24px',
+        //       top: '30%',
+        //       fontWeight: '600',
+        //     },
+        //   ],
+        // },
+
         // 7
-        {
-          background: '#d945a9',
-          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
-          fonts: [
-            {
-              text: '禮金1000',
-              fontSize: '24px',
-              top: '30%',
-              fontWeight: '600',
-            },
-          ],
-        },
+        // {
+        //   background: '#d945a9',
+        //   imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+        //   fonts: [
+        //     {
+        //       text: '禮金1000',
+        //       fontSize: '24px',
+        //       top: '30%',
+        //       fontWeight: '600',
+        //     },
+        //   ],
+        // },
       ],
       // 手機板
       blocks_phone: [{ padding: '30px', background: '#869cfa', imgs: [{ src: borderImg, width: '100%', rotate: true }] }],
@@ -410,31 +411,34 @@ export default {
           ],
         },
         // 6
-        {
-          background: '#ffaec1',
-          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
-          fonts: [
-            {
-              text: '禮金1000',
-              fontSize: '12px',
-              top: '30%',
-              fontWeight: '600',
-            },
-          ],
-        },
+
+        // {
+        //   background: '#ffaec1',
+        //   imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+        //   fonts: [
+        //     {
+        //       text: '禮金1000',
+        //       fontSize: '12px',
+        //       top: '30%',
+        //       fontWeight: '600',
+        //     },
+        //   ],
+        // },
+
         // 7
-        {
-          background: '#d945a9',
-          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
-          fonts: [
-            {
-              text: '禮金1000',
-              fontSize: '12px',
-              top: '30%',
-              fontWeight: '600',
-            },
-          ],
-        },
+
+        // {
+        //   background: '#d945a9',
+        //   imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+        //   fonts: [
+        //     {
+        //       text: '禮金1000',
+        //       fontSize: '12px',
+        //       top: '30%',
+        //       fontWeight: '600',
+        //     },
+        //   ],
+        // },
       ],
       // 電腦版
       buttons: [
@@ -536,6 +540,8 @@ export default {
           const ticketInclude = item.prize.includes('電子彩金');
           const airplaneInclude = item.prize.includes('機票');
           const thxInclude = item.prize.includes('銘謝惠顧');
+          const topUpInclude = item.prize.includes('入金');
+          const investInclude = item.prize.includes('投注');
           console.log(prizeMoney, ticketInclude, airplaneInclude, thxInclude);
           this.prizes[key].fonts[0].text = item.prize;
           // 電腦版
@@ -579,8 +585,8 @@ export default {
                 this.prizes[key].imgs[0].top = '55%';
               } else {
                 this.prizes[key].imgs[0].src = treasureImg;
-                this.prizes[key].imgs[0].width = '40%';
-                this.prizes[key].imgs[0].top = '55%';
+                this.prizes[key].imgs[0].width = '30%';
+                this.prizes[key].imgs[0].top = '50%';
               }
             } else if (airplaneInclude) {
               this.prizes[key].imgs[0].src = airplane;
@@ -590,6 +596,18 @@ export default {
               this.prizes[key].imgs[0].src = cryFace;
               this.prizes[key].imgs[0].width = '30%';
               this.prizes[key].imgs[0].top = '65%';
+            }
+            // 下次入金10%
+            if (topUpInclude) {
+              this.prizes[key].imgs[0].src = greenBag;
+              this.prizes[key].imgs[0].width = '40%';
+              this.prizes[key].imgs[0].top = '45%';
+            }
+            // 投注百萬送5000
+            if (investInclude) {
+              this.prizes[key].imgs[0].src = coinBag;
+              this.prizes[key].imgs[0].width = '40%';
+              this.prizes[key].imgs[0].top = '45%';
             }
           } else {
             console.log('基數區域');
@@ -631,8 +649,8 @@ export default {
                 this.prizes[key].imgs[0].top = '55%';
               } else {
                 this.prizes[key].imgs[0].src = treasureImg;
-                this.prizes[key].imgs[0].width = '40%';
-                this.prizes[key].imgs[0].top = '55%';
+                this.prizes[key].imgs[0].width = '30%';
+                this.prizes[key].imgs[0].top = '50%';
               }
             } else if (airplaneInclude) {
               this.prizes[key].imgs[0].src = airplane;
@@ -642,6 +660,17 @@ export default {
               this.prizes[key].imgs[0].src = cryFace;
               this.prizes[key].imgs[0].width = '30%';
               this.prizes[key].imgs[0].top = '65%';
+            } // 下次入金10%
+            if (topUpInclude) {
+              this.prizes[key].imgs[0].src = greenBag;
+              this.prizes[key].imgs[0].width = '40%';
+              this.prizes[key].imgs[0].top = '45%';
+            }
+            // 投注百萬送5000
+            if (investInclude) {
+              this.prizes[key].imgs[0].src = coinBag;
+              this.prizes[key].imgs[0].width = '40%';
+              this.prizes[key].imgs[0].top = '45%';
             }
           }
 
@@ -662,6 +691,8 @@ export default {
           const ticketInclude = item.prize.includes('電子彩金');
           const airplaneInclude = item.prize.includes('機票');
           const thxInclude = item.prize.includes('銘謝惠顧');
+          const topUpInclude = item.prize.includes('入金');
+          const investInclude = item.prize.includes('投注');
           console.log(prizeMoney, ticketInclude, airplaneInclude, thxInclude);
           this.prizes_phone[key].fonts[0].text = item.prize;
           // 手機板
@@ -706,8 +737,8 @@ export default {
                 this.prizes_phone[key].imgs[0].top = '55%';
               } else {
                 this.prizes_phone[key].imgs[0].src = treasureImg;
-                this.prizes_phone[key].imgs[0].width = '40%';
-                this.prizes_phone[key].imgs[0].top = '55%';
+                this.prizes_phone[key].imgs[0].width = '30%';
+                this.prizes_phone[key].imgs[0].top = '50%';
               }
             } else if (airplaneInclude) {
               this.prizes_phone[key].imgs[0].src = airplane;
@@ -717,6 +748,18 @@ export default {
               this.prizes_phone[key].imgs[0].src = cryFace;
               this.prizes_phone[key].imgs[0].width = '30%';
               this.prizes_phone[key].imgs[0].top = '65%';
+            }
+            // 下次入金10%
+            if (topUpInclude) {
+              this.prizes_phone[key].imgs[0].src = greenBag;
+              this.prizes_phone[key].imgs[0].width = '40%';
+              this.prizes_phone[key].imgs[0].top = '45%';
+            }
+            // 投注百萬送5000
+            if (investInclude) {
+              this.prizes_phone[key].imgs[0].src = coinBag;
+              this.prizes_phone[key].imgs[0].width = '40%';
+              this.prizes_phone[key].imgs[0].top = '45%';
             }
           } else {
             console.log('基數區域');
@@ -758,8 +801,8 @@ export default {
                 this.prizes_phone[key].imgs[0].top = '55%';
               } else {
                 this.prizes_phone[key].imgs[0].src = treasureImg;
-                this.prizes_phone[key].imgs[0].width = '40%';
-                this.prizes_phone[key].imgs[0].top = '55%';
+                this.prizes_phone[key].imgs[0].width = '30%';
+                this.prizes_phone[key].imgs[0].top = '50%';
               }
             } else if (airplaneInclude) {
               this.prizes_phone[key].imgs[0].src = airplane;
@@ -769,6 +812,18 @@ export default {
               this.prizes_phone[key].imgs[0].src = cryFace;
               this.prizes_phone[key].imgs[0].width = '30%';
               this.prizes_phone[key].imgs[0].top = '65%';
+            }
+            // 下次入金10%
+            if (topUpInclude) {
+              this.prizes_phone[key].imgs[0].src = greenBag;
+              this.prizes_phone[key].imgs[0].width = '40%';
+              this.prizes_phone[key].imgs[0].top = '45%';
+            }
+            // 投注百萬送5000
+            if (investInclude) {
+              this.prizes_phone[key].imgs[0].src = coinBag;
+              this.prizes_phone[key].imgs[0].width = '40%';
+              this.prizes_phone[key].imgs[0].top = '45%';
             }
           }
 
@@ -1169,7 +1224,8 @@ export default {
 }
 // 抽獎次數文字樣式
 .drawNums_style {
-  color: rgb(255, 243, 14);
+  // color: rgb(255, 243, 14);
+  color: #d31818;
   font-weight: bold;
   font-size: 30px;
 }
@@ -1360,6 +1416,11 @@ pre {
 }
 .banner_style {
   border-radius: 50px !important;
+  max-height: 100%;
+  max-width: 100%;
+  width: 800px;
+  // height: 400px;
+  margin: auto;
 }
 // 抽獎彈窗
 .drawModel_style {
