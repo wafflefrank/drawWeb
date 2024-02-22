@@ -1156,7 +1156,7 @@ export default {
   & .D_Word {
     text-align: left;
     padding-left: 20px;
-    color: white;
+    color: rgb(30, 26, 26);
     font-size: 18px;
     font-weight: bold;
   }
