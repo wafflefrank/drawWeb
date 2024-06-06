@@ -1,6 +1,6 @@
 <template>
   <!-- <SwiperCarousel /> -->
-  <div class="mt-5 mb-3"><img class="banner_style" src="../assets/backGround/lightAd.jpg" alt="#" /></div>
+  <div class="mt-5 mb-3"><img class="banner_style" src="../assets/backGround/event_0606.jpg" alt="#" /></div>
   <div>
     <div class="d-flex justify-content-center">
       <button class="line_btn me-3" @click="goLine()"><img src="../assets/banner/line_logo.png" alt="" /><span class="ms-2 text-white">Line活動專員</span></button>
@@ -42,7 +42,7 @@
   <!-- 帳戶 -->
   <div class="d-flex align-items-center justify-content-center mb-5 mt-5 phone_style">
     <!-- <span class="text-white me-5 fs-4">帳戶: {{ this.memberAccount }}</span> -->
-    <span style="color: rgb(77, 74, 74)" class=" me-5 text-start"
+    <span style="color: rgb(77, 74, 74)" class="me-5 text-start"
       ><span class="fs-4"
         >剩餘抽獎次數: <span class="drawNums_style">{{ this.drawNum }}</span></span
       >
@@ -302,32 +302,31 @@ export default {
           ],
         },
         // 6
-        // {
-        //   background: '#ffaec1',
-        //   imgs: [{ src: coinImg, width: '20%', top: '60%' }],
-        //   fonts: [
-        //     {
-        //       text: '禮金1000',
-        //       fontSize: '24px',
-        //       top: '30%',
-        //       fontWeight: '600',
-        //     },
-        //   ],
-        // },
-
+        {
+          background: '#ffaec1',
+          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+          fonts: [
+            {
+              text: '禮金1000',
+              fontSize: '24px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
         // 7
-        // {
-        //   background: '#d945a9',
-        //   imgs: [{ src: coinImg, width: '20%', top: '60%' }],
-        //   fonts: [
-        //     {
-        //       text: '禮金1000',
-        //       fontSize: '24px',
-        //       top: '30%',
-        //       fontWeight: '600',
-        //     },
-        //   ],
-        // },
+        {
+          background: '#d945a9',
+          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+          fonts: [
+            {
+              text: '禮金1000',
+              fontSize: '24px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
       ],
       // 手機板
       blocks_phone: [{ padding: '30px', background: '#869cfa', imgs: [{ src: borderImg, width: '100%', rotate: true }] }],
@@ -412,33 +411,33 @@ export default {
         },
         // 6
 
-        // {
-        //   background: '#ffaec1',
-        //   imgs: [{ src: coinImg, width: '20%', top: '60%' }],
-        //   fonts: [
-        //     {
-        //       text: '禮金1000',
-        //       fontSize: '12px',
-        //       top: '30%',
-        //       fontWeight: '600',
-        //     },
-        //   ],
-        // },
+        {
+          background: '#ffaec1',
+          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+          fonts: [
+            {
+              text: '禮金1000',
+              fontSize: '12px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
 
         // 7
 
-        // {
-        //   background: '#d945a9',
-        //   imgs: [{ src: coinImg, width: '20%', top: '60%' }],
-        //   fonts: [
-        //     {
-        //       text: '禮金1000',
-        //       fontSize: '12px',
-        //       top: '30%',
-        //       fontWeight: '600',
-        //     },
-        //   ],
-        // },
+        {
+          background: '#d945a9',
+          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+          fonts: [
+            {
+              text: '禮金1000',
+              fontSize: '12px',
+              top: '30%',
+              fontWeight: '600',
+            },
+          ],
+        },
       ],
       // 電腦版
       buttons: [
@@ -677,6 +676,73 @@ export default {
           console.log(this.prizes);
         });
       });
+    },
+    // 自訂獎項圖片
+    customPrize() {
+      this.$http.get('/api/admin/prizes').then((res) => {
+        console.log('轉盤資訊:', res.data.data);
+        // for (this.i = 0; this.i < res.data.data.length; this.i += 1) {
+        //   this.prizes.push(this.prizes_content);
+        // }
+        // console.log(this.prizes);
+        _.forEach(res.data.data, (item, key) => {
+          console.log(item, key);
+          this.prizes[key].fonts[0].text = item.prize;
+          this.prizes_phone[key].fonts[0].text = item.prize;
+          console.log(this.prizes);
+        });
+      });
+      // 電腦版
+      this.prizes[0].imgs[0].src = treasureImg;
+      this.prizes[0].imgs[0].width = '30%';
+      this.prizes[0].imgs[0].top = '55%';
+      this.prizes[1].imgs[0].src = treasureImg;
+      this.prizes[1].imgs[0].width = '30%';
+      this.prizes[1].imgs[0].top = '55%';
+      this.prizes[2].imgs[0].src = treasureImg;
+      this.prizes[2].imgs[0].width = '30%';
+      this.prizes[2].imgs[0].top = '55%';
+      this.prizes[3].imgs[0].src = coinBag;
+      this.prizes[3].imgs[0].width = '30%';
+      this.prizes[3].imgs[0].top = '55%';
+      this.prizes[4].imgs[0].src = greenBag;
+      this.prizes[4].imgs[0].width = '35%';
+      this.prizes[4].imgs[0].top = '55%';
+      this.prizes[5].imgs[0].src = ticketImg;
+      this.prizes[5].imgs[0].width = '30%';
+      this.prizes[5].imgs[0].top = '55%';
+      this.prizes[6].imgs[0].src = ticketImg;
+      this.prizes[6].imgs[0].width = '30%';
+      this.prizes[6].imgs[0].top = '55%';
+      this.prizes[7].imgs[0].src = ticketImg;
+      this.prizes[7].imgs[0].width = '30%';
+      this.prizes[7].imgs[0].top = '55%';
+
+      // 手機版
+      this.prizes_phone[0].imgs[0].src = treasureImg;
+      this.prizes_phone[0].imgs[0].width = '30%';
+      this.prizes_phone[0].imgs[0].top = '55%';
+      this.prizes_phone[1].imgs[0].src = treasureImg;
+      this.prizes_phone[1].imgs[0].width = '30%';
+      this.prizes_phone[1].imgs[0].top = '55%';
+      this.prizes_phone[2].imgs[0].src = treasureImg;
+      this.prizes_phone[2].imgs[0].width = '30%';
+      this.prizes_phone[2].imgs[0].top = '55%';
+      this.prizes_phone[3].imgs[0].src = coinBag;
+      this.prizes_phone[3].imgs[0].width = '30%';
+      this.prizes_phone[3].imgs[0].top = '55%';
+      this.prizes_phone[4].imgs[0].src = greenBag;
+      this.prizes_phone[4].imgs[0].width = '35%';
+      this.prizes_phone[4].imgs[0].top = '55%';
+      this.prizes_phone[5].imgs[0].src = ticketImg;
+      this.prizes_phone[5].imgs[0].width = '30%';
+      this.prizes_phone[5].imgs[0].top = '55%';
+      this.prizes_phone[6].imgs[0].src = ticketImg;
+      this.prizes_phone[6].imgs[0].width = '30%';
+      this.prizes_phone[6].imgs[0].top = '55%';
+      this.prizes_phone[7].imgs[0].src = ticketImg;
+      this.prizes_phone[7].imgs[0].width = '30%';
+      this.prizes_phone[7].imgs[0].top = '55%';
     },
     getPrizes_phone() {
       this.$http.get('/api/admin/prizes').then((res) => {
@@ -1058,8 +1124,9 @@ export default {
   },
   created() {
     // this.reloadSavedForm();
-    this.getPrizes();
-    this.getPrizes_phone();
+    // this.getPrizes();
+    // this.getPrizes_phone();
+    this.customPrize();
     this.getWebInfo();
     this.getWithExpiry();
   },
