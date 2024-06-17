@@ -57,7 +57,7 @@
   <div class="mb-5 d-flex flex-column align-items-center" v-if="isRouterAlive">
     <!-- 幸運轉盤 -->
 
-    <LuckyWheel
+    <!-- <LuckyWheel
       v-if="this.fullWidth >= 600"
       ref="myLucky"
       width="700px"
@@ -79,7 +79,34 @@
       :buttons="buttons_phone"
       @start="startCallback"
       @end="endCallback"
-    />
+    /> -->
+    <div class="lucky-wheel">
+      <div class="pointer-container">
+        <!-- pointer -->
+        <div
+          class="pointer"
+          ref="pointer"
+          id="pointer"
+          :style="{ transform: rotate_deg, transition: prize_transition }"
+          @click="rotateHandler(num)"
+          @keydown="rotateHandler(num)"
+        ></div>
+      </div>
+      <!-- lucky wheel -->
+      <div :class="containerClass">
+        <div v-for="item in prizes" :key="item.name" ref="item" :class="itemClass">
+          <div :class="contentClass">
+            <i class="material-icons">
+              {{ item.icon }}
+            </i>
+            <span
+              >{{ item.name }}
+              <span :class="countClass">{{ item.count }}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <transition name="slide-fade">
       <div class="prize" v-if="isShow === true && fullWidth > 600">
@@ -1143,6 +1170,7 @@ export default {
         this.pcVersion = false;
       }
     };
+
     // 每幾秒刷新指定頁面
 
     // window.setInterval(() => {
@@ -1698,5 +1726,107 @@ pre {
       color: #fff !important;
     }
   }
+}
+</style>
+
+<style lang="scss" scoped>
+.lucky-wheel {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 550px;
+  height: 550px;
+  border-radius: 550px;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: 3;
+}
+
+.lucky-wheel::after {
+  content: '';
+  width: 540px;
+  height: 549px;
+  background-image: url('../assets/newWheel/wheel-outside.svg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: absolute;
+}
+
+.lucky-wheel .container {
+  display: block;
+  width: 520px;
+  height: 520px;
+  border-radius: 520px;
+  overflow: hidden;
+  position: relative;
+  -webkit-transform: rotate(-30deg);
+  transform: rotate(-30deg);
+}
+.lucky-wheel .container {
+  display: block;
+  width: 520px;
+  height: 520px;
+  border-radius: 520px;
+  overflow: hidden;
+  position: relative;
+  -webkit-transform: rotate(-30deg);
+  transform: rotate(-30deg);
+}
+
+.lucky-wheel .container.container-large {
+  -webkit-transform: rotate(-18deg);
+  transform: rotate(-18deg);
+}
+
+.pointer-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 128px;
+  height: 208px;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: 9999;
+  position: absolute;
+  color: #ff00ba;
+  font-size: 2rem;
+}
+
+.pointer-container::after {
+  display: block;
+  content: 'PRESS';
+  width: 120px;
+  height: 120px;
+  border-radius: 120px;
+  background-color: #1f1172;
+  line-height: 120px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.pointer-container .pointer {
+  width: 128px;
+  height: 208px;
+  display: block;
+  background-image: url('../assets/newWheel/hand.svg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: absolute;
+  bottom: 39.7px;
+  -webkit-transform-origin: 64px 144px;
+  transform-origin: 64px 144px;
+  cursor: pointer;
 }
 </style>
