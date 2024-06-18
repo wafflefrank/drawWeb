@@ -94,7 +94,7 @@
       </div>
       <!-- lucky wheel -->
       <div :class="containerClass">
-        <div v-for="item in prizes" :key="item.name" ref="item" :class="itemClass">
+        <div v-for="item in prizes_new" :key="item.name" ref="item" :class="itemClass">
           <div :class="contentClass">
             <i class="material-icons">
               {{ item.icon }}
@@ -108,6 +108,7 @@
       </div>
     </div>
 
+    <!-- 中獎動畫 -->
     <transition name="slide-fade">
       <div class="prize" v-if="isShow === true && fullWidth > 600">
         <div class="prize-container">
@@ -466,6 +467,38 @@ export default {
           ],
         },
       ],
+      prizes_new: [
+        {
+          name: 'Wish',
+          icon: 'cake',
+          count: 5,
+        },
+        {
+          name: 'Anything',
+          icon: 'stars',
+          count: 5,
+        },
+        {
+          name: 'Child',
+          icon: 'child_care',
+          count: 4,
+        },
+        {
+          name: 'Flight',
+          icon: ' flight',
+          count: 1,
+        },
+        {
+          name: 'Wifi',
+          icon: 'wifi',
+          count: 5,
+        },
+        {
+          name: 'Movie',
+          icon: 'movie_filter',
+          count: 0,
+        },
+      ],
       // 電腦版
       buttons: [
         {
@@ -542,6 +575,8 @@ export default {
       fullHeight: 0,
       // 電腦版
       pcVersion: false,
+
+      current_year: 2017,
     };
   },
   methods: {
@@ -1184,6 +1219,21 @@ export default {
       this.reloadPage();
     }, 2000);
   },
+  computed: {
+    // 判斷轉盤 class
+    containerClass() {
+      return this.current_year === 2017 ? 'container' : 'container container-large';
+    },
+    itemClass() {
+      return this.current_year === 2017 ? 'item item-skew' : 'item item-skew-large';
+    },
+    contentClass() {
+      return this.current_year === 2017 ? 'item-content' : 'item-content item-content-large';
+    },
+    countClass() {
+      return this.current_year === 2017 ? 'count' : 'count count-large';
+    },
+  },
 };
 </script>
 
@@ -1729,6 +1779,7 @@ pre {
 }
 </style>
 
+<!-- 新版轉盤 -->
 <style lang="scss" scoped>
 .lucky-wheel {
   display: -webkit-box;
@@ -1745,7 +1796,7 @@ pre {
   align-items: center;
   z-index: 3;
 }
-
+// 外框樣式
 .lucky-wheel::after {
   content: '';
   width: 540px;
@@ -1778,11 +1829,7 @@ pre {
   transform: rotate(-30deg);
 }
 
-.lucky-wheel .container.container-large {
-  -webkit-transform: rotate(-18deg);
-  transform: rotate(-18deg);
-}
-
+// 中心點文字顏色
 .pointer-container {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1803,6 +1850,7 @@ pre {
   font-size: 2rem;
 }
 
+// 中心點的樣式
 .pointer-container::after {
   display: block;
   content: 'PRESS';
@@ -1815,6 +1863,7 @@ pre {
   font-weight: bold;
 }
 
+// 紫色箭頭圈圈樣式
 .pointer-container .pointer {
   width: 128px;
   height: 208px;
@@ -1828,5 +1877,127 @@ pre {
   -webkit-transform-origin: 64px 144px;
   transform-origin: 64px 144px;
   cursor: pointer;
+}
+.item {
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 50%;
+  height: 50%;
+  border: 1px solid #1f1172;
+  top: 0;
+  right: 0;
+  -webkit-transform-origin: 0% 100%;
+  transform-origin: 0% 100%;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.item-skew:nth-child(1) {
+  -webkit-transform: rotate(60deg) skewY(-30deg);
+  transform: rotate(60deg) skewY(-30deg);
+}
+.item-skew:nth-child(2) {
+  -webkit-transform: rotate(120deg) skewY(-30deg);
+  transform: rotate(120deg) skewY(-30deg);
+}
+
+.item-skew:nth-child(3) {
+  -webkit-transform: rotate(180deg) skewY(-30deg);
+  transform: rotate(180deg) skewY(-30deg);
+}
+
+.item-skew:nth-child(4) {
+  -webkit-transform: rotate(240deg) skewY(-30deg);
+  transform: rotate(240deg) skewY(-30deg);
+}
+
+.item-skew:nth-child(5) {
+  -webkit-transform: rotate(300deg) skewY(-30deg);
+  transform: rotate(300deg) skewY(-30deg);
+}
+
+.item-skew:nth-child(6) {
+  -webkit-transform: rotate(360deg) skewY(-30deg);
+  transform: rotate(360deg) skewY(-30deg);
+}
+.item-content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100px;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  font-size: 2rem;
+  font-weight: bold;
+  -webkit-transform-origin: center center;
+  transform-origin: center center;
+  -webkit-transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.item-content .count {
+  position: absolute;
+  left: 28px;
+  top: 112px;
+  font-size: 1.2rem;
+  text-align: center;
+  width: 45px;
+  line-height: 25px;
+  border-radius: 30px;
+  display: block;
+}
+.item-content > i {
+  font-size: 4rem;
+}
+
+.item:nth-child(odd) {
+  background-color: #343baa;
+}
+
+.item:nth-child(odd) .item-content {
+  color: #f0beff;
+}
+
+.item:nth-child(odd) .count {
+  color: #343baa;
+  background-color: #f0beff;
+}
+
+.item:nth-child(even) {
+  background-color: #f0beff;
+}
+
+.item:nth-child(even) .item-content {
+  color: #343baa;
+}
+
+.item:nth-child(even) .count {
+  color: #f0beff;
+  background-color: #343baa;
+}
+
+.item.active {
+  background-color: #ff00ba;
+  -webkit-transition: 0.2s ease-in;
+  transition: 0.2s ease-in;
+}
+
+.item.active .item-content {
+  color: white;
+  -webkit-transition: 0.2s ease-in;
+  transition: 0.2s ease-in;
 }
 </style>
