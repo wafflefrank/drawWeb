@@ -95,10 +95,11 @@
       <!-- lucky wheel -->
       <div :class="containerClass">
         <div v-for="item in prizes_new" :key="item.name" ref="item" :class="itemClass">
+          <div class="prize_Img"></div>
           <div :class="contentClass">
-            <i class="material-icons">
+            <!-- <i class="material-icons">
               {{ item.icon }}
-            </i>
+            </i> -->
             <span
               >{{ item.name }}
               <span :class="countClass">{{ item.count }}</span>
@@ -467,38 +468,6 @@ export default {
           ],
         },
       ],
-      prizes_new: [
-        {
-          name: 'Wish',
-          icon: 'cake',
-          count: 5,
-        },
-        {
-          name: 'Anything',
-          icon: 'stars',
-          count: 5,
-        },
-        {
-          name: 'Child',
-          icon: 'child_care',
-          count: 4,
-        },
-        {
-          name: 'Flight',
-          icon: ' flight',
-          count: 1,
-        },
-        {
-          name: 'Wifi',
-          icon: 'wifi',
-          count: 5,
-        },
-        {
-          name: 'Movie',
-          icon: 'movie_filter',
-          count: 0,
-        },
-      ],
       // 電腦版
       buttons: [
         {
@@ -576,7 +545,56 @@ export default {
       // 電腦版
       pcVersion: false,
 
+      // 新版轉盤資訊
+      prizes_new: [
+        {
+          name: 'Wish',
+          icon: 'cake',
+          count: 5,
+        },
+        {
+          name: 'Anything',
+          icon: 'stars',
+          count: 5,
+        },
+        {
+          name: 'Child',
+          icon: 'child_care',
+          count: 4,
+        },
+        {
+          name: 'Flight',
+          icon: ' flight',
+          count: 1,
+        },
+        {
+          name: 'Wifi',
+          icon: 'wifi',
+          count: 5,
+        },
+        {
+          name: 'Movie',
+          icon: 'movie_filter',
+          count: 0,
+        },
+      ],
       current_year: 2017,
+      prizes_2017: [],
+      prizes_2018: [],
+      prize_name: '',
+      prize_rotate: [],
+      prize_transition: '',
+      each_deg: 0,
+      rotate_deg: 0,
+      start_deg: 0,
+      current_deg: 0,
+      index: 0,
+      duration: 3000,
+      time_remaining: 20,
+      num: 0,
+      numbers: [], // 紀錄還有獎品的編號
+      isToggle: false, // 顯示隱藏按鈕
+      isClicked: false, // 轉動中禁止觸發
     };
   },
   methods: {
@@ -1009,14 +1027,6 @@ export default {
       // }
       this.getCode_Form.code = '';
     },
-    // reloadSavedForm() {
-    //   // 使用JSON.parse()將LocalStorange中的資料轉回可利用的object
-    //   const stored = JSON.parse(localStorage.getItem('storedDrawNums'));
-    //   // console.log(stored);
-    //   if (stored !== null) {
-    //     this.drawNum = stored;
-    //   }
-    // },
 
     // 点击抽奖按钮会触发star回调
     startCallback() {
@@ -1183,12 +1193,151 @@ export default {
     goEntertaiment() {
       window.open('https://linkby.tw/max7890707', '_blank');
     },
+
+    // 新版轉盤
+    reset() {
+      this.isShow = true;
+      this.index = 0;
+      this.prize_name = '';
+      this.prize_icon = '';
+      this.prize_rotate = [];
+      this.numbers = [];
+      this.start_deg = 0;
+      this.rotate_deg = 'rotate(0deg)';
+      this.current_deg = 0;
+      this.isClicked = false;
+      this.prize_transition = 'none';
+      console.log('RESET');
+    },
+    restart() {
+      this.$refs.item[this.index].classList.value = this.itemClass;
+      if (this.current_year === 2017) {
+        this.time_remaining = 20;
+        this.reset();
+        this.initPrize();
+      }
+    },
+    initPrize() {
+      this.num = 6;
+      this.degree(this.num);
+      this.prizes = this.prizes_2017;
+      this.numberArray();
+    },
+    degree(num) {
+      // 計算每個轉盤角度
+      for (let i = 1; i <= num; i += 1) {
+        const deg = 360 / num;
+        this.each_deg = deg;
+        const eachDeg = i * deg;
+        this.prize_rotate.push(eachDeg);
+        console.log('prize_rotate:', this.prize_rotate);
+      }
+    },
+    numberArray() {
+      // 產生獎品 index 編號 => [0,1,2,3,4,5]
+      this.numbers = this.prizes_new.map((prize, index) => index);
+    },
+    rotateHandler(num) {
+      // 刪去沒有獎品的 index
+      this.prizes_new.filter((prize, index) => {
+        if (prize.count <= 0) {
+          const filterArray = this.numbers.filter((num1) => num1 !== index);
+          console.log(filterArray);
+          this.numbers = filterArray;
+        }
+        return this.numbers;
+      });
+
+      if (this.time_remaining > 0) {
+        this.$refs.item[this.index].classList.value = this.itemClass;
+        // 執行旋轉
+        this.prize_draw(num);
+      } else if (this.time_remaining <= 0) {
+        this.$refs.item[this.index].classList.value = this.itemClass;
+        this.restart();
+      }
+    },
+    prize_draw(num) {
+      console.log('num:', num);
+      // 執行抽獎
+      if (this.isClicked) return;
+      this.isShow = this.isClicked;
+
+      // 移除抽到獎品 active 狀態
+      this.$refs.item[this.index].classList.value = this.itemClass;
+
+      // 取出 0-5之間隨機整數
+      this.index = this.numbers[Math.floor(Math.random() * this.numbers.length)];
+      console.log('1.剩餘牌號', this.numbers);
+
+      // 預先旋轉四圈
+      const circle = 4;
+      // degree=初始角度 + 旋轉4圈 + 獎品旋轉角度[隨機數] - 餘數
+      const degree = this.start_deg + circle * 360 + this.prize_rotate[this.index] - (this.start_deg % 360);
+      console.log(degree);
+      console.log('this.prize_rotate:', this.prize_rotate);
+      // 將初始角度 start_deg:0度 = 旋轉後的角度 degree，下次執行從當下角度開始
+      this.start_deg = degree;
+      // 綁定旋轉角度到指針
+      if (this.current_year === 2017) {
+        this.rotate_deg = `rotate(${degree}deg)`;
+      }
+
+      this.prize_transition = `all ${this.duration / 1000}s cubic-bezier(0.42, 0, 0.2, 0.91)`;
+      this.time_remaining -= 1;
+      this.isClicked = true;
+
+      // 取當下開始角度的餘數，與輪盤角度比對(除錯用)
+      const remainder = this.start_deg % 360;
+      if (remainder <= 0) {
+        // 為了不產生負數或0，加360
+        if (this.current_year === 2017) {
+          this.current_deg = remainder + 360;
+        } else {
+          this.current_deg = remainder + 360 - this.each_deg / 2;
+        }
+      } else if (remainder > 0) {
+        if (this.current_year === 2017) {
+          this.current_deg = remainder;
+        } else {
+          this.current_deg = remainder - this.each_deg / 2;
+        }
+      }
+      console.log('2.執行旋轉', degree, 'index', this.index);
+
+      // 將this.index設為抽中獎品索引數，獎品抽完的索引數將不再出現，直到獎品全數抽完，重新 RESET
+      const prize = this.prizes_new[this.index];
+      this.prize_name = prize.name;
+      this.prize_icon = prize.icon;
+      if (this.current_year === 2018) {
+        this.prize_icon = 'card_giftcard';
+      }
+      this.prizeActive();
+      setTimeout(() => {
+        prize.count -= 1;
+        console.log('3.旋轉角度:', this.current_deg, '獎品:', this.prizes_new.name, '剩餘數量:', this.prizes_new.count, ' index', this.index);
+      }, this.duration);
+
+      // 點選動畫結束後，將"已點選"改回"未點選"
+      setTimeout(() => {
+        if (this.isClicked === true) {
+          this.isClicked = false;
+        }
+      }, this.duration);
+    },
+    prizeActive() {
+      // 抽到獎品後變更 item 的 css
+      setTimeout(() => {
+        this.$refs.item[this.index].classList.value = `${this.itemClass} active`;
+      }, this.duration);
+      console.log('item active');
+    },
   },
   created() {
     // this.reloadSavedForm();
     // this.getPrizes();
     // this.getPrizes_phone();
-    this.customPrize();
+    // this.customPrize();
     this.getWebInfo();
     this.getWithExpiry();
   },
@@ -1218,6 +1367,7 @@ export default {
     window.setTimeout(() => {
       this.reloadPage();
     }, 2000);
+    this.initPrize();
   },
   computed: {
     // 判斷轉盤 class
@@ -1547,6 +1697,299 @@ export default {
     }
   }
 }
+
+// 新版轉盤
+.lucky-wheel {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 650px;
+  height: 650px;
+  border-radius: 650px;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: 99;
+  overflow: hidden;
+}
+// 外框樣式
+.lucky-wheel::after {
+  content: '';
+  width: 649px;
+  height: 649px;
+  background-image: url('../assets/newWheel/wheel-outside.svg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: absolute;
+}
+
+.lucky-wheel .container {
+  display: block;
+  width: 620px;
+  height: 620px;
+  border-radius: 620px;
+  overflow: hidden;
+  position: relative;
+  -webkit-transform: rotate(-30deg);
+  transform: rotate(-30deg);
+}
+
+// 中心點文字顏色
+.pointer-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 128px;
+  height: 208px;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: 9999;
+  position: absolute;
+  color: #ff00ba;
+  font-size: 2rem;
+}
+
+// 中心點的樣式
+.pointer-container::after {
+  display: block;
+  content: 'PRESS';
+  width: 120px;
+  height: 120px;
+  border-radius: 120px;
+  background-color: #1f1172;
+  line-height: 120px;
+  text-align: center;
+  font-weight: bold;
+}
+
+// 紫色箭頭圈圈樣式
+.pointer-container .pointer {
+  width: 128px;
+  height: 208px;
+  display: block;
+  background-image: url('../assets/newWheel/hand.svg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: absolute;
+  bottom: 39.7px;
+  // -webkit-transform-origin: 64px 144px;
+  transform-origin: 64px 144px;
+  cursor: pointer;
+}
+.item {
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 50%;
+  height: 50%;
+  border: 1px solid #1f1172;
+  top: 0;
+  right: 0;
+  -webkit-transform-origin: 0% 100%;
+  transform-origin: 0% 100%;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.item-skew:nth-child(1) {
+  -webkit-transform: rotate(60deg) skewY(-30deg);
+  transform: rotate(60deg) skewY(-30deg);
+  // background-image: url('../assets//backGround/greenBag.png');
+  // background-repeat: no-repeat;
+  // background-size: 360px 100px;
+  // width: 100px;
+  // height: 100px;
+}
+.item-skew:nth-child(2) {
+  -webkit-transform: rotate(120deg) skewY(-30deg);
+  transform: rotate(120deg) skewY(-30deg);
+}
+
+.item-skew:nth-child(3) {
+  -webkit-transform: rotate(180deg) skewY(-30deg);
+  transform: rotate(180deg) skewY(-30deg);
+}
+
+.item-skew:nth-child(4) {
+  -webkit-transform: rotate(240deg) skewY(-30deg);
+  transform: rotate(240deg) skewY(-30deg);
+}
+
+.item-skew:nth-child(5) {
+  -webkit-transform: rotate(300deg) skewY(-30deg);
+  transform: rotate(300deg) skewY(-30deg);
+}
+
+.item-skew:nth-child(6) {
+  -webkit-transform: rotate(360deg) skewY(-30deg);
+  transform: rotate(360deg) skewY(-30deg);
+}
+// 獎項名稱+編號位置
+.item-content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 200px;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  font-size: 2rem;
+  font-weight: bold;
+  -webkit-transform-origin: center center;
+  transform-origin: center center;
+  -webkit-transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  position: absolute;
+  right: 15px;
+  bottom: 0;
+}
+// 獎品編號
+.item-content .count {
+  position: absolute;
+  left: 78px;
+  top: 60px;
+  font-size: 1.2rem;
+  text-align: center;
+  width: 45px;
+  line-height: 25px;
+  border-radius: 30px;
+  display: block;
+}
+.item-content > i {
+  font-size: 4rem;
+}
+
+.item:nth-child(odd) {
+  background-color: #343baa;
+}
+
+.item:nth-child(odd) .item-content {
+  color: #f0beff;
+}
+
+.item:nth-child(odd) .count {
+  color: #343baa;
+  background-color: #f0beff;
+}
+
+// 獎品圖片
+.item:nth-child(1) .prize_Img {
+  position: absolute;
+  right: 40px;
+  top: 180px;
+  background-image: url('../assets/backGround/greenBag.png') !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  -webkit-transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  width: 100px;
+  height: 150px;
+}
+.item:nth-child(2) .prize_Img {
+  position: absolute;
+  right: 40px;
+  top: 180px;
+  background-image: url('../assets/backGround/goldcoins_bag.png') !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  -webkit-transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  width: 100px;
+  height: 150px;
+}
+.item:nth-child(3) .prize_Img {
+  position: absolute;
+  right: 40px;
+  top: 180px;
+  background-image: url('../assets/backGround/treasure.png') !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  -webkit-transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  width: 100px;
+  height: 150px;
+}
+.item:nth-child(4) .prize_Img {
+  position: absolute;
+  right: 40px;
+  top: 180px;
+  background-image: url('../assets/backGround/ticket.png') !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  -webkit-transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  width: 100px;
+  height: 150px;
+}
+.item:nth-child(5) .prize_Img {
+  position: absolute;
+  right: 40px;
+  top: 180px;
+  background-image: url('../assets/backGround/ticket3.png') !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  -webkit-transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  width: 100px;
+  height: 150px;
+}
+.item:nth-child(6) .prize_Img {
+  position: absolute;
+  right: 40px;
+  top: 180px;
+  background-image: url('../assets/backGround/ticket2.png') !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  -webkit-transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  width: 100px;
+  height: 150px;
+}
+
+.item:nth-child(even) {
+  background-color: #f0beff;
+}
+
+.item:nth-child(even) .item-content {
+  color: #343baa;
+}
+
+.item:nth-child(even) .count {
+  color: #f0beff;
+  background-color: #343baa;
+}
+// 選種獎項樣式
+.item.active {
+  background-color: #ff00ba;
+  -webkit-transition: 0.2s ease-in;
+  transition: 0.2s ease-in;
+}
+
+.item.active .item-content {
+  color: white;
+  -webkit-transition: 0.2s ease-in;
+  transition: 0.2s ease-in;
+}
 </style>
 
 <style lang="scss">
@@ -1678,12 +2121,6 @@ pre {
   transition: 0.5ms;
 }
 
-@media (min-width: 768px) {
-  .button-72 {
-    font-size: 21px;
-    padding: 18px 34px;
-  }
-}
 /*歷史紀錄Btn CSS */
 .button-73 {
   align-items: center;
@@ -1716,13 +2153,6 @@ pre {
   background-image: linear-gradient(#b384c9, #3b050d 50%);
   transition: 0.5ms;
 }
-
-@media (min-width: 768px) {
-  .button-73 {
-    font-size: 21px;
-    padding: 18px 34px;
-  }
-}
 .swalBody {
   border-radius: 30px;
   background-color: #ffffff;
@@ -1730,6 +2160,12 @@ pre {
 @media (max-width: 800px) {
   .banner_style {
     width: 550px !important;
+  }
+}
+@media (min-width: 768px) {
+  .button-72 {
+    font-size: 21px;
+    padding: 18px 34px;
   }
 }
 @media (max-width: 600px) {
@@ -1776,228 +2212,129 @@ pre {
       color: #fff !important;
     }
   }
-}
-</style>
 
-<!-- 新版轉盤 -->
-<style lang="scss" scoped>
-.lucky-wheel {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  width: 550px;
-  height: 550px;
-  border-radius: 550px;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  z-index: 3;
-}
-// 外框樣式
-.lucky-wheel::after {
-  content: '';
-  width: 540px;
-  height: 549px;
-  background-image: url('../assets/newWheel/wheel-outside.svg');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  position: absolute;
-}
+  // 轉盤樣式
+  .lucky-wheel {
+    width: 400px !important;
+    height: 400px !important;
+    border-radius: 400px !important;
+  }
+  .lucky-wheel::after {
+    content: '';
+    width: 400px !important;
+    height: 400px !important;
+    background-image: url('../assets/newWheel/wheel-outside.svg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: absolute;
+  }
+  .pointer-container {
+    width: 128px;
+    height: 208px;
+    font-size: 0.8rem !important;
+  }
+  .pointer-container::after {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50px !important;
+    line-height: 50px !important;
+  }
+  .pointer-container .pointer {
+    // width: 58px !important;
+    // height: 95px !important;
+    // bottom: 72.7px !important;
+    // transform-origin: 29px 66px !important;
 
-.lucky-wheel .container {
-  display: block;
-  width: 520px;
-  height: 520px;
-  border-radius: 520px;
-  overflow: hidden;
-  position: relative;
-  -webkit-transform: rotate(-30deg);
-  transform: rotate(-30deg);
+    width: 60px !important;
+    height: 97px !important;
+    bottom: 72.7px !important;
+    transform-origin: 30px 67.5px !important;
+  }
+  .item-content {
+    width: 100px !important;
+    font-size: 1rem !important;
+    right: 0px !important;
+    bottom: -30px !important;
+  }
+  .item-content .count {
+    left: 37px !important;
+    top: 30px !important;
+    width: 25px !important;
+    line-height: 20px !important;
+  }
+  // .item:nth-child(odd) .prize_Img {
+  //   right: -15px !important;
+  //   top: 230px !important;
+  //   width: 90px !important;
+  // }
+  .item:nth-child(1) .prize_Img {
+    right: 10px !important;
+    top: 240px !important;
+    width: 70px !important;
+  }
+  .item:nth-child(2) .prize_Img {
+    right: 10px !important;
+    top: 240px !important;
+    width: 70px !important;
+  }
+  .item:nth-child(3) .prize_Img {
+    right: 10px !important;
+    top: 250px !important;
+    width: 70px !important;
+  }
+  .item:nth-child(4) .prize_Img {
+    right: 10px !important;
+    top: 250px !important;
+    width: 70px !important;
+  }
+  .item:nth-child(5) .prize_Img {
+    right: 10px !important;
+    top: 250px !important;
+    width: 70px !important;
+  }
+  .item:nth-child(6) .prize_Img {
+    right: 10px !important;
+    top: 240px !important;
+    width: 70px !important;
+  }
 }
-.lucky-wheel .container {
-  display: block;
-  width: 520px;
-  height: 520px;
-  border-radius: 520px;
-  overflow: hidden;
-  position: relative;
-  -webkit-transform: rotate(-30deg);
-  transform: rotate(-30deg);
+@media (min-width: 576px) {
+  .container {
+    max-width: 600px !important;
+  }
 }
-
-// 中心點文字顏色
-.pointer-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  width: 128px;
-  height: 208px;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  z-index: 9999;
-  position: absolute;
-  color: #ff00ba;
-  font-size: 2rem;
-}
-
-// 中心點的樣式
-.pointer-container::after {
-  display: block;
-  content: 'PRESS';
-  width: 120px;
-  height: 120px;
-  border-radius: 120px;
-  background-color: #1f1172;
-  line-height: 120px;
-  text-align: center;
-  font-weight: bold;
-}
-
-// 紫色箭頭圈圈樣式
-.pointer-container .pointer {
-  width: 128px;
-  height: 208px;
-  display: block;
-  background-image: url('../assets/newWheel/hand.svg');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  position: absolute;
-  bottom: 39.7px;
-  -webkit-transform-origin: 64px 144px;
-  transform-origin: 64px 144px;
-  cursor: pointer;
-}
-.item {
-  position: absolute;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  width: 50%;
-  height: 50%;
-  border: 1px solid #1f1172;
-  top: 0;
-  right: 0;
-  -webkit-transform-origin: 0% 100%;
-  transform-origin: 0% 100%;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.item-skew:nth-child(1) {
-  -webkit-transform: rotate(60deg) skewY(-30deg);
-  transform: rotate(60deg) skewY(-30deg);
-}
-.item-skew:nth-child(2) {
-  -webkit-transform: rotate(120deg) skewY(-30deg);
-  transform: rotate(120deg) skewY(-30deg);
-}
-
-.item-skew:nth-child(3) {
-  -webkit-transform: rotate(180deg) skewY(-30deg);
-  transform: rotate(180deg) skewY(-30deg);
-}
-
-.item-skew:nth-child(4) {
-  -webkit-transform: rotate(240deg) skewY(-30deg);
-  transform: rotate(240deg) skewY(-30deg);
-}
-
-.item-skew:nth-child(5) {
-  -webkit-transform: rotate(300deg) skewY(-30deg);
-  transform: rotate(300deg) skewY(-30deg);
-}
-
-.item-skew:nth-child(6) {
-  -webkit-transform: rotate(360deg) skewY(-30deg);
-  transform: rotate(360deg) skewY(-30deg);
-}
-.item-content {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  width: 100px;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  font-size: 2rem;
-  font-weight: bold;
-  -webkit-transform-origin: center center;
-  transform-origin: center center;
-  -webkit-transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
-  transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
-  position: absolute;
-  right: 0;
-  bottom: 0;
-}
-.item-content .count {
-  position: absolute;
-  left: 28px;
-  top: 112px;
-  font-size: 1.2rem;
-  text-align: center;
-  width: 45px;
-  line-height: 25px;
-  border-radius: 30px;
-  display: block;
-}
-.item-content > i {
-  font-size: 4rem;
-}
-
-.item:nth-child(odd) {
-  background-color: #343baa;
-}
-
-.item:nth-child(odd) .item-content {
-  color: #f0beff;
-}
-
-.item:nth-child(odd) .count {
-  color: #343baa;
-  background-color: #f0beff;
-}
-
-.item:nth-child(even) {
-  background-color: #f0beff;
-}
-
-.item:nth-child(even) .item-content {
-  color: #343baa;
-}
-
-.item:nth-child(even) .count {
-  color: #f0beff;
-  background-color: #343baa;
-}
-
-.item.active {
-  background-color: #ff00ba;
-  -webkit-transition: 0.2s ease-in;
-  transition: 0.2s ease-in;
-}
-
-.item.active .item-content {
-  color: white;
-  -webkit-transition: 0.2s ease-in;
-  transition: 0.2s ease-in;
-}
+// @media (max-width: 648px) {
+//   .lucky-wheel {
+//     width: 400px !important;
+//     height: 400px !important;
+//     border-radius: 400px !important;
+//   }
+//   .lucky-wheel::after {
+//     content: '';
+//     width: 400px !important;
+//     height: 400px !important;
+//     background-image: url('../assets/newWheel/wheel-outside.svg');
+//     background-position: center;
+//     background-size: cover;
+//     background-repeat: no-repeat;
+//     position: absolute;
+//   }
+//   .pointer-container {
+//     width: 128px;
+//     height: 208px;
+//     font-size: 1rem !important;
+//   }
+//   .pointer-container::after {
+//     width: 60px !important;
+//     height: 60px !important;
+//     border-radius: 60px !important;
+//     line-height: 60px !important;
+//   }
+//   .pointer-container .pointer{
+//     width: 64px  !important;
+//     height: 100px !important;
+//     bottom: 70.7px !important;
+//   }
+// }
 </style>
