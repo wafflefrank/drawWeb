@@ -548,22 +548,22 @@ export default {
       // 新版轉盤資訊
       prizes_new: [
         {
-          name: 'Wish',
+          name: '獎金200',
           icon: 'cake',
           count: 5,
         },
         {
-          name: 'Anything',
+          name: '電子彩金2500',
           icon: 'stars',
           count: 5,
         },
         {
-          name: 'Child',
+          name: '獎金5000',
           icon: 'child_care',
           count: 4,
         },
         {
-          name: 'Flight',
+          name: '獎金反俐2000',
           icon: ' flight',
           count: 1,
         },
@@ -571,6 +571,16 @@ export default {
           name: 'Wifi',
           icon: 'wifi',
           count: 5,
+        },
+        {
+          name: 'Movie',
+          icon: 'movie_filter',
+          count: 0,
+        },
+        {
+          name: 'Movie',
+          icon: 'movie_filter',
+          count: 0,
         },
         {
           name: 'Movie',
@@ -1218,7 +1228,7 @@ export default {
       }
     },
     initPrize() {
-      this.num = 6;
+      this.num = 8;
       this.degree(this.num);
       this.prizes = this.prizes_2017;
       this.numberArray();
@@ -1280,7 +1290,7 @@ export default {
       this.start_deg = degree;
       // 綁定旋轉角度到指針
       if (this.current_year === 2017) {
-        this.rotate_deg = `rotate(${degree}deg)`;
+        this.rotate_deg = `rotate(${degree - 22.5}deg)`;
       }
 
       this.prize_transition = `all ${this.duration / 1000}s cubic-bezier(0.42, 0, 0.2, 0.91)`;
@@ -1309,13 +1319,10 @@ export default {
       const prize = this.prizes_new[this.index];
       this.prize_name = prize.name;
       this.prize_icon = prize.icon;
-      if (this.current_year === 2018) {
-        this.prize_icon = 'card_giftcard';
-      }
       this.prizeActive();
       setTimeout(() => {
         prize.count -= 1;
-        console.log('3.旋轉角度:', this.current_deg, '獎品:', this.prizes_new.name, '剩餘數量:', this.prizes_new.count, ' index', this.index);
+        console.log('3.旋轉角度:', this.current_deg, '獎品:', prize.name, '剩餘數量:', prize.count, ' index', this.index);
       }, this.duration);
 
       // 點選動畫結束後，將"已點選"改回"未點選"
@@ -1734,8 +1741,8 @@ export default {
   border-radius: 620px;
   overflow: hidden;
   position: relative;
-  -webkit-transform: rotate(-30deg);
-  transform: rotate(-30deg);
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
 }
 
 // 中心點文字顏色
@@ -1808,8 +1815,8 @@ export default {
 }
 
 .item-skew:nth-child(1) {
-  -webkit-transform: rotate(60deg) skewY(-30deg);
-  transform: rotate(60deg) skewY(-30deg);
+  -webkit-transform: rotate(45deg) skewY(-45deg);
+  transform: rotate(45deg) skewY(-45deg);
   // background-image: url('../assets//backGround/greenBag.png');
   // background-repeat: no-repeat;
   // background-size: 360px 100px;
@@ -1817,35 +1824,44 @@ export default {
   // height: 100px;
 }
 .item-skew:nth-child(2) {
-  -webkit-transform: rotate(120deg) skewY(-30deg);
-  transform: rotate(120deg) skewY(-30deg);
+  -webkit-transform: rotate(90deg) skewY(-45deg);
+  transform: rotate(90deg) skewY(-45deg);
 }
 
 .item-skew:nth-child(3) {
-  -webkit-transform: rotate(180deg) skewY(-30deg);
-  transform: rotate(180deg) skewY(-30deg);
+  -webkit-transform: rotate(135deg) skewY(-45deg);
+  transform: rotate(135deg) skewY(-45deg);
 }
 
 .item-skew:nth-child(4) {
-  -webkit-transform: rotate(240deg) skewY(-30deg);
-  transform: rotate(240deg) skewY(-30deg);
+  -webkit-transform: rotate(180deg) skewY(-45deg);
+  transform: rotate(180deg) skewY(-45deg);
 }
 
 .item-skew:nth-child(5) {
-  -webkit-transform: rotate(300deg) skewY(-30deg);
-  transform: rotate(300deg) skewY(-30deg);
+  -webkit-transform: rotate(225deg) skewY(-45deg);
+  transform: rotate(225deg) skewY(-45deg);
 }
 
 .item-skew:nth-child(6) {
-  -webkit-transform: rotate(360deg) skewY(-30deg);
-  transform: rotate(360deg) skewY(-30deg);
+  -webkit-transform: rotate(270deg) skewY(-45deg);
+  transform: rotate(270deg) skewY(-45deg);
+}
+.item-skew:nth-child(7) {
+  -webkit-transform: rotate(315deg) skewY(-45deg);
+  transform: rotate(315deg) skewY(-45deg);
+}
+.item-skew:nth-child(8) {
+  -webkit-transform: rotate(360deg) skewY(-45deg);
+  transform: rotate(360deg) skewY(-45deg);
 }
 // 獎項名稱+編號位置
 .item-content {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  width: 200px;
+  width: 70px;
+  height: 50px;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
@@ -1853,22 +1869,22 @@ export default {
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-  font-size: 2rem;
+  font-size: 1.2rem;
   font-weight: bold;
   -webkit-transform-origin: center center;
   transform-origin: center center;
   -webkit-transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
-  transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  transform: skewY(45deg) rotate(20deg) translate(-95px, 92px);
   position: absolute;
-  right: 15px;
-  bottom: 0;
+  right: 90px;
+  bottom: -20px;
 }
 // 獎品編號
 .item-content .count {
   position: absolute;
-  left: 78px;
-  top: 60px;
-  font-size: 1.2rem;
+  left: 10px;
+  top: 70px;
+  font-size: 1rem;
   text-align: center;
   width: 45px;
   line-height: 25px;
@@ -1895,73 +1911,97 @@ export default {
 // 獎品圖片
 .item:nth-child(1) .prize_Img {
   position: absolute;
-  right: 40px;
+  right: 50px;
   top: 180px;
   background-image: url('../assets/backGround/greenBag.png') !important;
   background-size: contain !important;
   background-repeat: no-repeat !important;
-  -webkit-transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
-  transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  -webkit-transform: skewY(45deg) rotate(20deg) translate(-95px, 92px);
+  transform: skewY(45deg) rotate(20deg) translate(-95px, 92px);
   width: 100px;
   height: 150px;
 }
 .item:nth-child(2) .prize_Img {
   position: absolute;
-  right: 40px;
+  right: 50px;
   top: 180px;
   background-image: url('../assets/backGround/goldcoins_bag.png') !important;
   background-size: contain !important;
   background-repeat: no-repeat !important;
-  -webkit-transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
-  transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  -webkit-transform: skewY(45deg) rotate(20deg) translate(-95px, 92px);
+  transform: skewY(45deg) rotate(20deg) translate(-95px, 92px);
   width: 100px;
   height: 150px;
 }
 .item:nth-child(3) .prize_Img {
   position: absolute;
-  right: 40px;
+  right: 50px;
   top: 180px;
   background-image: url('../assets/backGround/treasure.png') !important;
   background-size: contain !important;
   background-repeat: no-repeat !important;
-  -webkit-transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
-  transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  -webkit-transform: skewY(45deg) rotate(20deg) translate(-95px, 92px);
+  transform: skewY(45deg) rotate(20deg) translate(-95px, 92px);
   width: 100px;
   height: 150px;
 }
 .item:nth-child(4) .prize_Img {
   position: absolute;
-  right: 40px;
-  top: 180px;
+  right: 70px;
+  top: 200px;
   background-image: url('../assets/backGround/ticket.png') !important;
   background-size: contain !important;
   background-repeat: no-repeat !important;
-  -webkit-transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
-  transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  -webkit-transform: skewY(45deg) rotate(20deg) translate(-95px, 92px);
+  transform: skewY(45deg) rotate(20deg) translate(-95px, 92px);
   width: 100px;
   height: 150px;
 }
 .item:nth-child(5) .prize_Img {
   position: absolute;
-  right: 40px;
+  right: 50px;
   top: 180px;
   background-image: url('../assets/backGround/ticket3.png') !important;
   background-size: contain !important;
   background-repeat: no-repeat !important;
-  -webkit-transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
-  transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  -webkit-transform: skewY(45deg) rotate(20deg) translate(-95px, 92px);
+  transform: skewY(45deg) rotate(20deg) translate(-95px, 92px);
   width: 100px;
   height: 150px;
 }
 .item:nth-child(6) .prize_Img {
   position: absolute;
-  right: 40px;
+  right: 50px;
   top: 180px;
   background-image: url('../assets/backGround/ticket2.png') !important;
   background-size: contain !important;
   background-repeat: no-repeat !important;
-  -webkit-transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
-  transform: skewY(30deg) rotate(30deg) translate(-95px, 62px);
+  -webkit-transform: skewY(45deg) rotate(20deg) translate(-95px, 92px);
+  transform: skewY(45deg) rotate(20deg) translate(-95px, 92px);
+  width: 100px;
+  height: 150px;
+}
+.item:nth-child(7) .prize_Img {
+  position: absolute;
+  right: 50px;
+  top: 180px;
+  background-image: url('../assets/backGround/ticket2.png') !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  -webkit-transform: skewY(45deg) rotate(20deg) translate(-95px, 92px);
+  transform: skewY(45deg) rotate(20deg) translate(-95px, 92px);
+  width: 100px;
+  height: 150px;
+}
+.item:nth-child(8) .prize_Img {
+  position: absolute;
+  right: 50px;
+  top: 180px;
+  background-image: url('../assets/backGround/ticket2.png') !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  -webkit-transform: skewY(45deg) rotate(20deg) translate(-95px, 92px);
+  transform: skewY(45deg) rotate(20deg) translate(-95px, 92px);
   width: 100px;
   height: 150px;
 }
@@ -2235,10 +2275,10 @@ pre {
     font-size: 0.8rem !important;
   }
   .pointer-container::after {
-    width: 50px !important;
-    height: 50px !important;
+    width: 55px !important;
+    height: 55px !important;
     border-radius: 50px !important;
-    line-height: 50px !important;
+    line-height: 57px !important;
   }
   .pointer-container .pointer {
     // width: 58px !important;
@@ -2252,14 +2292,15 @@ pre {
     transform-origin: 30px 67.5px !important;
   }
   .item-content {
-    width: 100px !important;
-    font-size: 1rem !important;
-    right: 0px !important;
-    bottom: -30px !important;
+    width: 80px !important;
+    font-size: 0.8rem !important;
+    right: 5px !important;
+    bottom: -25px !important;
+    height: 10px !important;
   }
   .item-content .count {
-    left: 37px !important;
-    top: 30px !important;
+    left: 25px !important;
+    top: 40px !important;
     width: 25px !important;
     line-height: 20px !important;
   }
@@ -2269,33 +2310,43 @@ pre {
   //   width: 90px !important;
   // }
   .item:nth-child(1) .prize_Img {
-    right: 10px !important;
-    top: 240px !important;
+    right: 5px !important;
+    top: 245px !important;
     width: 70px !important;
   }
   .item:nth-child(2) .prize_Img {
-    right: 10px !important;
-    top: 240px !important;
+    right: 5px !important;
+    top: 245px !important;
     width: 70px !important;
   }
   .item:nth-child(3) .prize_Img {
-    right: 10px !important;
-    top: 250px !important;
+    right: 5px !important;
+    top: 245px !important;
     width: 70px !important;
   }
   .item:nth-child(4) .prize_Img {
-    right: 10px !important;
-    top: 250px !important;
+    right: 5px !important;
+    top: 245px !important;
     width: 70px !important;
   }
   .item:nth-child(5) .prize_Img {
-    right: 10px !important;
-    top: 250px !important;
+    right: 5px !important;
+    top: 245px !important;
     width: 70px !important;
   }
   .item:nth-child(6) .prize_Img {
-    right: 10px !important;
-    top: 240px !important;
+    right: 5px !important;
+    top: 245px !important;
+    width: 70px !important;
+  }
+  .item:nth-child(7) .prize_Img {
+    right: 5px !important;
+    top: 245px !important;
+    width: 70px !important;
+  }
+  .item:nth-child(8) .prize_Img {
+    right: 5px !important;
+    top: 245px !important;
     width: 70px !important;
   }
 }
