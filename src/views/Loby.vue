@@ -42,7 +42,7 @@
   <!-- 帳戶 -->
   <div class="d-flex align-items-center justify-content-center mb-5 mt-5 phone_style">
     <!-- <span class="text-white me-5 fs-4">帳戶: {{ this.memberAccount }}</span> -->
-    <span style="color: rgb(77, 74, 74)" class=" me-5 text-start"
+    <span style="color: rgb(77, 74, 74)" class="me-5 text-start"
       ><span class="fs-4"
         >剩餘抽獎次數: <span class="drawNums_style">{{ this.drawNum }}</span></span
       >
@@ -525,6 +525,61 @@ export default {
       this.$nextTick(() => {
         this.isRouterAlive = true;
       });
+    },
+    // 自訂獎項圖片
+    customPrize() {
+      this.$http.get('/api/admin/prizes').then((res) => {
+        console.log('轉盤資訊:', res.data.data);
+        // for (this.i = 0; this.i < res.data.data.length; this.i += 1) {
+        //   this.prizes.push(this.prizes_content);
+        // }
+        console.log(this.prizes_phone[0].fonts[0].text);
+        _.forEach(res.data.data, (item, key) => {
+          console.log(item, key);
+          this.prizes[key].fonts[0].text = item.prize;
+          this.prizes_phone[key].fonts[0].text = item.prize;
+          console.log(this.prizes);
+        });
+      });
+      // 電腦版
+      this.prizes[0].imgs[0].src = treasureImg;
+      this.prizes[0].imgs[0].width = '30%';
+      this.prizes[0].imgs[0].top = '55%';
+      this.prizes[1].imgs[0].src = ticketImg;
+      this.prizes[1].imgs[0].width = '30%';
+      this.prizes[1].imgs[0].top = '55%';
+      this.prizes[2].imgs[0].src = coinBag;
+      this.prizes[2].imgs[0].width = '30%';
+      this.prizes[2].imgs[0].top = '55%';
+      this.prizes[3].imgs[0].src = ticketImg;
+      this.prizes[3].imgs[0].width = '30%';
+      this.prizes[3].imgs[0].top = '55%';
+      this.prizes[4].imgs[0].src = coinBag;
+      this.prizes[4].imgs[0].width = '35%';
+      this.prizes[4].imgs[0].top = '55%';
+      this.prizes[5].imgs[0].src = ticketImg;
+      this.prizes[5].imgs[0].width = '30%';
+      this.prizes[5].imgs[0].top = '55%';
+
+      // 手機版
+      this.prizes_phone[0].imgs[0].src = treasureImg;
+      this.prizes_phone[0].imgs[0].width = '30%';
+      this.prizes_phone[0].imgs[0].top = '55%';
+      this.prizes_phone[1].imgs[0].src = ticketImg;
+      this.prizes_phone[1].imgs[0].width = '30%';
+      this.prizes_phone[1].imgs[0].top = '55%';
+      this.prizes_phone[2].imgs[0].src = coinBag;
+      this.prizes_phone[2].imgs[0].width = '30%';
+      this.prizes_phone[2].imgs[0].top = '55%';
+      this.prizes_phone[3].imgs[0].src = ticketImg;
+      this.prizes_phone[3].imgs[0].width = '30%';
+      this.prizes_phone[3].imgs[0].top = '55%';
+      this.prizes_phone[4].imgs[0].src = coinBag;
+      this.prizes_phone[4].imgs[0].width = '35%';
+      this.prizes_phone[4].imgs[0].top = '55%';
+      this.prizes_phone[5].imgs[0].src = ticketImg;
+      this.prizes_phone[5].imgs[0].width = '30%';
+      this.prizes_phone[5].imgs[0].top = '55%';
     },
     //  獲取轉盤獎項
     getPrizes() {
@@ -1058,8 +1113,9 @@ export default {
   },
   created() {
     // this.reloadSavedForm();
-    this.getPrizes();
-    this.getPrizes_phone();
+    // this.getPrizes();
+    // this.getPrizes_phone();
+    this.customPrize();
     this.getWebInfo();
     this.getWithExpiry();
   },

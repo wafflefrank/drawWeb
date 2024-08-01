@@ -8,7 +8,7 @@ module.exports = defineConfig({
 
   // 後台網址
   devServer: {
-    proxy: 'http://lottery.morty.zaza.one',
+    proxy: 'http://lottery.mo.shy.lol',
   },
   // assetsDir: 'static',
   // outputDir: 'dist',
