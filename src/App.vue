@@ -1,5 +1,6 @@
 <template>
-  <router-view> </router-view> <!--  v-slot="{ Component }" -->
+  <router-view> </router-view>
+  <!--  v-slot="{ Component }" -->
   <!-- <transition name="fade" mode="out-in">
     <component :is="Component" :key="$route.path" />
   </transition> -->
@@ -33,7 +34,7 @@ export default {
 @import 'assets/SideBar/sideBar.css';
 @import './assets/all.scss';
 body {
-  background-image: url('../src//assets/backGround/lightBGg.jpg');
+  background-image: url('../src//assets/backGround/beach_bg.jpg');
   // background-size: 100% 100%;
   background-size: cover;
   background-attachment: fixed;

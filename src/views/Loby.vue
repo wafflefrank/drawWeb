@@ -1,6 +1,6 @@
 <template>
   <!-- <SwiperCarousel /> -->
-  <div class="mt-5 mb-3"><img class="banner_style" src="../assets/backGround/lightAd.jpg" alt="#" /></div>
+  <div class="mt-5 mb-3"><img class="banner_style" src="../assets/backGround/light_beach.jpg" alt="#" /></div>
   <div>
     <div class="d-flex justify-content-center">
       <button class="line_btn me-3" @click="goLine()"><img src="../assets/banner/line_logo.png" alt="" /><span class="ms-2 text-white">Line活動專員</span></button>
@@ -1472,12 +1472,13 @@ pre {
   white-space: break-word;
 }
 .banner_style {
-  border-radius: 50px !important;
   max-height: 100%;
   max-width: 100%;
   width: 800px;
   // height: 400px;
   margin: auto;
+  // border-radius: 100%;
+  border-radius: 35% / 30%; /* 調整這裡的百分比來達到你想要的弧度 */
 }
 // 抽獎彈窗
 .drawModel_style {
