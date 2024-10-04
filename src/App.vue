@@ -34,13 +34,29 @@ export default {
 @import 'assets/SideBar/sideBar.css';
 @import './assets/all.scss';
 body {
-  background-image: url('../src//assets/backGround/beach_bg.jpg');
-  // background-size: 100% 100%;
+  background-image: url('../src//assets/backGround/event_bg2.jpg');
+  // background-size: 50% 100%;
   background-size: cover;
   background-attachment: fixed;
-  background-position: center;
+  background-position: bottom;
   background-repeat: no-repeat;
   transition: background 0.2s;
+}
+// 模糊化
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: inherit; /* 繼承背景圖 */
+  background-size: inherit;
+  background-attachment: inherit;
+  background-position: inherit;
+  background-repeat: inherit;
+  filter: blur(5px); /* 模糊效果 */
+  z-index: -1; /* 放在背景下 */
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

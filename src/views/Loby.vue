@@ -1,6 +1,6 @@
 <template>
   <!-- <SwiperCarousel /> -->
-  <div class="mt-5 mb-3"><img class="banner_style" src="../assets/backGround/light_beach.jpg" alt="#" /></div>
+  <div class="mt-5 mb-3"><img class="banner_style" src="../assets/backGround/event_bg.jpg" alt="#" /></div>
   <div>
     <div class="d-flex justify-content-center">
       <button class="line_btn me-3" @click="goLine()"><img src="../assets/banner/line_logo.png" alt="" /><span class="ms-2 text-white">Line活動專員</span></button>
@@ -42,7 +42,7 @@
   <!-- 帳戶 -->
   <div class="d-flex align-items-center justify-content-center mb-5 mt-5 phone_style">
     <!-- <span class="text-white me-5 fs-4">帳戶: {{ this.memberAccount }}</span> -->
-    <span style="color: rgb(77, 74, 74)" class="me-5 text-start"
+    <span style="color: #fff" class="me-5 text-start"
       ><span class="fs-4"
         >剩餘抽獎次數: <span class="drawNums_style">{{ this.drawNum }}</span></span
       >
@@ -173,6 +173,12 @@ import ticketImg from '../assets/backGround/ticket3.png';
 import treasureImg from '../assets/backGround/treasure.png';
 import airplane from '../assets/prizes/airplane.png';
 import cryFace from '../assets/prizes/cry.png';
+import prizeOne from '../assets/prizes/500.png';
+import prizeTwo from '../assets/prizes/1000.png';
+import prizeThree from '../assets/prizes/3000.png';
+import prizeFour from '../assets/prizes/10000.png';
+import prizeFive from '../assets/prizes/20000.png';
+import byebye from '../assets/prizes/銘謝惠顧.png';
 
 export default {
   components: {
@@ -542,43 +548,43 @@ export default {
         });
       });
       // 電腦版
-      this.prizes[0].imgs[0].src = treasureImg;
-      this.prizes[0].imgs[0].width = '30%';
+      this.prizes[0].imgs[0].src = prizeFive;
+      this.prizes[0].imgs[0].width = '45%';
       this.prizes[0].imgs[0].top = '55%';
-      this.prizes[1].imgs[0].src = ticketImg;
-      this.prizes[1].imgs[0].width = '30%';
+      this.prizes[1].imgs[0].src = prizeOne;
+      this.prizes[1].imgs[0].width = '45%';
       this.prizes[1].imgs[0].top = '55%';
-      this.prizes[2].imgs[0].src = coinBag;
-      this.prizes[2].imgs[0].width = '30%';
+      this.prizes[2].imgs[0].src = prizeFour;
+      this.prizes[2].imgs[0].width = '45%';
       this.prizes[2].imgs[0].top = '55%';
-      this.prizes[3].imgs[0].src = ticketImg;
-      this.prizes[3].imgs[0].width = '30%';
+      this.prizes[3].imgs[0].src = byebye;
+      this.prizes[3].imgs[0].width = '45%';
       this.prizes[3].imgs[0].top = '55%';
-      this.prizes[4].imgs[0].src = coinBag;
-      this.prizes[4].imgs[0].width = '35%';
+      this.prizes[4].imgs[0].src = prizeThree;
+      this.prizes[4].imgs[0].width = '45%';
       this.prizes[4].imgs[0].top = '55%';
-      this.prizes[5].imgs[0].src = ticketImg;
-      this.prizes[5].imgs[0].width = '30%';
+      this.prizes[5].imgs[0].src = prizeTwo;
+      this.prizes[5].imgs[0].width = '45%';
       this.prizes[5].imgs[0].top = '55%';
 
       // 手機版
-      this.prizes_phone[0].imgs[0].src = treasureImg;
-      this.prizes_phone[0].imgs[0].width = '30%';
+      this.prizes_phone[0].imgs[0].src = prizeFive;
+      this.prizes_phone[0].imgs[0].width = '45%';
       this.prizes_phone[0].imgs[0].top = '55%';
-      this.prizes_phone[1].imgs[0].src = ticketImg;
-      this.prizes_phone[1].imgs[0].width = '30%';
+      this.prizes_phone[1].imgs[0].src = prizeOne;
+      this.prizes_phone[1].imgs[0].width = '45%';
       this.prizes_phone[1].imgs[0].top = '55%';
-      this.prizes_phone[2].imgs[0].src = coinBag;
-      this.prizes_phone[2].imgs[0].width = '30%';
+      this.prizes_phone[2].imgs[0].src = prizeFour;
+      this.prizes_phone[2].imgs[0].width = '45%';
       this.prizes_phone[2].imgs[0].top = '55%';
-      this.prizes_phone[3].imgs[0].src = ticketImg;
-      this.prizes_phone[3].imgs[0].width = '30%';
+      this.prizes_phone[3].imgs[0].src = byebye;
+      this.prizes_phone[3].imgs[0].width = '45%';
       this.prizes_phone[3].imgs[0].top = '55%';
-      this.prizes_phone[4].imgs[0].src = coinBag;
-      this.prizes_phone[4].imgs[0].width = '35%';
+      this.prizes_phone[4].imgs[0].src = prizeThree;
+      this.prizes_phone[4].imgs[0].width = '45%';
       this.prizes_phone[4].imgs[0].top = '55%';
-      this.prizes_phone[5].imgs[0].src = ticketImg;
-      this.prizes_phone[5].imgs[0].width = '30%';
+      this.prizes_phone[5].imgs[0].src = prizeTwo;
+      this.prizes_phone[5].imgs[0].width = '45%';
       this.prizes_phone[5].imgs[0].top = '55%';
     },
     //  獲取轉盤獎項
@@ -603,7 +609,7 @@ export default {
           if (key % 2 === 0) {
             console.log('偶數區域'); // 偶數
             this.prizes[key].background = '#ffaec1';
-            if (prizeMoney >= 1 && prizeMoney <= 200) {
+            if (prizeMoney >= 1 && prizeMoney <= 500) {
               if (ticketInclude) {
                 this.prizes[key].imgs[0].src = ticketImg;
                 this.prizes[key].imgs[0].width = '30%';
@@ -613,7 +619,7 @@ export default {
                 this.prizes[key].imgs[0].width = '20%';
                 this.prizes[key].imgs[0].top = '60%';
               }
-            } else if (prizeMoney > 200 && prizeMoney <= 600) {
+            } else if (prizeMoney > 200 && prizeMoney <= 1000) {
               if (ticketInclude) {
                 this.prizes[key].imgs[0].src = ticketImg;
                 this.prizes[key].imgs[0].width = '30%';
@@ -1479,6 +1485,7 @@ pre {
   margin: auto;
   // border-radius: 100%;
   border-radius: 35% / 30%; /* 調整這裡的百分比來達到你想要的弧度 */
+  box-shadow: 0px 4px 20px rgba(255, 255, 255, 0.6), 0 6px 30px rgba(255, 255, 255, 0.4); /* 亮色系陰影 */
 }
 // 抽獎彈窗
 .drawModel_style {
