@@ -58,6 +58,7 @@
     <!-- 幸運轉盤 -->
 
     <LuckyWheel
+      class="test_wheel"
       v-if="this.fullWidth >= 600"
       ref="myLucky"
       width="700px"
@@ -173,11 +174,11 @@ import ticketImg from '../assets/backGround/ticket3.png';
 import treasureImg from '../assets/backGround/treasure.png';
 import airplane from '../assets/prizes/airplane.png';
 import cryFace from '../assets/prizes/cry.png';
-import prizeOne from '../assets/prizes/500.png';
-import prizeTwo from '../assets/prizes/1000.png';
-import prizeThree from '../assets/prizes/3000.png';
-import prizeFour from '../assets/prizes/10000.png';
-import prizeFive from '../assets/prizes/20000.png';
+import prizeOne from '../assets/prizes/300.png';
+import prizeTwo from '../assets/prizes/600.png';
+import prizeThree from '../assets/prizes/1200.png';
+import prizeFour from '../assets/prizes/3000.png';
+import prizeFive from '../assets/prizes/16000.png';
 import byebye from '../assets/prizes/銘謝惠顧.png';
 
 export default {
@@ -1467,6 +1468,10 @@ export default {
 </style>
 
 <style lang="scss">
+.test_wheel {
+  box-shadow: rgb(84, 157, 234) 0px 30px 90px;
+  border-radius: 60%;
+}
 pre {
   color: white;
   font-size: 18px;
