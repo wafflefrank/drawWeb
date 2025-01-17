@@ -177,7 +177,7 @@ import cryFace from '../assets/prizes/cry.png';
 import prizeOne from '../assets/prizes/300.png';
 import prizeTwo from '../assets/prizes/600.png';
 import prizeThree from '../assets/prizes/1200.png';
-import prizeFour from '../assets/prizes/3000.png';
+import prizeFour from '../assets/prizes/3600.png';
 import prizeFive from '../assets/prizes/16000.png';
 import byebye from '../assets/prizes/銘謝惠顧.png';
 
@@ -549,44 +549,44 @@ export default {
         });
       });
       // 電腦版
-      this.prizes[0].imgs[0].src = prizeFive;
-      this.prizes[0].imgs[0].width = '45%';
-      this.prizes[0].imgs[0].top = '55%';
-      this.prizes[1].imgs[0].src = prizeOne;
-      this.prizes[1].imgs[0].width = '45%';
+      this.prizes[0].imgs[0].src = prizeOne;
+      this.prizes[0].imgs[0].width = '40%';
+      this.prizes[0].imgs[0].top = '45%';
+      this.prizes[1].imgs[0].src = prizeTwo;
+      this.prizes[1].imgs[0].width = '35%';
       this.prizes[1].imgs[0].top = '55%';
-      this.prizes[2].imgs[0].src = prizeFour;
-      this.prizes[2].imgs[0].width = '45%';
-      this.prizes[2].imgs[0].top = '55%';
-      this.prizes[3].imgs[0].src = byebye;
-      this.prizes[3].imgs[0].width = '45%';
+      this.prizes[2].imgs[0].src = prizeThree;
+      this.prizes[2].imgs[0].width = '35%';
+      this.prizes[2].imgs[0].top = '50%';
+      this.prizes[3].imgs[0].src = prizeFour;
+      this.prizes[3].imgs[0].width = '35%';
       this.prizes[3].imgs[0].top = '55%';
-      this.prizes[4].imgs[0].src = prizeThree;
-      this.prizes[4].imgs[0].width = '45%';
+      this.prizes[4].imgs[0].src = prizeFive;
+      this.prizes[4].imgs[0].width = '35%';
       this.prizes[4].imgs[0].top = '55%';
-      this.prizes[5].imgs[0].src = prizeTwo;
-      this.prizes[5].imgs[0].width = '45%';
-      this.prizes[5].imgs[0].top = '55%';
+      this.prizes[5].imgs[0].src = byebye;
+      this.prizes[5].imgs[0].width = '35%';
+      this.prizes[5].imgs[0].top = '50%';
 
       // 手機版
-      this.prizes_phone[0].imgs[0].src = prizeFive;
-      this.prizes_phone[0].imgs[0].width = '45%';
-      this.prizes_phone[0].imgs[0].top = '55%';
-      this.prizes_phone[1].imgs[0].src = prizeOne;
-      this.prizes_phone[1].imgs[0].width = '45%';
+      this.prizes_phone[0].imgs[0].src = prizeOne;
+      this.prizes_phone[0].imgs[0].width = '40%';
+      this.prizes_phone[0].imgs[0].top = '45%';
+      this.prizes_phone[1].imgs[0].src = prizeTwo;
+      this.prizes_phone[1].imgs[0].width = '35%';
       this.prizes_phone[1].imgs[0].top = '55%';
-      this.prizes_phone[2].imgs[0].src = prizeFour;
-      this.prizes_phone[2].imgs[0].width = '45%';
-      this.prizes_phone[2].imgs[0].top = '55%';
-      this.prizes_phone[3].imgs[0].src = byebye;
-      this.prizes_phone[3].imgs[0].width = '45%';
+      this.prizes_phone[2].imgs[0].src = prizeThree;
+      this.prizes_phone[2].imgs[0].width = '35%';
+      this.prizes_phone[2].imgs[0].top = '50%';
+      this.prizes_phone[3].imgs[0].src = prizeFour;
+      this.prizes_phone[3].imgs[0].width = '35%';
       this.prizes_phone[3].imgs[0].top = '55%';
-      this.prizes_phone[4].imgs[0].src = prizeThree;
-      this.prizes_phone[4].imgs[0].width = '45%';
+      this.prizes_phone[4].imgs[0].src = prizeFive;
+      this.prizes_phone[4].imgs[0].width = '35%';
       this.prizes_phone[4].imgs[0].top = '55%';
-      this.prizes_phone[5].imgs[0].src = prizeTwo;
-      this.prizes_phone[5].imgs[0].width = '45%';
-      this.prizes_phone[5].imgs[0].top = '55%';
+      this.prizes_phone[5].imgs[0].src = byebye;
+      this.prizes_phone[5].imgs[0].width = '35%';
+      this.prizes_phone[5].imgs[0].top = '50%';
     },
     //  獲取轉盤獎項
     getPrizes() {
@@ -1489,7 +1489,7 @@ pre {
   // height: 400px;
   margin: auto;
   // border-radius: 100%;
-  border-radius: 35% / 30%; /* 調整這裡的百分比來達到你想要的弧度 */
+  border-radius: 35% / 20%; /* 調整這裡的百分比來達到你想要的弧度 */
   box-shadow: 0px 4px 20px rgba(255, 255, 255, 0.6), 0 6px 30px rgba(255, 255, 255, 0.4); /* 亮色系陰影 */
 }
 // 抽獎彈窗
