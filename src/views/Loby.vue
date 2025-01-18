@@ -106,14 +106,14 @@
         <!-- <p>1.為避免【會員瀏覽器問題】所有得獎者獎項一律以LEO娛樂城抽獎系統歷史記錄為主。</p>
         <p>2.中獎禮金將於21號後依序轉入會員的遊戲帳戶。</p>
         <p>3.本活動最終解釋權歸LEO娛樂城所有。</p> -->
-        <pre style="color: #fff">{{ this.awardText }}</pre>
+        <pre>{{ this.awardText }}</pre>
       </div>
     </div>
     <!-- 活動說明 -->
     <div class="directionBox">
       <div class="D_title"><img src="../assets/banner/act_des.png" alt="" /></div>
       <div class="D_Word">
-        <pre style="color: #fff">{{ this.activityText }}</pre>
+        <pre>{{ this.activityText }}</pre>
         <!-- <p>1.LEO娛樂城EX與KU經銷專屬幸運大抽獎，僅有EX與KU旗下會員才可參加抽獎活動，非EX與KU旗下會員將不符合資格。</p>
         <p>2.會員當月存款金額累計滿10000點(含)以上且需一倍流水，獲得抽獎次數1次，最多儲值滿30000點(含)以上且需一倍流水，獲得抽獎次數3次。</p>
         <p>3.次月1號至10號經審查合格後，將於隔日11號可獲得抽獎序號，會員需自行至抽獎活動網址進行抽獎。</p>
@@ -1219,9 +1219,11 @@ export default {
   & .D_Word {
     text-align: left;
     padding-left: 20px;
-    color: rgb(30, 26, 26);
+    // color: rgb(30, 26, 26);
     font-size: 18px;
-    font-weight: bold;
+    // font-weight: bold;
+    color: rgb(219, 219, 219); /* 文字顏色 */
+    -webkit-text-stroke: 0.9px black; /* 黑邊描邊 */
   }
 }
 // 輸入驗證碼樣式
