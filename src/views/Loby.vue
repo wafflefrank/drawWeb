@@ -43,10 +43,10 @@
   <div class="d-flex align-items-center justify-content-center mb-5 mt-5 phone_style">
     <!-- <span class="text-white me-5 fs-4">帳戶: {{ this.memberAccount }}</span> -->
     <span style="color: #fff" class="me-5 text-start"
-      ><span class="fs-4"
+      ><span class="fs-4 drawNums_name"
         >剩餘抽獎次數: <span class="drawNums_style">{{ this.drawNum }}</span></span
       >
-      <br />(若卡在抽獎過程,刷新不減抽獎次數！</span
+      <br />(若卡在抽獎過程,刷新不減抽獎次數</span
     >
     <div class="phone_inputKey d-flex">
       <button class="button-72 me-2" @click="inputCode()">輸入序號</button>
@@ -1288,11 +1288,19 @@ export default {
   bottom: 0;
 }
 // 抽獎次數文字樣式
+.drawNums_name {
+  // color: rgb(255, 243, 14);
+  color: #d7d7d7;
+  font-weight: bold;
+  font-size: 30px;
+  text-shadow: 1px 1px 0 black, -1px 1px 0 black, 1px -1px 0 black, -1px -1px 0 black; /* 多方向的陰影，模擬黑邊 */
+}
 .drawNums_style {
   // color: rgb(255, 243, 14);
   color: #d31818;
   font-weight: bold;
   font-size: 30px;
+  text-shadow: 1px 1px 0 black, -1px 1px 0 black, 1px -1px 0 black, -1px -1px 0 black; /* 多方向的陰影，模擬黑邊 */
 }
 // 獲取獎項動畫
 .slide-fade-enter-active {
