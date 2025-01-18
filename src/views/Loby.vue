@@ -1221,9 +1221,9 @@ export default {
     padding-left: 20px;
     // color: rgb(30, 26, 26);
     font-size: 18px;
-    // font-weight: bold;
-    color: rgb(219, 219, 219); /* 文字顏色 */
-    -webkit-text-stroke: 0.9px black; /* 黑邊描邊 */
+    color: #cccccc;
+    font-weight: bolder;
+    text-shadow: 1px 1px 0 black, -1px 1px 0 black, 1px -1px 0 black, -1px -1px 0 black; /* 多方向的陰影，模擬黑邊 */
   }
 }
 // 輸入驗證碼樣式
