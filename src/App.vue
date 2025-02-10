@@ -55,7 +55,7 @@ body::before {
   background-attachment: inherit;
   background-position: inherit;
   background-repeat: inherit;
-  filter: blur(2px); /* 模糊效果 */
+  filter: blur(5px); /* 模糊效果 */
   z-index: -1; /* 放在背景下 */
 }
 #app {
