@@ -34,11 +34,11 @@ export default {
 @import 'assets/SideBar/sideBar.css';
 @import './assets/all.scss';
 body {
-  background-image: url('../src//assets/backGround/event_bg2.webp');
+  background-image: url('../src//assets/backGround/event_bg2.jpg');
   // background-size: 50% 100%;
   background-size: cover;
   background-attachment: fixed;
-  background-position: bottom;
+  background-position: center 90%;
   background-repeat: no-repeat;
   transition: background 0.2s;
 }
@@ -49,7 +49,7 @@ body::before {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  // height: 100%;
   background-image: inherit; /* 繼承背景圖 */
   background-size: inherit;
   background-attachment: inherit;
