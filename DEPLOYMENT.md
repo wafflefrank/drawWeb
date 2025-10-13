@@ -36,9 +36,33 @@ npm run build
 # 將 dist 資料夾的內容推送到 gh-pages 分支
 ```
 
+## 故障排除
+
+### 如果 GitHub Pages 沒有顯示網址：
+
+1. **檢查分支設定**：
+   - 確保您推送的分支是 `display_Wheel`、`main` 或 `master`
+   - 工作流程已更新支援 `display_Wheel` 分支
+
+2. **檢查 Pages 設定**：
+   - 前往倉庫的 Settings > Pages
+   - 確保 Source 選擇 "GitHub Actions"
+   - 如果沒有顯示網址，等待幾分鐘後重新整理頁面
+
+3. **檢查工作流程權限**：
+   - 前往 Settings > Actions > General
+   - 在 "Workflow permissions" 部分選擇 "Read and write permissions"
+   - 勾選 "Allow GitHub Actions to create and approve pull requests"
+
+4. **手動觸發部署**：
+   - 前往 Actions 標籤
+   - 點擊 "Deploy to GitHub Pages" 工作流程
+   - 點擊 "Run workflow" 按鈕手動觸發
+
 ## 注意事項
 
 - 確保 `vue.config.js` 中的 `publicPath` 設定為 `/drawWeb/`
 - 如果您的倉庫名稱不是 `drawWeb`，請相應修改 `publicPath`
 - 部署過程可能需要幾分鐘時間
 - 您可以在 "Actions" 標籤中查看部署狀態
+- 如果仍然沒有顯示網址，請檢查倉庫的 Pages 設定是否正確啟用
