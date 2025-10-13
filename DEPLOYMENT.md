@@ -59,6 +59,20 @@ npm run build
    - 點擊 "Deploy to GitHub Pages" 工作流程
    - 點擊 "Run workflow" 按鈕手動觸發
 
+### 如果網站顯示 README 內容而不是 Vue 應用程式：
+
+1. **檢查 .nojekyll 檔案**：
+   - 工作流程會自動建立 `.nojekyll` 檔案
+   - 這告訴 GitHub Pages 不要使用 Jekyll 處理檔案
+
+2. **檢查 publicPath 設定**：
+   - 確保 `vue.config.js` 中的 `publicPath` 設定正確
+   - 已加入 `configureWebpack` 確保路徑正確
+
+3. **重新建置和部署**：
+   - 推送最新的程式碼變更
+   - 等待 GitHub Actions 完成部署
+
 ## 注意事項
 
 - 確保 `vue.config.js` 中的 `publicPath` 設定為 `/drawWeb/`

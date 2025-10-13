@@ -17,4 +17,11 @@ module.exports = defineConfig({
 
   // 靜態資源目錄
   assetsDir: 'static',
+
+  // 確保在 GitHub Pages 上正確工作
+  configureWebpack: {
+    output: {
+      publicPath: process.env.NODE_ENV === 'production' ? '/drawWeb/' : '/',
+    },
+  },
 });
