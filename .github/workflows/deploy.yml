@@ -2,7 +2,9 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main, display_Wheel ]
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
 
 jobs:
   build-and-deploy:
@@ -10,15 +12,12 @@ jobs:
     
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-        persist-credentials: false
+      uses: actions/checkout@v4
       
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
-        node-version: '16'
+        node-version: '18'
         cache: 'npm'
         
     - name: Install dependencies
@@ -26,13 +25,10 @@ jobs:
       
     - name: Build
       run: npm run build
-    
-    - name: SPA 404 fallback for GitHub Pages
-      run: cp dist/index.html dist/404.html
       
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_branch: gh-pages
         publish_dir: ./dist
