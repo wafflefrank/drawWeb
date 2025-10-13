@@ -855,6 +855,8 @@ export default {
     },
     // 確認驗證碼
     doVarify() {
+      // this.drawNum = 20;
+
       // api
       this.$http.post('/api/users/startLottery', this.getDrawNums).then((res) => {
         if (res.data.code === 200) {
