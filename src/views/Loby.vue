@@ -123,9 +123,24 @@
   </div>
   <!-- 輸入抽獎碼彈窗 -->
   <el-dialog class="drawModel_style" v-model="dialogFormVisible" title="抽獎序號驗證" width="70%" center>
+    <!-- 測試模式提示 -->
+    <div v-if="isTestMode" class="test-mode-hint mb-3 p-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; color: white;">
+      <h6 class="mb-2">🧪 測試模式</h6>
+      <p class="mb-1">可用測試序號：</p>
+      <div class="d-flex flex-wrap gap-2">
+        <span v-for="code in testData.codes" :key="code.code"
+              class="badge"
+              :class="code.used ? 'bg-secondary' : 'bg-success'"
+              style="font-size: 14px; padding: 5px 10px;">
+          {{ code.code }} ({{ code.drawCount }}次)
+        </span>
+      </div>
+      <small class="text-light">每個序號只能使用一次</small>
+    </div>
+
     <el-form :model="getDrawNums">
       <el-form-item label="抽獎序號:" class="codeForm_style">
-        <el-input class="codeInput_style" v-model="getDrawNums.code" autocomplete="off" />
+        <el-input class="codeInput_style" v-model="getDrawNums.code" autocomplete="off" placeholder="請輸入測試序號" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -193,6 +208,20 @@ export default {
   data() {
     return {
       isRouterAlive: true,
+      // 測試模式開關
+      isTestMode: true, // 設為 true 啟用測試模式
+      // 測試假資料
+      testData: {
+        codes: [
+          { code: 'TEST001', drawCount: 3, used: false },
+          { code: 'TEST002', drawCount: 5, used: false },
+          { code: 'TEST003', drawCount: 1, used: false },
+          { code: 'DEMO123', drawCount: 10, used: false },
+          { code: 'SHOW456', drawCount: 2, used: false },
+        ],
+        currentCode: null,
+        testDrawHistory: [],
+      },
       // 驗證碼
       getDrawNums: {
         code: '',
@@ -840,48 +869,99 @@ export default {
       });
     },
     postLottery() {
-      this.$http.post('/api/users/drawing', this.getDrawNums).then((res) => {
-        if (res.data.code === 200) {
-          // this.$swal.fire('抽獎成功', `恭喜獲取 :${res.data.data.award}`, 'success');
-          this.drawNum = res.data.data.count;
-          this.prizeIndex = res.data.data.award;
-          // localStorage.setItem('storedDrawNums', JSON.stringify(this.drawNum));
-          this.setWithExpiry('storedDrawNums', this.drawNum, 600000); // 設定暫存10分鐘;1秒=1000ms
-          this.dialogFormVisible = false;
-        } else {
-          this.$swal.fire('抽獎失敗', `${res.data.msg}`, 'error');
-        }
+      if (this.isTestMode) {
+        // 測試模式：模擬抽獎
+        this.doTestLottery();
+      } else {
+        // 正式模式：使用 API
+        this.$http.post('/api/users/drawing', this.getDrawNums).then((res) => {
+          if (res.data.code === 200) {
+            this.drawNum = res.data.data.count;
+            this.prizeIndex = res.data.data.award;
+            this.setWithExpiry('storedDrawNums', this.drawNum, 600000);
+            this.dialogFormVisible = false;
+          } else {
+            this.$swal.fire('抽獎失敗', `${res.data.msg}`, 'error');
+          }
+        });
+      }
+    },
+    // 測試模式抽獎
+    doTestLottery() {
+      if (this.drawNum <= 0) {
+        this.$swal.fire('測試模式', '沒有抽獎次數了！', 'error');
+        return;
+      }
+
+      // 模擬抽獎結果（隨機選擇獎項）
+      const randomIndex = Math.floor(Math.random() * this.prizes.length) + 1;
+      this.prizeIndex = randomIndex;
+
+      // 減少抽獎次數
+      this.drawNum -= 1;
+
+      // 記錄抽獎歷史
+      const drawRecord = {
+        code: this.getDrawNums.code,
+        isEnter: true,
+        award: randomIndex.toString(),
+        drawTime: new Date().toLocaleString('zh-TW'),
+      };
+      this.testData.testDrawHistory.push(drawRecord);
+
+      // 更新暫存
+      this.setWithExpiry('storedDrawNums', this.drawNum, 600000);
+
+      console.log('測試模式抽獎結果:', {
+        prizeIndex: this.prizeIndex,
+        remainingDraws: this.drawNum,
+        prizeName: this.prizes[this.prizeIndex - 1].fonts[0].text,
       });
     },
     // 確認驗證碼
     doVarify() {
-      // this.drawNum = 20;
+      if (this.isTestMode) {
+        // 測試模式：使用假資料
+        this.doTestVerify();
+      } else {
+        // 正式模式：使用 API
+        this.$http.post('/api/users/startLottery', this.getDrawNums).then((res) => {
+          if (res.data.code === 200) {
+            this.drawNum = res.data.count;
+            this.$swal.fire('輸入成功', `${res.data.msg}`, 'success');
+            this.dialogFormVisible = false;
+            this.setWithExpiry('storedDrawNums', this.drawNum, 600000);
+            this.setWithExpiry('storedDrawCode', this.getDrawNums.code, 600000);
+            this.drawHistory_Data = [];
+          } else {
+            this.$swal.fire('輸入失敗', `${res.data.msg}`, 'error');
+          }
+        });
+      }
+    },
+    // 測試模式驗證
+    doTestVerify() {
+      const inputCode = this.getDrawNums.code.trim().toUpperCase();
+      const testCode = this.testData.codes.find((item) => item.code === inputCode);
 
-      // api
-      this.$http.post('/api/users/startLottery', this.getDrawNums).then((res) => {
-        if (res.data.code === 200) {
-          this.drawNum = res.data.count;
-          // this.drawNum = 20;
-          this.$swal.fire('輸入成功', `${res.data.msg}`, 'success');
-          this.dialogFormVisible = false;
-          // localStorage.setItem('storedDrawNums', JSON.stringify(this.drawNum));
-          this.setWithExpiry('storedDrawNums', this.drawNum, 600000);
-          this.setWithExpiry('storedDrawCode', this.getDrawNums.code, 600000);
-          this.drawHistory_Data = [];
-        } else {
-          this.$swal.fire('輸入失敗', `${res.data.msg}`, 'error');
-        }
-      });
+      if (testCode && !testCode.used) {
+        // 找到有效的測試序號
+        this.testData.currentCode = testCode;
+        this.drawNum = testCode.drawCount;
+        testCode.used = true;
 
-      // test
-      // if (this.getCode_Form.code !== '') {
-      //   this.$swal.fire('驗證成功', '驗證成功', 'success');
-      //   this.dialogFormVisible = false;
-      //   this.drawNum = 7;
-      // } else {
-      //   this.$swal.fire('驗證失敗', '驗證失敗', 'error');
-      // }
-      this.getCode_Form.code = '';
+        this.$swal.fire('測試模式', `序號 ${inputCode} 驗證成功！獲得 ${testCode.drawCount} 次抽獎機會`, 'success');
+        this.dialogFormVisible = false;
+
+        // 儲存到暫存
+        this.setWithExpiry('storedDrawNums', this.drawNum, 600000);
+        this.setWithExpiry('storedDrawCode', this.getDrawNums.code, 600000);
+        this.drawHistory_Data = [];
+      } else if (testCode && testCode.used) {
+        this.$swal.fire('測試模式', `序號 ${inputCode} 已經使用過！`, 'error');
+      } else {
+        this.$swal.fire('測試模式', `序號 ${inputCode} 不存在！可用測試序號：${this.testData.codes.map((c) => c.code).join(', ')}`, 'error');
+      }
     },
     // reloadSavedForm() {
     //   // 使用JSON.parse()將LocalStorange中的資料轉回可利用的object
@@ -992,16 +1072,26 @@ export default {
     // 中獎彈窗資料
     getDrawHistory() {
       this.drawHistory_Visible = true;
-      console.log(this.codeReview);
-      this.$http.get(`/api/users/awards/${this.getDrawNums.code}`).then((res) => {
-        this.drawHistory_Data = res.data.data.BetHistories;
-        _.forEach(this.drawHistory_Data, (item, key) => {
-          // console.log('獎品內容', item);
-          this.drawHistory_Data[key].isEnter = res.data.data.isEnter;
-          this.drawHistory_Data[key].code = res.data.data.code;
+
+      if (this.isTestMode) {
+        // 測試模式：顯示假資料
+        this.drawHistory_Data = this.testData.testDrawHistory.map((record) => ({
+          code: record.code,
+          isEnter: record.isEnter,
+          award: record.award,
+          drawTime: record.drawTime,
+        }));
+        console.log('測試模式抽獎歷史:', this.drawHistory_Data);
+      } else {
+        // 正式模式：使用 API
+        this.$http.get(`/api/users/awards/${this.getDrawNums.code}`).then((res) => {
+          this.drawHistory_Data = res.data.data.BetHistories;
+          _.forEach(this.drawHistory_Data, (item, key) => {
+            this.drawHistory_Data[key].isEnter = res.data.data.isEnter;
+            this.drawHistory_Data[key].code = res.data.data.code;
+          });
         });
-        // console.log('中獎資料', this.drawHistory_Data);
-      });
+      }
     },
     // 過濾序號使用狀態
     formatisEnter(isEnter) {
@@ -1060,9 +1150,11 @@ export default {
   },
   created() {
     // this.reloadSavedForm();
-    this.getPrizes();
-    this.getPrizes_phone();
-    this.getWebInfo();
+    if (!this.isTestMode) {
+      this.getPrizes();
+      this.getPrizes_phone();
+      this.getWebInfo();
+    }
     this.getWithExpiry();
   },
   mounted() {
@@ -1584,11 +1676,33 @@ pre {
   border-radius: 30px;
   background-color: #ffffff;
 }
+// 測試模式提示樣式
+.test-mode-hint {
+  .badge {
+    border-radius: 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  .bg-success {
+    background: linear-gradient(45deg, #28a745, #20c997) !important;
+  }
+
+  .bg-secondary {
+    background: linear-gradient(45deg, #6c757d, #adb5bd) !important;
+  }
+}
+
 @media (max-width: 800px) {
   .banner_style {
     width: 550px !important;
   }
 }
+
 @media (max-width: 600px) {
   .banner_style {
     width: 350px !important;
@@ -1633,5 +1747,6 @@ pre {
       color: #fff !important;
     }
   }
+
 }
 </style>
