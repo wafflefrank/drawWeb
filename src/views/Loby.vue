@@ -1,9 +1,15 @@
 <template>
   <!-- <SwiperCarousel /> -->
-  <div class="mt-5 mb-3"><img class="banner_style" src="../assets/backGround/lightAd.jpg" alt="#" /></div>
+  <div class="mt-5 mb-3">
+    <img class="banner_style" src="../assets/backGround/lightAd.jpg" alt="#" />
+  </div>
   <div>
     <div class="d-flex justify-content-center">
-      <button class="line_btn me-3" @click="goLine()"><img src="../assets/banner/line_logo.png" alt="" /><span class="ms-2 text-white">Line活動專員</span></button>
+      <button class="line_btn me-3" @click="goLine()">
+        <img src="../assets/banner/line_logo.png" alt="" /><span class="ms-2 text-white"
+          >Line活動專員</span
+        >
+      </button>
       <button class="game_btn" @click="goLine()">
         <span class="ms-2 text-white">娛樂城</span>
       </button>
@@ -42,7 +48,7 @@
   <!-- 帳戶 -->
   <div class="d-flex align-items-center justify-content-center mb-5 mt-5 phone_style">
     <!-- <span class="text-white me-5 fs-4">帳戶: {{ this.memberAccount }}</span> -->
-    <span style="color: rgb(77, 74, 74)" class=" me-5 text-start"
+    <span style="color: rgb(77, 74, 74)" class="me-5 text-start"
       ><span class="fs-4"
         >剩餘抽獎次數: <span class="drawNums_style">{{ this.drawNum }}</span></span
       >
@@ -60,8 +66,8 @@
     <LuckyWheel
       v-if="this.fullWidth >= 600"
       ref="myLucky"
-      width="700px"
-      height="700px"
+      width="500px"
+      height="500px"
       :prizes="prizes"
       :blocks="blocks"
       :buttons="buttons"
@@ -122,16 +128,33 @@
     </div>
   </div>
   <!-- 輸入抽獎碼彈窗 -->
-  <el-dialog class="drawModel_style" v-model="dialogFormVisible" title="抽獎序號驗證" width="70%" center>
+  <el-dialog
+    class="drawModel_style"
+    v-model="dialogFormVisible"
+    title="抽獎序號驗證"
+    width="70%"
+    center
+  >
     <!-- 測試模式提示 -->
-    <div v-if="isTestMode" class="test-mode-hint mb-3 p-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; color: white;">
+    <div
+      v-if="isTestMode"
+      class="test-mode-hint mb-3 p-3"
+      style="
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+        color: white;
+      "
+    >
       <h6 class="mb-2">🧪 測試模式</h6>
       <p class="mb-1">可用測試序號：</p>
       <div class="d-flex flex-wrap gap-2">
-        <span v-for="code in testData.codes" :key="code.code"
-              class="badge"
-              :class="code.used ? 'bg-secondary' : 'bg-success'"
-              style="font-size: 14px; padding: 5px 10px;">
+        <span
+          v-for="code in testData.codes"
+          :key="code.code"
+          class="badge"
+          :class="code.used ? 'bg-secondary' : 'bg-success'"
+          style="font-size: 14px; padding: 5px 10px"
+        >
           {{ code.code }} ({{ code.drawCount }}次)
         </span>
       </div>
@@ -140,22 +163,39 @@
 
     <el-form :model="getDrawNums">
       <el-form-item label="抽獎序號:" class="codeForm_style">
-        <el-input class="codeInput_style" v-model="getDrawNums.code" autocomplete="off" placeholder="請輸入測試序號" />
+        <el-input
+          class="codeInput_style"
+          v-model="getDrawNums.code"
+          autocomplete="off"
+          placeholder="請輸入測試序號"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button class="cancelBtn" color="#a3a3a3" @click="dialogFormVisible = false">取消</el-button>
+        <el-button class="cancelBtn" color="#a3a3a3" @click="dialogFormVisible = false"
+          >取消</el-button
+        >
         <el-button class="verifyBtn" color="#c71e2d" @click="doVarify()">認證</el-button>
       </span>
     </template>
   </el-dialog>
   <!-- 抽獎紀錄彈窗 -->
-  <el-dialog class="loginHistory_style" v-model="drawHistory_Visible" title="中獎歷史紀錄" width="40%" center>
+  <el-dialog
+    class="loginHistory_style"
+    v-model="drawHistory_Visible"
+    title="中獎歷史紀錄"
+    width="40%"
+    center
+  >
     <div class="loginHyTable_style">
       <el-table
         :data="drawHistory_Data"
-        :header-cell-style="{ background: 'linear-gradient(180deg, rgba(252, 240, 255, 1) 0%, rgba(115, 111, 159, 0.46) 100%)', color: '#000' }"
+        :header-cell-style="{
+          background:
+            'linear-gradient(180deg, rgba(252, 240, 255, 1) 0%, rgba(115, 111, 159, 0.46) 100%)',
+          color: '#000',
+        }"
       >
         <el-table-column prop="code" label="驗證碼" width="100" align="center">
           <!-- <template v-slot="{ row }">{{ formatCode(row) }}</template> -->
@@ -250,7 +290,13 @@ export default {
       prizeName: '禮金8888',
       lotteryMsg: '',
       // 電腦版
-      blocks: [{ padding: '55px', background: '#869cfa', imgs: [{ src: borderImg, width: '100%', rotate: true }] }],
+      blocks: [
+        {
+          padding: '35px',
+          background: '#869cfa',
+          imgs: [{ src: borderImg, width: '100%', rotate: true }],
+        },
+      ],
       prizes: [
         // 0
         {
@@ -259,7 +305,7 @@ export default {
           fonts: [
             {
               text: '禮金1000',
-              fontSize: '24px',
+              fontSize: '18px',
               top: '30%',
               fontWeight: '600',
             },
@@ -271,8 +317,8 @@ export default {
           imgs: [{ src: coinImg, width: '20%', top: '60%' }],
           fonts: [
             {
-              text: '禮金1000',
-              fontSize: '24px',
+              text: '禮金3000',
+              fontSize: '18px',
               top: '30%',
               fontWeight: '600',
             },
@@ -281,11 +327,11 @@ export default {
         // 2
         {
           background: '#ee95a9',
-          imgs: [{ src: coinBag, width: '20%', top: '60%' }],
+          imgs: [{ src: coinBag, width: '30%', top: '60%' }],
           fonts: [
             {
-              text: '禮金1000',
-              fontSize: '24px',
+              text: '禮金5000',
+              fontSize: '18px',
               top: '30%',
               fontWeight: '600',
             },
@@ -294,11 +340,11 @@ export default {
         // 3
         {
           background: '#c98ef4',
-          imgs: [{ src: coinBag, width: '30%', top: '60%' }],
+          imgs: [{ src: greenBag, width: '30%', top: '60%' }],
           fonts: [
             {
-              text: '禮金1000',
-              fontSize: '24px',
+              text: '禮金10000',
+              fontSize: '18px',
               top: '30%',
               fontWeight: '600',
             },
@@ -307,11 +353,11 @@ export default {
         // 4
         {
           background: '#ee95a9',
-          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+          imgs: [{ src: ticketImg, width: '20%', top: '60%' }],
           fonts: [
             {
-              text: '禮金1000',
-              fontSize: '24px',
+              text: '禮金500',
+              fontSize: '18px',
               top: '30%',
               fontWeight: '600',
             },
@@ -320,11 +366,11 @@ export default {
         // 5
         {
           background: '#d945a9',
-          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+          imgs: [{ src: airplane, width: '70%', top: '30%' }],
           fonts: [
             {
-              text: '禮金1000',
-              fontSize: '24px',
+              text: '東京來回雙人機票',
+              fontSize: '18px',
               top: '30%',
               fontWeight: '600',
             },
@@ -359,7 +405,13 @@ export default {
         // },
       ],
       // 手機板
-      blocks_phone: [{ padding: '30px', background: '#869cfa', imgs: [{ src: borderImg, width: '100%', rotate: true }] }],
+      blocks_phone: [
+        {
+          padding: '30px',
+          background: '#869cfa',
+          imgs: [{ src: borderImg, width: '100%', rotate: true }],
+        },
+      ],
       prizes_phone: [
         // 0
         {
@@ -380,7 +432,7 @@ export default {
           imgs: [{ src: coinImg, width: '20%', top: '60%' }],
           fonts: [
             {
-              text: '禮金1000',
+              text: '禮金3000',
               fontSize: '12px',
               top: '30%',
               fontWeight: '600',
@@ -390,10 +442,10 @@ export default {
         // 2
         {
           background: '#ee95a9',
-          imgs: [{ src: coinBag, width: '20%', top: '60%' }],
+          imgs: [{ src: coinBag, width: '30%', top: '60%' }],
           fonts: [
             {
-              text: '禮金1000',
+              text: '禮金5000',
               fontSize: '12px',
               top: '30%',
               fontWeight: '600',
@@ -403,10 +455,10 @@ export default {
         // 3
         {
           background: '#c98ef4',
-          imgs: [{ src: coinBag, width: '40%', top: '60%' }],
+          imgs: [{ src: greenBag, width: '35%', top: '60%' }],
           fonts: [
             {
-              text: '禮金1000',
+              text: '禮金10000',
               fontSize: '12px',
               top: '30%',
               fontWeight: '600',
@@ -416,10 +468,10 @@ export default {
         // 4
         {
           background: '#ee95a9',
-          imgs: [{ src: coinBag, width: '40%', top: '60%' }],
+          imgs: [{ src: ticketImg, width: '30%', top: '60%' }],
           fonts: [
             {
-              text: '禮金1000',
+              text: '禮金500',
               fontSize: '12px',
               top: '30%',
               fontWeight: '600',
@@ -429,10 +481,10 @@ export default {
         // 5
         {
           background: '#d945a9',
-          imgs: [{ src: coinImg, width: '20%', top: '60%' }],
+          imgs: [{ src: airplane, width: '60%', top: '40%' }],
           fonts: [
             {
-              text: '禮金1000',
+              text: '東京來回雙人機票',
               fontSize: '12px',
               top: '30%',
               fontWeight: '600',
@@ -950,7 +1002,11 @@ export default {
         this.drawNum = testCode.drawCount;
         testCode.used = true;
 
-        this.$swal.fire('測試模式', `序號 ${inputCode} 驗證成功！獲得 ${testCode.drawCount} 次抽獎機會`, 'success');
+        this.$swal.fire(
+          '測試模式',
+          `序號 ${inputCode} 驗證成功！獲得 ${testCode.drawCount} 次抽獎機會`,
+          'success',
+        );
         this.dialogFormVisible = false;
 
         // 儲存到暫存
@@ -960,7 +1016,13 @@ export default {
       } else if (testCode && testCode.used) {
         this.$swal.fire('測試模式', `序號 ${inputCode} 已經使用過！`, 'error');
       } else {
-        this.$swal.fire('測試模式', `序號 ${inputCode} 不存在！可用測試序號：${this.testData.codes.map((c) => c.code).join(', ')}`, 'error');
+        this.$swal.fire(
+          '測試模式',
+          `序號 ${inputCode} 不存在！可用測試序號：${this.testData.codes
+            .map((c) => c.code)
+            .join(', ')}`,
+          'error',
+        );
       }
     },
     // reloadSavedForm() {
@@ -1189,7 +1251,12 @@ export default {
 <style lang="scss" scoped>
 // 扇形顏色
 .section_color {
-  background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(244, 82, 96, 0.770920868347339) 24%, rgba(179, 0, 255, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(244, 82, 96, 0.770920868347339) 24%,
+    rgba(179, 0, 255, 1) 100%
+  );
 }
 .line_btn {
   min-width: 255px;
@@ -1347,7 +1414,7 @@ export default {
   background-color: #8c8c8c21;
   overflow: hidden;
   z-index: -5;
-  margin-top: 180px;
+  margin-top: 100px;
 
   .prize-container {
     display: flex;
@@ -1378,7 +1445,7 @@ export default {
   }
 
   .prize-item {
-    font-size: 52px;
+    font-size: 32px;
     color: #bb1414;
     // text-decoration: underline;
   }
@@ -1524,7 +1591,12 @@ pre {
   font-weight: bold;
   border-radius: 20px;
   & .el-dialog__header {
-    background: linear-gradient(90deg, rgba(238, 149, 179, 1) 17%, rgba(244, 82, 96, 0.770920868347339) 52%, rgba(201, 142, 244, 0.8073354341736695) 100%);
+    background: linear-gradient(
+      90deg,
+      rgba(238, 149, 179, 1) 17%,
+      rgba(244, 82, 96, 0.770920868347339) 52%,
+      rgba(201, 142, 244, 0.8073354341736695) 100%
+    );
     margin-right: 0;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
@@ -1538,7 +1610,12 @@ pre {
 
 // 抽獎紀錄彈窗
 .loginHistory_style {
-  background: linear-gradient(270deg, rgba(238, 149, 179, 1) 0%, rgb(159, 28, 188) 0%, rgba(35, 7, 64, 1) 100%) !important;
+  background: linear-gradient(
+    270deg,
+    rgba(238, 149, 179, 1) 0%,
+    rgb(159, 28, 188) 0%,
+    rgba(35, 7, 64, 1) 100%
+  ) !important;
   font-size: 20px;
   font-weight: bold;
   border-radius: 20px;
@@ -1615,7 +1692,8 @@ pre {
   padding: 18px 18px;
   text-align: center;
   text-decoration: none;
-  text-shadow: rgba(255, 255, 255, 0.4) 0 0 4px, rgba(255, 255, 255, 0.2) 0 0 12px, rgba(57, 31, 91, 0.6) 1px 1px 4px, rgba(57, 31, 91, 0.32) 4px 4px 16px;
+  text-shadow: rgba(255, 255, 255, 0.4) 0 0 4px, rgba(255, 255, 255, 0.2) 0 0 12px,
+    rgba(57, 31, 91, 0.6) 1px 1px 4px, rgba(57, 31, 91, 0.32) 4px 4px 16px;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
@@ -1637,7 +1715,12 @@ pre {
 .button-73 {
   align-items: center;
   background-color: initial;
-  background-image: linear-gradient(90deg, rgba(238, 149, 179, 1) 0%, rgba(199, 30, 45, 0.770920868347339), rgba(71, 1, 15, 0.8073354341736695) 100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(238, 149, 179, 1) 0%,
+    rgba(199, 30, 45, 0.770920868347339),
+    rgba(71, 1, 15, 0.8073354341736695) 100%
+  );
   border-radius: 42px;
   border-width: 0;
   box-shadow: rgba(57, 31, 91, 0.24) 0 2px 2px, rgba(179, 132, 201, 0.4) 0 8px 12px;
@@ -1654,7 +1737,8 @@ pre {
   padding: 18px 18px;
   text-align: center;
   text-decoration: none;
-  text-shadow: rgba(255, 255, 255, 0.4) 0 0 4px, rgba(255, 255, 255, 0.2) 0 0 12px, rgba(59, 5, 13, 1) 56% 1px 1px 4px, rgba(129, 15, 25, 0.770920868347339) 4px 4px 16px;
+  text-shadow: rgba(255, 255, 255, 0.4) 0 0 4px, rgba(255, 255, 255, 0.2) 0 0 12px,
+    rgba(59, 5, 13, 1) 56% 1px 1px 4px, rgba(129, 15, 25, 0.770920868347339) 4px 4px 16px;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
@@ -1747,6 +1831,5 @@ pre {
       color: #fff !important;
     }
   }
-
 }
 </style>
