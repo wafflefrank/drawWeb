@@ -1241,9 +1241,9 @@ export default {
     // }, 5000);
 
     // 2秒後更新畫面
-    window.setTimeout(() => {
+    window.addEventListener('load', () => {
       this.reloadPage();
-    }, 2000);
+    });
   },
 };
 </script>
