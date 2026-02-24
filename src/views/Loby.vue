@@ -11,7 +11,7 @@
         >
       </button>
       <button class="game_btn" @click="goLine()">
-        <span class="ms-2 text-white">娛樂城</span>
+        <span class="ms-2 text-white">活動官網</span>
       </button>
     </div>
   </div>
@@ -108,9 +108,9 @@
     <div class="directionBox">
       <div class="D_title"><img src="../assets/banner/win_des.png" alt="" /></div>
       <div class="D_Word">
-        <!-- <p>1.為避免【會員瀏覽器問題】所有得獎者獎項一律以LEO娛樂城抽獎系統歷史記錄為主。</p>
+        <p>1.為避免【會員瀏覽器問題】所有得獎者獎項一律以LEO活動官網抽獎系統歷史記錄為主。</p>
         <p>2.中獎禮金將於21號後依序轉入會員的遊戲帳戶。</p>
-        <p>3.本活動最終解釋權歸LEO娛樂城所有。</p> -->
+        <p>3.本活動最終解釋權歸LEO活動官網所有。</p>
         <pre style="color: rgb(77, 74, 74)">{{ this.awardText }}</pre>
       </div>
     </div>
@@ -119,11 +119,11 @@
       <div class="D_title"><img src="../assets/banner/act_des.png" alt="" /></div>
       <div class="D_Word">
         <pre style="color: rgb(77, 74, 74)">{{ this.activityText }}</pre>
-        <!-- <p>1.LEO娛樂城EX與KU經銷專屬幸運大抽獎，僅有EX與KU旗下會員才可參加抽獎活動，非EX與KU旗下會員將不符合資格。</p>
+        <p>1.LEO活動官網EX與KU經銷專屬幸運大抽獎，僅有EX與KU旗下會員才可參加抽獎活動，非EX與KU旗下會員將不符合資格。</p>
         <p>2.會員當月存款金額累計滿10000點(含)以上且需一倍流水，獲得抽獎次數1次，最多儲值滿30000點(含)以上且需一倍流水，獲得抽獎次數3次。</p>
         <p>3.次月1號至10號經審查合格後，將於隔日11號可獲得抽獎序號，會員需自行至抽獎活動網址進行抽獎。</p>
         <p>4.審核合格後，當月20號以前未自行前往抽獎則視為放棄資格。</p>
-        <p>5.任何參與資格都以LEO娛樂城抽獎系統判斷為主，不得有爭議。<br />&nbsp;</p> -->
+        <p>5.任何參與資格都以LEO活動官網抽獎系統判斷為主，不得有爭議。<br />&nbsp;</p>
       </div>
     </div>
   </div>
@@ -1205,7 +1205,7 @@ export default {
     goLine() {
       window.open('https://line.me/R/ti/p/@max7890707?from=page&searchId=max7890707', '_blank');
     },
-    // 前往娛樂城
+    // 前往活動官網
     goEntertaiment() {
       window.open('https://linkby.tw/max7890707', '_blank');
     },
